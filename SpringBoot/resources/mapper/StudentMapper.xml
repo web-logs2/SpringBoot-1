@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.SpringBoot.mapper.StudentMapper">
+	<!-- 结果集映射 -->
+	<resultMap id="studentMapper" type="spring.SpringBoot.entiry.Student">
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 公共列名 -->
+	<sql id="common_column">
+		name,password
+	</sql>
+	
+	<!-- 查询学生信息 -->
+	<select id="getStudentInfo" resultMap="studentMapper">
+		select
+		<include refid="common_column" />
+		from Student
+		where is_valid = '1'
+	</select>
+	
+	<!-- 新增学生信息 -->
+	<insert id="addStudentInfo" parameterType="spring.SpringBoot.entiry.Student">
+		insert into Student
+		values
+		(
+			#{name,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			'1'
+		);
+	</insert>
+	
+	<!-- 修改学生信息 -->
+	<update id="updateStudentInfo" parameterType="spring.SpringBoot.entiry.Student">
+		update Student 
+		set 
+			name = #{name},
+			password = #{password}
+		where 
+			name = #{name}
+			and is_valid = '1'
+	</update>
+
+	<!-- 删除学生信息 -->
+	<update id="deleteStudentInfo" parameterType="spring.SpringBoot.entiry.Student">
+		update Student 
+		set is_valid = '0'
+		where name = #{name}
+	</update>
+</mapper>
