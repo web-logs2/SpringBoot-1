@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class SolidityUtils {
+public class SolidityUtil {
     /**
      * 利用abi信息 与 bin信息 生成对应的abi,bin文件
      * @param abi 合约编译后的abi信息

@@ -28,4 +28,32 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo selectAccount(Integer id) {
         return userInfoMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public UserInfo selectWalletId(String walletId) {
+        return userInfoMapper.selectWalletId(walletId);
+    }
+
+    @Override
+    public int register(UserInfo userInfo) {
+        if (null != userInfo &&
+                null != userInfo.getWalletId() && "" != userInfo.getWalletId() &&
+                null != userInfo.getEmail() && "" != userInfo.getEmail()) {
+            UserInfo userInfoExist = userInfoMapper.selectWalletId(userInfo.getWalletId());
+            if (null == userInfoExist) {
+                return userInfoMapper.insertSelective(userInfo);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int cancel(String walletId) {
+        return userInfoMapper.deleteWalletId(walletId);
+    }
+
+    @Override
+    public int updateAccount(UserInfo userInfo) {
+        return userInfoMapper.updateAccount(userInfo);
+    }
 }

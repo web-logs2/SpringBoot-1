@@ -1,6 +1,6 @@
 package spring.SpringBoot;
 
-import spring.SpringBoot.utils.SolidityUtils;
+import spring.SpringBoot.utils.SolidityUtil;
 
 public class TestGenerateABIAndBIN {
     public static void main(String[] args) {
@@ -66,6 +66,6 @@ public class TestGenerateABIAndBIN {
 
         String abiFileName = "leaveMsg.abi";
         String binFileName = "leaveMsg.bin";
-        SolidityUtils.generateABIAndBIN(abi, bin, abiFileName, binFileName);
+        SolidityUtil.generateABIAndBIN(abi, bin, abiFileName, binFileName);
     }
 }

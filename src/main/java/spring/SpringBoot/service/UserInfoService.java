@@ -6,8 +6,14 @@ import java.util.List;
 
 public interface UserInfoService {
     List<UserInfo> getUserInfos();
-
-    int creatAccount(UserInfo userInfo);
-
+    
     UserInfo selectAccount(Integer id);
+
+    UserInfo selectWalletId(String walletId);
+
+    int register(UserInfo userInfo);
+
+    int cancel(String walletId);
+
+    int updateAccount(UserInfo userInfo);
 }

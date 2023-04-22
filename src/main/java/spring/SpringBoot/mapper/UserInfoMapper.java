@@ -7,17 +7,18 @@ import java.util.List;
 
 @Repository
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(UserInfo record);
 
     int insertSelective(UserInfo record);
 
     UserInfo selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(UserInfo record);
+    int updateAccount(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);
 
     List<UserInfo> getUserInfos();
+
+    UserInfo selectWalletId(String walletId);
+
+    int deleteWalletId(String walletId);
 }
