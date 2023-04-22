@@ -20,11 +20,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public int creatAccount(UserInfo userInfo) {
-        return 0;
-    }
-
-    @Override
     public UserInfo selectAccount(Integer id) {
         return userInfoMapper.selectByPrimaryKey(id);
     }
