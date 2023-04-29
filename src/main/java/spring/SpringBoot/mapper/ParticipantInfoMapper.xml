@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.SpringBoot.mapper.ParticipantInfoMapper">
+  <resultMap id="BaseResultMap" type="spring.SpringBoot.entry.ParticipantInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="token_id" jdbcType="VARCHAR" property="tokenId" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="contract_address" jdbcType="VARCHAR" property="contractAddress" />
+    <result column="ticket" jdbcType="INTEGER" property="ticket" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, token_id, user_address, contract_address, ticket, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from participant_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getParticipantInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from participant_info
+    where user_address = #{userAddress,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from participant_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.ParticipantInfo" useGeneratedKeys="true">
+    insert into participant_info (token_id, user_address, contract_address, 
+      ticket, create_time, update_time
+      )
+    values (#{tokenId,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, #{contractAddress,jdbcType=VARCHAR}, 
+      #{ticket,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.ParticipantInfo" useGeneratedKeys="true">
+    insert into participant_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tokenId != null">
+        token_id,
+      </if>
+      <if test="userAddress != null">
+        user_address,
+      </if>
+      <if test="contractAddress != null">
+        contract_address,
+      </if>
+      <if test="ticket != null">
+        ticket,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tokenId != null">
+        #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAddress != null">
+        #{contractAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ticket != null">
+        #{ticket,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="spring.SpringBoot.entry.ParticipantInfo">
+    update participant_info
+    <set>
+      <if test="tokenId != null">
+        token_id = #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        user_address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAddress != null">
+        contract_address = #{contractAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ticket != null">
+        ticket = #{ticket,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="spring.SpringBoot.entry.ParticipantInfo">
+    update participant_info
+    set token_id = #{tokenId,jdbcType=VARCHAR},
+      user_address = #{userAddress,jdbcType=VARCHAR},
+      contract_address = #{contractAddress,jdbcType=VARCHAR},
+      ticket = #{ticket,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

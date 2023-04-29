@@ -5,37 +5,45 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * subscribe_info
+ * participant_info
  * @author 
  */
 @Data
-public class SubscribeInfo implements Serializable {
+public class ParticipantInfo implements Serializable {
     /**
      * 用户编号
      */
     private Integer id;
 
     /**
-     * 订阅者钱包
+     * tokenID
      */
-    private String subscriberWallet;
+    private String tokenId;
 
     /**
-     * 被订阅者钱包
+     * 参与者地址
      */
-    private String subscribeeWallet;
-
-    private Byte status;
+    private String userAddress;
 
     /**
-     * 更新时间
+     * raffleAddress
      */
-    private Date updateTime;
+    private String contractAddress;
+
+    /**
+     * 参与者票数
+     */
+    private Integer ticket;
 
     /**
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }

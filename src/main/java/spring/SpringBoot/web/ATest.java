@@ -9,7 +9,7 @@ import org.web3j.protocol.http.HttpService;
 
 import java.util.concurrent.ExecutionException;
 
-public class Main {
+public class ATest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Web3j client = Web3j.build(new HttpService("https://sepolia.infura.io/v3/0xd9145CCE52D386f254917e481eB44e9943F39138"));
         Web3ClientVersion clientVersion = client.web3ClientVersion().sendAsync().get();

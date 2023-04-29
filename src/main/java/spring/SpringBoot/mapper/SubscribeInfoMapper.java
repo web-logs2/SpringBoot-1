@@ -1,7 +1,11 @@
 package spring.SpringBoot.mapper;
 
-import spring.SpringBoot.entry.SubscribeInfo;
+import org.springframework.stereotype.Repository;
+import  spring.SpringBoot.entry.SubscribeInfo;
 
+import java.util.List;
+
+@Repository
 public interface SubscribeInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +18,9 @@ public interface SubscribeInfoMapper {
     int updateByPrimaryKeySelective(SubscribeInfo record);
 
     int updateByPrimaryKey(SubscribeInfo record);
+
+    List<SubscribeInfo> getSubscribees(String subscriberWallet);
+
+    int updateSubscribeStatus(SubscribeInfo subscribeInfo);
+
 }

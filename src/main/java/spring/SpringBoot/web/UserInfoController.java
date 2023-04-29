@@ -23,8 +23,9 @@ public class UserInfoController {
      * @return
      */
     @RequestMapping("/getAccounts")
-    public List<UserInfo> getAccounts() {
-        return userInfoService.getUserInfos();
+    public Object getAccounts() {
+        List<UserInfo> userInfos = userInfoService.getUserInfos();
+        return ResponseUtil.ok(userInfos);
     }
 
     /**
@@ -34,8 +35,9 @@ public class UserInfoController {
      * @return
      */
     @RequestMapping("/getAccountById")
-    public UserInfo getAccountById(@RequestParam Integer id) {
-        return userInfoService.selectAccount(id);
+    public Object getAccountById(@RequestParam Integer id) {
+        UserInfo userInfo = userInfoService.selectAccount(id);
+        return ResponseUtil.ok(userInfo);
     }
 
     /**
@@ -45,8 +47,9 @@ public class UserInfoController {
      * @return
      */
     @RequestMapping("/getAccountInfo")
-    public UserInfo getAccountInfo(@RequestParam String walletId) {
-        return userInfoService.selectWalletId(walletId);
+    public Object getAccountInfo(@RequestParam String walletId) {
+        UserInfo userInfo = userInfoService.selectWalletId(walletId);
+        return ResponseUtil.ok(userInfo);
     }
 
     /**

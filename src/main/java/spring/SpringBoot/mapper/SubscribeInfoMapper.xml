@@ -5,11 +5,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="subscriber_wallet" jdbcType="VARCHAR" property="subscriberWallet" />
     <result column="subscribee_wallet" jdbcType="VARCHAR" property="subscribeeWallet" />
+    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, subscriber_wallet, subscribee_wallet, update_time, create_time
+    id, subscriber_wallet, subscribee_wallet, `status`, update_time, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,15 +18,23 @@
     from subscribe_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getSubscribees" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from subscribe_info
+    where  subscriber_wallet= #{subscriberWallet,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from subscribe_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.SubscribeInfo" useGeneratedKeys="true">
     insert into subscribe_info (subscriber_wallet, subscribee_wallet, 
-      update_time, create_time)
+      `status`, update_time, create_time
+      )
     values (#{subscriberWallet,jdbcType=VARCHAR}, #{subscribeeWallet,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.SubscribeInfo" useGeneratedKeys="true">
     insert into subscribe_info
@@ -35,6 +44,9 @@
       </if>
       <if test="subscribeeWallet != null">
         subscribee_wallet,
+      </if>
+      <if test="status != null">
+        `status`,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -49,6 +61,9 @@
       </if>
       <if test="subscribeeWallet != null">
         #{subscribeeWallet,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -67,6 +82,9 @@
       <if test="subscribeeWallet != null">
         subscribee_wallet = #{subscribeeWallet,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -80,8 +98,17 @@
     update subscribe_info
     set subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR},
       subscribee_wallet = #{subscribeeWallet,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateSubscribeStatus" parameterType="spring.SpringBoot.entry.SubscribeInfo">
+    update subscribe_info
+    set
+        `status` = #{status,jdbcType=TINYINT},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+    where subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR}
   </update>
 </mapper>

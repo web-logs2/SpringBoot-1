@@ -5,11 +5,11 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * subscribe_info
+ * favorite_info
  * @author 
  */
 @Data
-public class SubscribeInfo implements Serializable {
+public class FavoriteInfo implements Serializable {
     /**
      * 用户编号
      */
@@ -21,21 +21,24 @@ public class SubscribeInfo implements Serializable {
     private String subscriberWallet;
 
     /**
+     * 活动id
+     */
+    private String activityId;
+
+    /**
      * 被订阅者钱包
      */
     private String subscribeeWallet;
-
-    private Byte status;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     /**
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }
