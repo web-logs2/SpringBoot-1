@@ -11,7 +11,7 @@ import spring.SpringBoot.utils.ResponseUtil;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/favoriteinfo")
+@RequestMapping("/api/favoriteInfo")
 public class FavoriteInfoController {
     @Autowired
     FavoriteInfoService favoriteInfoService;

@@ -11,7 +11,7 @@ import spring.SpringBoot.utils.ResponseUtil;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/participantinfo")
+@RequestMapping("/api/participantInfo")
 public class ParticipantInfoController {
     @Autowired
     ParticipantInfoService participantInfoService;
