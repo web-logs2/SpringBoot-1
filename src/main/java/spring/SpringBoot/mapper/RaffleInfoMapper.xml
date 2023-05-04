@@ -35,11 +35,11 @@
         contract_address = #{contractAddress,jdbcType=VARCHAR} and (raffleStatus !=4 or raffleStatus!=5)
     </select>
 
-    <select id="getRaffleInfoList" resultMap="BaseResultMap">
+    <select id="getRaffleInfoListByOwner" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from raffle_info
-        where 1 = 1
+        where `owner` = #{owner,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

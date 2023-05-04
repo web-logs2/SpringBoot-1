@@ -20,7 +20,7 @@ public interface RaffleInfoMapper {
 
     int updateByPrimaryKey(RaffleInfo record);
 
-    List<RaffleInfo> getRaffleInfoList();
+    List<RaffleInfo> getRaffleInfoListByOwner(String owner);
 
     RaffleInfo getRaffleInfoByCondition(Map map);
 }

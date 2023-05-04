@@ -16,8 +16,8 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     RaffleInfoMapper raffleInfoMapper;
 
     @Override
-    public List<RaffleInfo> getRaffleInfoList() {
-        return raffleInfoMapper.getRaffleInfoList();
+    public List<RaffleInfo> getRaffleInfoListByOwner(String owner) {
+        return raffleInfoMapper.getRaffleInfoListByOwner(owner);
     }
 
     @Override

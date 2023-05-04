@@ -21,13 +21,13 @@ public class RaffleInfoController {
     RaffleInfoService raffleInfoService;
 
     /**
-     * 获取所有活动列表
+     * 获取当前用户所有活动列表
      *
      * @return
      */
-    @RequestMapping("/getRaffleInfoList")
-    public Object getRaffleInfoList() {
-        List<RaffleInfo> raffleInfos = raffleInfoService.getRaffleInfoList();
+    @RequestMapping("/getRaffleInfoListByOwner")
+    public Object getRaffleInfoListByOwner(@RequestParam String owner) {
+        List<RaffleInfo> raffleInfos = raffleInfoService.getRaffleInfoListByOwner(owner);
         return ResponseUtil.ok(raffleInfos);
     }
 
