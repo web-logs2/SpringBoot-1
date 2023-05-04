@@ -21,7 +21,7 @@ public class ResponseUtil {
     public static Object ok() {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 200);
-        obj.put("msg", "成功");
+        obj.put("msg", "success");
         return obj;
     }
 
@@ -44,7 +44,7 @@ public class ResponseUtil {
     public static Object ok(Object data) {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 200);
-        obj.put("msg", "成功");
+        obj.put("msg", "success");
         obj.put("data", data);
         return obj;
     }
@@ -67,7 +67,7 @@ public class ResponseUtil {
     public static Object okFstComponentDependency(int totalSize, Object data) {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 200);
-        obj.put("msg", "成功");
+        obj.put("msg", "success");
         obj.put("totalSize", totalSize);
         obj.put("data", data);
         return obj;
@@ -91,7 +91,7 @@ public class ResponseUtil {
     public static Object part(Object data) {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 201);
-        obj.put("msg", "部分执行成功");
+        obj.put("msg", "part success");
         obj.put("data", data);
         return obj;
     }
@@ -115,7 +115,7 @@ public class ResponseUtil {
     public static Object okList(Object data, int cn, int sn, int total) {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 200);
-        obj.put("msg", "成功");
+        obj.put("msg", "success");
         obj.put("data", data);
         obj.put("cn", cn);
         obj.put("sn", sn);
@@ -143,7 +143,7 @@ public class ResponseUtil {
     public static Object okList(Object data, int cn, int sn, long total) {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", 200);
-        obj.put("msg", "成功");
+        obj.put("msg", "success");
         obj.put("data", data);
         obj.put("cn", cn);
         obj.put("sn", sn);
@@ -167,7 +167,7 @@ public class ResponseUtil {
     public static Object fail() {
         Map<String, Object> obj = new HashMap<>();
         obj.put("code", -1);
-        obj.put("msg", "错误");
+        obj.put("msg", "error");
         return obj;
     }
 
