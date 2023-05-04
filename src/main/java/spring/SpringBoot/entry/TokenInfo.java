@@ -2,7 +2,6 @@ package spring.SpringBoot.entry;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * token_info

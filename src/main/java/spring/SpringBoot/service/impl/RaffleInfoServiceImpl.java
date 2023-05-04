@@ -7,7 +7,6 @@ import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.RaffleInfoService;
-import spring.SpringBoot.service.TokenInfoService;
 import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.ArrayList;

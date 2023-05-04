@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.RaffleInfo;
-import spring.SpringBoot.entry.UserInfo;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
 import spring.SpringBoot.vo.TokenRaffleVo;
