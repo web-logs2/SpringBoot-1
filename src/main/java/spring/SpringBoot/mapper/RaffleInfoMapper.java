@@ -15,7 +15,7 @@ public interface RaffleInfoMapper {
 
     RaffleInfo selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(RaffleInfo record);
+    int updateRaffleInfo(RaffleInfo record);
 
     int updateByPrimaryKey(RaffleInfo record);
 

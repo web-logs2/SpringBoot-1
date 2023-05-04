@@ -38,7 +38,7 @@ public class RaffleInfoController {
     @RequestMapping("/createRaffleInfo")
     public Object createRaffleInfo(@RequestBody RaffleInfo raffleInfo) {
         Object result = raffleInfoService.createRaffleInfo(raffleInfo);
-        if (!result.equals(1)) {
+        if (!result.equals(-1)) {
             return ResponseUtil.fail(-1, "createRaffleInfo fail!");
         }
         return ResponseUtil.ok(result);

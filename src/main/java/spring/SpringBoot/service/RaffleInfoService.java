@@ -8,4 +8,6 @@ public interface RaffleInfoService {
     List<RaffleInfo> getRaffleInfoList();
 
     int createRaffleInfo(RaffleInfo raffleInfo);
+
+    int updateRaffleInfo(RaffleInfo raffleInfo);
 }

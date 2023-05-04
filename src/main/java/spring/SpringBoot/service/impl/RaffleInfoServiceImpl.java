@@ -23,4 +23,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     public int createRaffleInfo(RaffleInfo raffleInfo) {
         return raffleInfoMapper.insertSelective(raffleInfo);
     }
+
+    @Override
+    public int updateRaffleInfo(RaffleInfo raffleInfo) {
+        return raffleInfoMapper.updateRaffleInfo(raffleInfo);
+    }
 }

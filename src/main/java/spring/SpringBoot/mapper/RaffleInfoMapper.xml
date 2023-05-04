@@ -128,47 +128,20 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="spring.SpringBoot.entry.RaffleInfo">
+  <update id="updateRaffleInfo" parameterType="spring.SpringBoot.entry.RaffleInfo">
     update raffle_info
     <set>
       <if test="raffleaddress != null">
         raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       </if>
-      <if test="owner != null">
-        `owner` = #{owner,jdbcType=VARCHAR},
-      </if>
-      <if test="tokenId != null">
-        token_id = #{tokenId,jdbcType=VARCHAR},
-      </if>
-      <if test="contractAddress != null">
-        contract_address = #{contractAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="tickets != null">
-        tickets = #{tickets,jdbcType=INTEGER},
-      </if>
-      <if test="ticketprice != null">
-        ticketPrice = #{ticketprice,jdbcType=FLOAT},
-      </if>
-      <if test="starttimestamp != null">
-        startTimestamp = #{starttimestamp,jdbcType=BIGINT},
-      </if>
-      <if test="endtimestamp != null">
-        endTimestamp = #{endtimestamp,jdbcType=BIGINT},
-      </if>
       <if test="rafflestatus != null">
         raffleStatus = #{rafflestatus,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="king != null">
         king = #{king,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="spring.SpringBoot.entry.RaffleInfo">
     update raffle_info

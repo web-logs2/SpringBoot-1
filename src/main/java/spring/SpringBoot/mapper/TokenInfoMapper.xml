@@ -17,11 +17,17 @@
     id, token_id, contract_address, `owner`, nftStandard_id, image, `name`, `desc`, create_time, 
     update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from token_info
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTokenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from token_info
+    where contract_address = #{contractAddress,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from token_info

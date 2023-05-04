@@ -16,4 +16,17 @@ public class TokenInfoServiceImpl implements TokenInfoService {
     public TokenInfo getTokenInfoById(int id) {
         return tokenInfoMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public int createTokenInfo(TokenInfo tokenInfo) {
+        if (null != tokenInfo && null != tokenInfo.getContractAddress() && "" != tokenInfo.getContractAddress() &&
+                null != tokenInfo.getTokenId() && "" != tokenInfo.getTokenId()) {
+            TokenInfo tokenInfoExist = tokenInfoMapper.selectByTokenId(tokenInfo.getContractAddress(), tokenInfo.getTokenId());
+            if (tokenInfo.getTokenId().equals(tokenInfoExist.getTokenId()) && tokenInfo.getContractAddress().equals(tokenInfoExist.getContractAddress())) {
+                return 2;
+            }
+            return tokenInfoMapper.insertSelective(tokenInfo);
+        }
+        return -1;
+    }
 }
