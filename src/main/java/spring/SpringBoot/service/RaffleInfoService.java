@@ -1,12 +1,13 @@
 package spring.SpringBoot.service;
 
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.List;
 import java.util.Map;
 
 public interface RaffleInfoService {
-    List<RaffleInfo> getRaffleInfoListByOwner(String owner);
+    List<TokenRaffleVo> getRaffleInfoListByOwner(String owner);
 
     int createRaffleInfo(RaffleInfo raffleInfo);
 

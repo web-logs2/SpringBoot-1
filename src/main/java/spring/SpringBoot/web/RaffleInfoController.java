@@ -9,6 +9,7 @@ import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.UserInfo;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
+import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,14 +22,14 @@ public class RaffleInfoController {
     RaffleInfoService raffleInfoService;
 
     /**
-     * 获取当前用户所有活动列表
+     * 获取当前用户所有活动列表(包含图片，name)
      *
      * @return
      */
     @RequestMapping("/getRaffleInfoListByOwner")
     public Object getRaffleInfoListByOwner(@RequestParam String owner) {
-        List<RaffleInfo> raffleInfos = raffleInfoService.getRaffleInfoListByOwner(owner);
-        return ResponseUtil.ok(raffleInfos);
+        List<TokenRaffleVo> tokenRaffleVos = raffleInfoService.getRaffleInfoListByOwner(owner);
+        return ResponseUtil.ok(tokenRaffleVos);
     }
 
 

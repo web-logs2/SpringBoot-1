@@ -3,9 +3,14 @@ package spring.SpringBoot.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
+import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.RaffleInfoService;
+import spring.SpringBoot.service.TokenInfoService;
+import spring.SpringBoot.vo.TokenRaffleVo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +20,21 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     @Autowired
     RaffleInfoMapper raffleInfoMapper;
 
+    @Autowired
+    TokenInfoMapper tokenInfoMapper;
+
     @Override
-    public List<RaffleInfo> getRaffleInfoListByOwner(String owner) {
-        return raffleInfoMapper.getRaffleInfoListByOwner(owner);
+    public List<TokenRaffleVo> getRaffleInfoListByOwner(String owner) {
+        TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
+        List<TokenRaffleVo> list = new ArrayList<>();
+        List<RaffleInfo> raffleInfos =  raffleInfoMapper.getRaffleInfoListByOwner(owner);
+        for (RaffleInfo raffleInfo:raffleInfos){
+            TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+            tokenRaffleVo.setRaffleInfo(raffleInfo);
+            tokenRaffleVo.setTokenInfo(tokenInfo);
+            list.add(tokenRaffleVo);
+        }
+        return list;
     }
 
     @Override

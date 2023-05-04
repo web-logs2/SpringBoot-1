@@ -8,4 +8,5 @@ public interface TokenInfoService {
     List<TokenInfo> getTokenInfoByOwner(String owner);
 
     int createTokenInfo(TokenInfo tokenInfo);
+
 }

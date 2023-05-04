@@ -21,4 +21,5 @@ public interface TokenInfoMapper {
     int updateByPrimaryKeySelective(TokenInfo record);
 
     int updateByPrimaryKey(TokenInfo record);
+
 }
