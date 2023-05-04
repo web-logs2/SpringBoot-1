@@ -37,6 +37,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserInfo userInfoExist = userInfoMapper.selectWalletId(userInfo.getWalletId());
             if (null == userInfoExist) {
                 return userInfoMapper.insertSelective(userInfo);
+            }else {
+                return userInfoMapper.updateAccount(userInfo);
             }
         }
         return -1;
