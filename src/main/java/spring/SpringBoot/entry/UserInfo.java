@@ -43,6 +43,11 @@ public class UserInfo implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
     public Integer getId() {
         return id;
     }
@@ -110,11 +115,6 @@ public class UserInfo implements Serializable {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }
