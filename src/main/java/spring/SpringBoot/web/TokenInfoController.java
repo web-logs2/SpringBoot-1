@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.TokenInfo;
-import spring.SpringBoot.entry.UserInfo;
 import spring.SpringBoot.service.TokenInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
 
@@ -18,16 +17,17 @@ public class TokenInfoController {
     TokenInfoService tokenInfoService;
 
     /**
-     * 根据id获取TokenInfo信息
+     * 根据owner获取TokenInfo信息
      *
      * @return
      */
-    @RequestMapping("/getTokenInfoById")
-    public Object getTokenInfoById(@RequestParam int id) {
-        return ResponseUtil.ok(tokenInfoService.getTokenInfoById(id));
+    @RequestMapping("/getTokenInfoByOwner")
+    public Object getTokenInfoByOwner(@RequestParam String owner) {
+        return ResponseUtil.ok(tokenInfoService.getTokenInfoByOwner(owner));
     }
 
     /**
+     * 创建token,如果数据库存在，则返回状态码2，失败返回-1，成功返回200
      * @param tokenInfo
      * @return
      */

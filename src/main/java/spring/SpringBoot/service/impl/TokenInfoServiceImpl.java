@@ -13,8 +13,8 @@ public class TokenInfoServiceImpl implements TokenInfoService {
     TokenInfoMapper tokenInfoMapper;
 
     @Override
-    public TokenInfo getTokenInfoById(int id) {
-        return tokenInfoMapper.selectByPrimaryKey(id);
+    public TokenInfo getTokenInfoByOwner(String owner) {
+        return tokenInfoMapper.selectByOwner(owner);
     }
 
     @Override

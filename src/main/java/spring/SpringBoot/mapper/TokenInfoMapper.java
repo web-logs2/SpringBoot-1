@@ -10,7 +10,8 @@ public interface TokenInfoMapper {
     int insert(TokenInfo record);
 
     int insertSelective(TokenInfo record);
-    TokenInfo selectByPrimaryKey(int id);
+
+    TokenInfo selectByOwner(String owner);
 
     TokenInfo selectByTokenId(String contractAddress, String tokenId);
 

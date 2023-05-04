@@ -17,11 +17,11 @@
     id, token_id, contract_address, `owner`, nftStandard_id, image, `name`, `desc`, create_time, 
     update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByOwner" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from token_info
-    where id = #{id,jdbcType=INTEGER}
+    where owner = #{owner,jdbcType=VARCHAR}
   </select>
   <select id="selectByTokenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
