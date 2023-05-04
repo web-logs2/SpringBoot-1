@@ -8,7 +8,6 @@ import lombok.Data;
  * token_info
  * @author 
  */
-@Data
 public class TokenInfo implements Serializable {
     /**
      * 用户编号
@@ -59,6 +58,86 @@ public class TokenInfo implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
+
+    public String getContractAddress() {
+        return contractAddress;
+    }
+
+    public void setContractAddress(String contractAddress) {
+        this.contractAddress = contractAddress;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public Integer getNftstandardId() {
+        return nftstandardId;
+    }
+
+    public void setNftstandardId(Integer nftstandardId) {
+        this.nftstandardId = nftstandardId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     private static final long serialVersionUID = 1L;
 }
