@@ -106,7 +106,7 @@
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where wallet_id = #{walletId,jdbcType=VARCHAR}
     </update>
     <update id="updateByPrimaryKey" parameterType="spring.SpringBoot.entry.UserInfo">
         update user_info
