@@ -21,6 +21,9 @@ public class TokenInfoServiceImpl implements TokenInfoService {
     public int createTokenInfo(TokenInfo tokenInfo) {
         if (null != tokenInfo && null != tokenInfo.getContractAddress() && "" != tokenInfo.getContractAddress() &&
                 null != tokenInfo.getTokenId() && "" != tokenInfo.getTokenId()) {
+            if (""==tokenInfo.getImage() &&""==tokenInfo.getName() && ""==tokenInfo.getDesc()){
+                return 3;
+            }
             TokenInfo tokenInfoExist = tokenInfoMapper.selectByTokenId(tokenInfo.getContractAddress(), tokenInfo.getTokenId());
             if (null!=tokenInfoExist) {
                 return 2;

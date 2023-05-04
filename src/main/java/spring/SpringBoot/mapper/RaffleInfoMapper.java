@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.RaffleInfo;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface RaffleInfoMapper {
@@ -20,4 +21,6 @@ public interface RaffleInfoMapper {
     int updateByPrimaryKey(RaffleInfo record);
 
     List<RaffleInfo> getRaffleInfoList();
+
+    RaffleInfo getRaffleInfoByCondition(Map map);
 }

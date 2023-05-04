@@ -3,6 +3,7 @@ package spring.SpringBoot.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.UserInfo;
@@ -10,6 +11,7 @@ import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/raffleInfo")
@@ -43,6 +45,31 @@ public class RaffleInfoController {
         }
         return ResponseUtil.ok(result);
     }
+
+    /**
+     *根据活动id：raffleAddress更新活动状态raffleStatus和king
+     * @param
+     * @return
+     */
+    @RequestMapping("/updateRaffleInfo")
+    public Object updateRaffleInfo(@RequestBody RaffleInfo raffleInfo) {
+        Object result = raffleInfoService.updateRaffleInfo(raffleInfo);
+        return ResponseUtil.ok(result);
+    }
+
+
+    /**
+     *根据条件查询个人维度存在的活动(非取消，非完成状态)
+     * @param map
+     * @return
+     */
+    @RequestMapping("/getRaffleInfoByCondition")
+    public Object getRaffleInfoByCondition(@RequestParam Map<String,Object> map) {
+        Object result = raffleInfoService.getRaffleInfoByCondition(map);
+        return ResponseUtil.ok(result);
+    }
+
+
 
 
 }

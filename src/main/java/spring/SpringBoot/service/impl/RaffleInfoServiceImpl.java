@@ -7,6 +7,7 @@ import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.service.RaffleInfoService;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RaffleInfoServiceImpl implements RaffleInfoService {
@@ -28,4 +29,10 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     public int updateRaffleInfo(RaffleInfo raffleInfo) {
         return raffleInfoMapper.updateRaffleInfo(raffleInfo);
     }
+
+    @Override
+    public RaffleInfo getRaffleInfoByCondition(Map map) {
+        return raffleInfoMapper.getRaffleInfoByCondition(map);
+    }
+
 }
