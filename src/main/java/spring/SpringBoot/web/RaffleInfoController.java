@@ -69,6 +69,18 @@ public class RaffleInfoController {
         return ResponseUtil.ok(result);
     }
 
+    /**
+     * 根据活动id获取raffle详情信息
+     * @param raffleAddress
+     * @return
+     */
+    @RequestMapping("/getDetailByRaffleAddress")
+    public Object getDetailByRaffleAddress(@RequestParam String raffleAddress) {
+        RaffleInfo raffleInfos = raffleInfoService.getDetailByRaffleAddress(raffleAddress);
+        return ResponseUtil.ok(raffleInfos);
+    }
+
+
 
 
 

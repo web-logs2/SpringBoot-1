@@ -21,11 +21,11 @@
         , raffleAddress, `owner`, token_id, contract_address, tickets, ticketPrice, startTimestamp,
     endTimestamp, raffleStatus, create_time, update_time, king
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="getDetailByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from raffle_info
-        where id = #{id,jdbcType=INTEGER}
+        where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
     </select>
     <select id="getRaffleInfoByCondition" resultMap="BaseResultMap">
         select

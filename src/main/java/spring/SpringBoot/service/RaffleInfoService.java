@@ -13,4 +13,6 @@ public interface RaffleInfoService {
     int updateRaffleInfo(RaffleInfo raffleInfo);
 
     RaffleInfo getRaffleInfoByCondition(Map map);
+
+    RaffleInfo getDetailByRaffleAddress(String raffleAddress);
 }

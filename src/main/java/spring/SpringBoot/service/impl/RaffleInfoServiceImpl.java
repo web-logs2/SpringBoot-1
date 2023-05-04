@@ -35,4 +35,10 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         return raffleInfoMapper.getRaffleInfoByCondition(map);
     }
 
+    @Override
+    public RaffleInfo getDetailByRaffleAddress(String raffleAddress) {
+        return raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
+    }
+
+
 }

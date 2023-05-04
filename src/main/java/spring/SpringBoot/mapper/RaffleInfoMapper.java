@@ -14,7 +14,7 @@ public interface RaffleInfoMapper {
 
     int insertSelective(RaffleInfo record);
 
-    RaffleInfo selectByPrimaryKey(Integer id);
+    RaffleInfo getDetailByRaffleAddress(String raffleAddress);
 
     int updateRaffleInfo(RaffleInfo record);
 
