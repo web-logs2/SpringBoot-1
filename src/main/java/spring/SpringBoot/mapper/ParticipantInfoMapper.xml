@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="spring.SpringBoot.entry.ParticipantInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="token_id" jdbcType="VARCHAR" property="tokenId" />
-    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
-    <result column="contract_address" jdbcType="VARCHAR" property="contractAddress" />
+    <result column="participant_address" jdbcType="VARCHAR" property="participantAddress" />
+    <result column="raffleAddress" jdbcType="VARCHAR" property="raffleaddress" />
     <result column="ticket" jdbcType="INTEGER" property="ticket" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, token_id, user_address, contract_address, ticket, create_time, update_time
+    id, token_id, participant_address, raffleAddress, ticket, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,7 +23,7 @@
     select
     <include refid="Base_Column_List" />
     from participant_info
-    where user_address = #{userAddress,jdbcType=VARCHAR}
+    where participant_address = #{participantAddress,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -31,10 +31,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.ParticipantInfo" useGeneratedKeys="true">
-    insert into participant_info (token_id, user_address, contract_address, 
+    insert into participant_info (token_id, participant_address, raffleAddress,
       ticket, create_time, update_time
       )
-    values (#{tokenId,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, #{contractAddress,jdbcType=VARCHAR}, 
+    values (#{tokenId,jdbcType=VARCHAR}, #{participantAddress,jdbcType=VARCHAR}, #{raffleaddress,jdbcType=VARCHAR},
       #{ticket,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -44,11 +44,11 @@
       <if test="tokenId != null">
         token_id,
       </if>
-      <if test="userAddress != null">
-        user_address,
+      <if test="participantAddress != null">
+        participant_address,
       </if>
-      <if test="contractAddress != null">
-        contract_address,
+      <if test="raffleaddress != null">
+        raffleAddress,
       </if>
       <if test="ticket != null">
         ticket,
@@ -64,11 +64,11 @@
       <if test="tokenId != null">
         #{tokenId,jdbcType=VARCHAR},
       </if>
-      <if test="userAddress != null">
-        #{userAddress,jdbcType=VARCHAR},
+      <if test="participantAddress != null">
+        #{participantAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contractAddress != null">
-        #{contractAddress,jdbcType=VARCHAR},
+      <if test="raffleaddress != null">
+        #{raffleaddress,jdbcType=VARCHAR},
       </if>
       <if test="ticket != null">
         #{ticket,jdbcType=INTEGER},
@@ -87,11 +87,11 @@
       <if test="tokenId != null">
         token_id = #{tokenId,jdbcType=VARCHAR},
       </if>
-      <if test="userAddress != null">
-        user_address = #{userAddress,jdbcType=VARCHAR},
+      <if test="participantAddress != null">
+        participant_address = #{participantAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contractAddress != null">
-        contract_address = #{contractAddress,jdbcType=VARCHAR},
+      <if test="raffleaddress != null">
+        raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       </if>
       <if test="ticket != null">
         ticket = #{ticket,jdbcType=INTEGER},
@@ -108,8 +108,8 @@
   <update id="updateByPrimaryKey" parameterType="spring.SpringBoot.entry.ParticipantInfo">
     update participant_info
     set token_id = #{tokenId,jdbcType=VARCHAR},
-      user_address = #{userAddress,jdbcType=VARCHAR},
-      contract_address = #{contractAddress,jdbcType=VARCHAR},
+      participant_address = #{participantAddress,jdbcType=VARCHAR},
+        raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       ticket = #{ticket,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

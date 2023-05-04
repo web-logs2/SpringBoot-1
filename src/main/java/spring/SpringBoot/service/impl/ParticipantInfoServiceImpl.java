@@ -15,7 +15,7 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
     @Autowired
     ParticipantInfoMapper participantInfoMapper;
     @Override
-    public List<ParticipantInfo> getParticipantInfos(String userAddress) {
-        return participantInfoMapper.getParticipantInfos(userAddress);
+    public List<ParticipantInfo> getParticipantInfos(String participantAddress) {
+        return participantInfoMapper.getParticipantInfos(participantAddress);
     }
 }

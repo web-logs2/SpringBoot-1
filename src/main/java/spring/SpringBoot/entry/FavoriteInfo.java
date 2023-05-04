@@ -23,7 +23,7 @@ public class FavoriteInfo implements Serializable {
     /**
      * 活动id
      */
-    private String activityId;
+    private String raffleaddress;
 
     /**
      * 被订阅者钱包

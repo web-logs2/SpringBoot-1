@@ -19,5 +19,5 @@ public interface ParticipantInfoMapper {
 
     int updateByPrimaryKey(ParticipantInfo record);
 
-    List<ParticipantInfo> getParticipantInfos(String userAddress);
+    List<ParticipantInfo> getParticipantInfos(String participantAddress);
 }

@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="spring.SpringBoot.entry.FavoriteInfo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="subscriber_wallet" jdbcType="VARCHAR" property="subscriberWallet" />
-    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="raffleAddress" jdbcType="VARCHAR" property="raffleaddress" />
     <result column="subscribee_wallet" jdbcType="VARCHAR" property="subscribeeWallet" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, subscriber_wallet, activity_id, subscribee_wallet, create_time, update_time
+    id, subscriber_wallet, raffleAddress, subscribee_wallet, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,9 +30,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.FavoriteInfo" useGeneratedKeys="true">
-    insert into favorite_info (subscriber_wallet, activity_id, subscribee_wallet, 
+    insert into favorite_info (subscriber_wallet, raffleAddress, subscribee_wallet,
       create_time, update_time)
-    values (#{subscriberWallet,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{subscribeeWallet,jdbcType=VARCHAR}, 
+    values (#{subscriberWallet,jdbcType=VARCHAR}, #{raffleaddress,jdbcType=VARCHAR}, #{subscribeeWallet,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.FavoriteInfo" useGeneratedKeys="true">
@@ -41,8 +41,8 @@
       <if test="subscriberWallet != null">
         subscriber_wallet,
       </if>
-      <if test="activityId != null">
-        activity_id,
+      <if test="raffleaddress != null">
+        raffleAddress,
       </if>
       <if test="subscribeeWallet != null">
         subscribee_wallet,
@@ -58,8 +58,8 @@
       <if test="subscriberWallet != null">
         #{subscriberWallet,jdbcType=VARCHAR},
       </if>
-      <if test="activityId != null">
-        #{activityId,jdbcType=VARCHAR},
+      <if test="raffleaddress != null">
+        #{raffleaddress,jdbcType=VARCHAR},
       </if>
       <if test="subscribeeWallet != null">
         #{subscribeeWallet,jdbcType=VARCHAR},
@@ -78,8 +78,8 @@
       <if test="subscriberWallet != null">
         subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR},
       </if>
-      <if test="activityId != null">
-        activity_id = #{activityId,jdbcType=VARCHAR},
+      <if test="raffleaddress != null">
+        raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       </if>
       <if test="subscribeeWallet != null">
         subscribee_wallet = #{subscribeeWallet,jdbcType=VARCHAR},
@@ -96,7 +96,7 @@
   <update id="updateByPrimaryKey" parameterType="spring.SpringBoot.entry.FavoriteInfo">
     update favorite_info
     set subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR},
-      activity_id = #{activityId,jdbcType=VARCHAR},
+      raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       subscribee_wallet = #{subscribeeWallet,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

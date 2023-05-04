@@ -23,12 +23,12 @@ public class ParticipantInfo implements Serializable {
     /**
      * 参与者地址
      */
-    private String userAddress;
+    private String participantAddress;
 
     /**
      * raffleAddress
      */
-    private String contractAddress;
+    private String raffleaddress;
 
     /**
      * 参与者票数
