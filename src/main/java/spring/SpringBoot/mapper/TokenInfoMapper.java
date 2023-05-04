@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.TokenInfo;
 
+import java.util.List;
+
 @Repository
 public interface TokenInfoMapper {
     int deleteByPrimaryKey(Integer id);
@@ -12,7 +14,7 @@ public interface TokenInfoMapper {
 
     int insertSelective(TokenInfo record);
 
-    TokenInfo selectByOwner(String owner);
+    List<TokenInfo> selectByOwner(String owner);
 
     TokenInfo selectByTokenId(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId);
 

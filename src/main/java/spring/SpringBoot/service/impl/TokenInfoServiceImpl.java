@@ -6,6 +6,8 @@ import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.TokenInfoService;
 
+import java.util.List;
+
 @Service
 public class TokenInfoServiceImpl implements TokenInfoService {
 
@@ -13,7 +15,7 @@ public class TokenInfoServiceImpl implements TokenInfoService {
     TokenInfoMapper tokenInfoMapper;
 
     @Override
-    public TokenInfo getTokenInfoByOwner(String owner) {
+    public List<TokenInfo> getTokenInfoByOwner(String owner) {
         return tokenInfoMapper.selectByOwner(owner);
     }
 
