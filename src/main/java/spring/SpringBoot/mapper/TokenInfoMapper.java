@@ -1,5 +1,6 @@
 package spring.SpringBoot.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.TokenInfo;
 
@@ -13,7 +14,7 @@ public interface TokenInfoMapper {
 
     TokenInfo selectByOwner(String owner);
 
-    TokenInfo selectByTokenId(String contractAddress, String tokenId);
+    TokenInfo selectByTokenId(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId);
 
     int updateByPrimaryKeySelective(TokenInfo record);
 
