@@ -15,7 +15,7 @@ public class TaskJob {
     @Autowired
     ContractService contractService;
 
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */10 * * * ?")
     public void job1() throws Exception {
         System.out.println("通过cron定义的定时任务");
         LeaveMsg contract = contractService.buildContract();
