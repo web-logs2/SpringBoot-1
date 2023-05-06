@@ -31,7 +31,7 @@ public class TransactionListener {
                     if (ethGetTransactionReceipt.getTransactionReceipt().isPresent()) {
                         TransactionReceipt transactionReceipt = ethGetTransactionReceipt.getTransactionReceipt().get();
                         if (transactionReceipt.getStatus().equals("0x1")) {
-                            // 交易已确认11111
+                            // 交易已确认1111122
                             System.out.println(Thread.currentThread().getId() + "Transaction confirmed: " + txHash);
 //                            executorService.shutdown();
                             // 更新数据库1
