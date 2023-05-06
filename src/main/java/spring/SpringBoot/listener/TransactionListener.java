@@ -31,13 +31,14 @@ public class TransactionListener {
                     if (ethGetTransactionReceipt.getTransactionReceipt().isPresent()) {
                         TransactionReceipt transactionReceipt = ethGetTransactionReceipt.getTransactionReceipt().get();
                         if (transactionReceipt.getStatus().equals("0x1")) {
-                            // 交易已确认
+                            // 交易已确认11111
                             System.out.println(Thread.currentThread().getId() + "Transaction confirmed: " + txHash);
 //                            executorService.shutdown();
-                            // 更新数据库
+                            // 更新数据库1
                             // ...
                         } else {
-                            // 交易失败
+                            // 交易失败:1.删除raffleInfo该条数据记录
+
                             System.out.println(Thread.currentThread().getId() + "Transaction failed: " + txHash);
 //                            executorService.shutdown();
                         }
