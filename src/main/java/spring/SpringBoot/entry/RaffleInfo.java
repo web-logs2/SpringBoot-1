@@ -15,6 +15,13 @@ public class RaffleInfo implements Serializable {
      */
     private Integer id;
 
+
+    /**
+     * txHash 交易hash
+     */
+    private String txHash;
+
+
     /**
      * Raffle 地址唯一
      */
@@ -73,4 +80,40 @@ public class RaffleInfo implements Serializable {
     private String king;
 
     private static final long serialVersionUID = 1L;
+
+    public String getTxHash() {
+        return txHash;
+    }
+
+    public void setTxHash(String txHash) {
+        this.txHash = txHash;
+    }
+
+
+    public String getRaffleaddress() {
+        return raffleaddress;
+    }
+
+    public void setRaffleaddress(String raffleaddress) {
+        this.raffleaddress = raffleaddress;
+    }
+
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
+
+    public String getContractAddress() {
+        return contractAddress;
+    }
+
+    public void setContractAddress(String contractAddress) {
+        this.contractAddress = contractAddress;
+    }
+
+
 }
