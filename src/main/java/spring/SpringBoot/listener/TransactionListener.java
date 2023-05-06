@@ -35,7 +35,7 @@ public class TransactionListener {
                             System.out.println(Thread.currentThread().getId() + "Transaction confirmed: " + txHash);
 //                            executorService.shutdown();
                             // 更新数据库1
-                            // ...
+                            // ...22
                         } else {
                             // 交易失败:1.删除raffleInfo该条数据记录
 
