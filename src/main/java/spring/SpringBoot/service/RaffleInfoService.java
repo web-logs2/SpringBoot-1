@@ -15,5 +15,5 @@ public interface RaffleInfoService {
 
     RaffleInfo getRaffleInfoByCondition(Map map);
 
-    RaffleInfo getDetailByRaffleAddress(String raffleAddress);
+    TokenRaffleVo getDetailByRaffleAddress(String raffleAddress);
 }

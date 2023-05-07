@@ -76,12 +76,7 @@ public class RaffleInfoController {
      */
     @RequestMapping("/getDetailByRaffleAddress")
     public Object getDetailByRaffleAddress(@RequestParam String raffleAddress) {
-        RaffleInfo raffleInfos = raffleInfoService.getDetailByRaffleAddress(raffleAddress);
-        return ResponseUtil.ok(raffleInfos);
+        TokenRaffleVo tokenRaffleVo= raffleInfoService.getDetailByRaffleAddress(raffleAddress);
+        return ResponseUtil.ok(tokenRaffleVo);
     }
-
-
-
-
-
 }

@@ -1,5 +1,6 @@
 package spring.SpringBoot.listener;
 
+import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,18 @@ import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Bytes32;
+import org.web3j.abi.datatypes.generated.Uint16;
+import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.service.RaffleInfoService;
+import spring.SpringBoot.solidity.NRaffleFactory;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,6 +46,12 @@ public class ServiceRunner implements ApplicationRunner {
     @Autowired
     private EthFilter ethFilter;
 
+    @Autowired
+    private NRaffleFactory nraffleFactory;
+
+    @Autowired
+    private RaffleInfoService raffleInfoService;
+
     @Override
     public void run(ApplicationArguments var1) {
         uploadProAuth();
@@ -48,17 +63,42 @@ public class ServiceRunner implements ApplicationRunner {
      */
     public void uploadProAuth() {
         Event event = new Event("RaffleCreated",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint16>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Bytes32>() {
+                }, new TypeReference<Address>(true) {
                 }));
+
 
         ethFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听RaffleCreated");
+
+        Flowable<NRaffleFactory.RaffleCreatedEventResponse> raffleCreatedEventResponse = nraffleFactory.raffleCreatedEventFlowable(ethFilter);
+        NRaffleFactory.RaffleCreatedEventResponse response = raffleCreatedEventResponse.blockingFirst();
+        System.out.println("blockingFirst===" + response.toString());
+
+        RaffleInfo raffleInfo= new RaffleInfo();
+        raffleInfo.setContractAddress(response.nftContract);
+        raffleInfo.setOwner(response.owner);
+        raffleInfo.setRaffleaddress(response.raffleAddress);
+        raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
+        raffleInfo.setTickets(response.tickets.intValue());
+        raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
+        raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
+        raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
+
+        raffleInfoService.createRaffleInfo(raffleInfo);
 
         web3j.ethLogFlowable(ethFilter).subscribe(log -> {
             List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
             System.out.println("Event=====: " + results.get(0).getValue());
         });
-
     }
-
 }

@@ -1,3 +1,5 @@
+package spring.SpringBoot.solidity;
+
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import java.math.BigInteger;
@@ -516,6 +518,21 @@ public class NRaffleFactory extends Contract {
         public String vrfCoordinator;
 
         public byte[] vrfKeyHash;
+
+        @Override
+        public String toString() {
+            return "RaffleCreatedEventResponse{" +
+                    "owner='" + owner + '\'' +
+                    ", raffleAddress='" + raffleAddress + '\'' +
+                    ", nftContract='" + nftContract + '\'' +
+                    ", nftTokenId=" + nftTokenId +
+                    ", nftStandardId=" + nftStandardId +
+                    ", tickets=" + tickets +
+                    ", ticketPrice=" + ticketPrice +
+                    ", startTimestamp=" + startTimestamp +
+                    ", endTimestamp=" + endTimestamp +
+                    '}';
+        }
     }
 
     public static class RoleAdminChangedEventResponse extends BaseEventResponse {
