@@ -1,9 +1,9 @@
 package spring.SpringBoot.listener;
 
-import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -18,14 +18,11 @@ import org.web3j.abi.datatypes.generated.Uint16;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffleFactory;
-import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -102,10 +99,6 @@ public class ServiceRunner implements ApplicationRunner {
                 log.info("该raffleAddress活动已存在！raffleAddress:"+response.raffleAddress);
             }
         });
-//        Flowable<NRaffleFactory.RaffleCreatedEventResponse> raffleCreatedEventResponse = nraffleFactory.raffleCreatedEventFlowable(ethFilter);
-//        NRaffleFactory.RaffleCreatedEventResponse response = raffleCreatedEventResponse.blockingFirst();
-//        System.out.println("blockingFirst===" + response.toString());
-
         web3j.ethLogFlowable(ethFilter).subscribe(log -> {
             List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
 //            System.out.println("Event=====: " + results.get(0).getValue());
