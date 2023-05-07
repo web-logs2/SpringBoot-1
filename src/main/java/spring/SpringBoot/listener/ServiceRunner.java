@@ -3,7 +3,6 @@ package spring.SpringBoot.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
+import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
 import java.util.Arrays;
@@ -37,29 +37,37 @@ public class ServiceRunner implements ApplicationRunner {
      */
     private Logger log = LoggerFactory.getLogger(ServiceRunner.class);
 
-    @Autowired
-    private Web3j web3j;
+//    @Autowired
+//    private Web3j web3j;
 
     //如果多个监听，必须要注入新的过滤器
     @Autowired
-    private EthFilter ethFilter;
+    private EthFilter ethNRaffleFactoryFilter;
+
+    @Autowired
+    private EthFilter ethNRaffleFilter;
+
 
     @Autowired
     private NRaffleFactory nraffleFactory;
+
+    @Autowired
+    private NRaffle nRaffle;
 
     @Autowired
     private RaffleInfoService raffleInfoService;
 
     @Override
     public void run(ApplicationArguments var1) {
-        uploadProAuth();
+        uploadNRaffleFactory();
+        uploadNRaffle();
         this.log.info("This will be execute when the project was started!");
     }
 
     /**
      * 收到上链事件
      */
-    public void uploadProAuth() {
+    public void uploadNRaffleFactory() {
         Event event = new Event("RaffleCreated",
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
                 }, new TypeReference<Address>() {
@@ -74,12 +82,10 @@ public class ServiceRunner implements ApplicationRunner {
                 }, new TypeReference<Address>(true) {
                 }));
 
-
-        ethFilter.addSingleTopic(EventEncoder.encode(event));
+        ethNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听RaffleCreated");
 
-        nraffleFactory.raffleCreatedEventFlowable(ethFilter).subscribe(response -> {
-
+        nraffleFactory.raffleCreatedEventFlowable(ethNRaffleFactoryFilter).subscribe(response -> {
             RaffleInfo result = raffleInfoService.getRaffleDetailByRaffleAddress(response.raffleAddress);
             if (null == result) {
                 RaffleInfo raffleInfo = new RaffleInfo();
@@ -94,14 +100,31 @@ public class ServiceRunner implements ApplicationRunner {
                 raffleInfo.setRafflestatus(0);
 
                 raffleInfoService.createRaffleInfo(raffleInfo);
-                log.info("该raffleAddress活动创建成功！raffleAddress:"+response.raffleAddress);
+                log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
             } else {
-                log.info("该raffleAddress活动已存在！raffleAddress:"+response.raffleAddress);
+                log.info("该raffleAddress活动已存在！raffleAddress:" + response.raffleAddress);
             }
         });
-        web3j.ethLogFlowable(ethFilter).subscribe(log -> {
-            List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
+//        web3j.ethLogFlowable(ethNRaffleFactoryFilter).subscribe(log -> {
+//            List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
 //            System.out.println("Event=====: " + results.get(0).getValue());
+//        });
+    }
+
+    /**
+     * 收到上链事件
+     */
+    public void uploadNRaffle() {
+        Event event = new Event("TicketsPurchased",
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Uint16>() {
+                }, new TypeReference<Uint16>() {
+                }));
+        ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
+        log.info("启动监听TicketsPurchased");
+
+        nRaffle.ticketsPurchasedEventFlowable(ethNRaffleFilter).subscribe(response -> {
+            log.info("buyer:" + response.buyer);
         });
     }
 }

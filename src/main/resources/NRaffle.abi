@@ -45,33 +45,6 @@
 				"internalType": "bytes32",
 				"name": "_vrfKeyHash",
 				"type": "bytes32"
-			},
-			{
-				"components": [
-					{
-						"internalType": "uint16",
-						"name": "_officeServiceRatio",
-						"type": "uint16"
-					},
-					{
-						"internalType": "uint16",
-						"name": "_ownerRewardRatio",
-						"type": "uint16"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_swapDuration",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_officialAccount",
-						"type": "address"
-					}
-				],
-				"internalType": "struct RaffleStructs.PayInfo",
-				"name": "_payInfo",
-				"type": "tuple"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -159,29 +132,6 @@
 	{
 		"anonymous": false,
 		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"internalType": "uint16",
-						"name": "from",
-						"type": "uint16"
-					},
-					{
-						"internalType": "uint16",
-						"name": "to",
-						"type": "uint16"
-					}
-				],
-				"indexed": false,
-				"internalType": "struct TicketStorage.TicketNumberRange",
-				"name": "ticketNumberRange",
-				"type": "tuple"
-			},
 			{
 				"indexed": false,
 				"internalType": "uint16",
@@ -488,28 +438,6 @@
 		],
 		"name": "getTicketNumberRange",
 		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"internalType": "uint16",
-						"name": "from",
-						"type": "uint16"
-					},
-					{
-						"internalType": "uint16",
-						"name": "to",
-						"type": "uint16"
-					}
-				],
-				"internalType": "struct TicketStorage.TicketNumberRange",
-				"name": "",
-				"type": "tuple"
-			}
 		],
 		"stateMutability": "view",
 		"type": "function"

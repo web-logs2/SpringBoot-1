@@ -18,4 +18,9 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
     public List<ParticipantInfo> getParticipantInfos(String participantAddress) {
         return participantInfoMapper.getParticipantInfos(participantAddress);
     }
+
+    @Override
+    public int createParticipantInfo(ParticipantInfo participantInfo) {
+        return participantInfoMapper.insertSelective(participantInfo);
+    }
 }
