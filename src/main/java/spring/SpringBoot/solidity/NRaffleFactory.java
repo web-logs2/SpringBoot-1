@@ -1,5 +1,3 @@
-package spring.SpringBoot.solidity;
-
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import java.math.BigInteger;
@@ -88,7 +86,7 @@ public class NRaffleFactory extends Contract {
     public static final String FUNC_WITHDRAW = "withdraw";
 
     public static final Event RAFFLECREATED_EVENT = new Event("RaffleCreated", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint16>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<Bytes32>() {}, new TypeReference<Address>(true) {}));
     ;
 
     public static final Event ROLEADMINCHANGED_EVENT = new Event("RoleAdminChanged", 
@@ -127,7 +125,17 @@ public class NRaffleFactory extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             RaffleCreatedEventResponse typedResponse = new RaffleCreatedEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.raffleAddress = (String) eventValues.getNonIndexedValues().get(0).getValue();
+            typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(1).getValue();
+            typedResponse.nftContract = (String) eventValues.getNonIndexedValues().get(0).getValue();
+            typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+            typedResponse.nftStandardId = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+            typedResponse.tickets = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
+            typedResponse.ticketPrice = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+            typedResponse.startTimestamp = (BigInteger) eventValues.getNonIndexedValues().get(5).getValue();
+            typedResponse.endTimestamp = (BigInteger) eventValues.getNonIndexedValues().get(6).getValue();
+            typedResponse.vrfCoordinator = (String) eventValues.getNonIndexedValues().get(7).getValue();
+            typedResponse.vrfKeyHash = (byte[]) eventValues.getNonIndexedValues().get(8).getValue();
             responses.add(typedResponse);
         }
         return responses;
@@ -140,7 +148,17 @@ public class NRaffleFactory extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(RAFFLECREATED_EVENT, log);
                 RaffleCreatedEventResponse typedResponse = new RaffleCreatedEventResponse();
                 typedResponse.log = log;
-                typedResponse.raffleAddress = (String) eventValues.getNonIndexedValues().get(0).getValue();
+                typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(1).getValue();
+                typedResponse.nftContract = (String) eventValues.getNonIndexedValues().get(0).getValue();
+                typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+                typedResponse.nftStandardId = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+                typedResponse.tickets = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
+                typedResponse.ticketPrice = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+                typedResponse.startTimestamp = (BigInteger) eventValues.getNonIndexedValues().get(5).getValue();
+                typedResponse.endTimestamp = (BigInteger) eventValues.getNonIndexedValues().get(6).getValue();
+                typedResponse.vrfCoordinator = (String) eventValues.getNonIndexedValues().get(7).getValue();
+                typedResponse.vrfKeyHash = (byte[]) eventValues.getNonIndexedValues().get(8).getValue();
                 return typedResponse;
             }
         });
@@ -477,7 +495,27 @@ public class NRaffleFactory extends Contract {
     }
 
     public static class RaffleCreatedEventResponse extends BaseEventResponse {
+        public String owner;
+
         public String raffleAddress;
+
+        public String nftContract;
+
+        public BigInteger nftTokenId;
+
+        public BigInteger nftStandardId;
+
+        public BigInteger tickets;
+
+        public BigInteger ticketPrice;
+
+        public BigInteger startTimestamp;
+
+        public BigInteger endTimestamp;
+
+        public String vrfCoordinator;
+
+        public byte[] vrfKeyHash;
     }
 
     public static class RoleAdminChangedEventResponse extends BaseEventResponse {

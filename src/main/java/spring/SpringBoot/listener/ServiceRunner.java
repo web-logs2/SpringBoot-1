@@ -56,7 +56,7 @@ public class ServiceRunner implements ApplicationRunner {
 
         web3j.ethLogFlowable(ethFilter).subscribe(log -> {
             List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
-            System.out.println("Event=====: " + results);
+            System.out.println("Event=====: " + results.get(0).getValue());
         });
 
     }
