@@ -70,7 +70,7 @@ public class RaffleInfoController {
     }
 
     /**
-     * 根据活动id获取raffle详情信息
+     * 根据活动id获取raffletoken详情信息
      * @param raffleAddress
      * @return
      */
@@ -78,5 +78,15 @@ public class RaffleInfoController {
     public Object getDetailByRaffleAddress(@RequestParam String raffleAddress) {
         TokenRaffleVo tokenRaffleVo= raffleInfoService.getDetailByRaffleAddress(raffleAddress);
         return ResponseUtil.ok(tokenRaffleVo);
+    }
+    /**
+     * 根据活动id获取raffle详情信息
+     * @param raffleAddress
+     * @return
+     */
+    @RequestMapping("/getRaffleDetailByRaffleAddress")
+    public Object getRaffleDetailByRaffleAddress(@RequestParam String raffleAddress) {
+        RaffleInfo raffleInfo= raffleInfoService.getRaffleDetailByRaffleAddress(raffleAddress);
+        return ResponseUtil.ok(raffleInfo);
     }
 }

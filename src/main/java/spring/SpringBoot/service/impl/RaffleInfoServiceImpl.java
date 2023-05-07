@@ -61,5 +61,11 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         return tokenRaffleVo;
     }
 
-
+    @Override
+    public RaffleInfo getRaffleDetailByRaffleAddress(String raffleAddress) {
+        if (null!=raffleAddress && ""!=raffleAddress){
+            return raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
+        }
+        return null;
+    }
 }

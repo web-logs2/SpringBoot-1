@@ -22,6 +22,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffleFactory;
+import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -80,25 +81,34 @@ public class ServiceRunner implements ApplicationRunner {
         ethFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听RaffleCreated");
 
-        Flowable<NRaffleFactory.RaffleCreatedEventResponse> raffleCreatedEventResponse = nraffleFactory.raffleCreatedEventFlowable(ethFilter);
-        NRaffleFactory.RaffleCreatedEventResponse response = raffleCreatedEventResponse.blockingFirst();
-        System.out.println("blockingFirst===" + response.toString());
+        nraffleFactory.raffleCreatedEventFlowable(ethFilter).subscribe(response -> {
 
-        RaffleInfo raffleInfo= new RaffleInfo();
-        raffleInfo.setContractAddress(response.nftContract);
-        raffleInfo.setOwner(response.owner);
-        raffleInfo.setRaffleaddress(response.raffleAddress);
-        raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
-        raffleInfo.setTickets(response.tickets.intValue());
-        raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
-        raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
-        raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
+            RaffleInfo result = raffleInfoService.getRaffleDetailByRaffleAddress(response.raffleAddress);
+            if (null == result) {
+                RaffleInfo raffleInfo = new RaffleInfo();
+                raffleInfo.setContractAddress(response.nftContract);
+                raffleInfo.setOwner(response.owner);
+                raffleInfo.setRaffleaddress(response.raffleAddress);
+                raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
+                raffleInfo.setTickets(response.tickets.intValue());
+                raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
+                raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
+                raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
+                raffleInfo.setRafflestatus(0);
 
-        raffleInfoService.createRaffleInfo(raffleInfo);
+                raffleInfoService.createRaffleInfo(raffleInfo);
+                log.info("该raffleAddress活动创建成功！raffleAddress:"+response.raffleAddress);
+            } else {
+                log.info("该raffleAddress活动已存在！raffleAddress:"+response.raffleAddress);
+            }
+        });
+//        Flowable<NRaffleFactory.RaffleCreatedEventResponse> raffleCreatedEventResponse = nraffleFactory.raffleCreatedEventFlowable(ethFilter);
+//        NRaffleFactory.RaffleCreatedEventResponse response = raffleCreatedEventResponse.blockingFirst();
+//        System.out.println("blockingFirst===" + response.toString());
 
         web3j.ethLogFlowable(ethFilter).subscribe(log -> {
             List<Type> results = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
-            System.out.println("Event=====: " + results.get(0).getValue());
+//            System.out.println("Event=====: " + results.get(0).getValue());
         });
     }
 }
