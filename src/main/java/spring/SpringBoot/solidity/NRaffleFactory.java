@@ -2,11 +2,13 @@ package spring.SpringBoot.solidity;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
@@ -34,7 +36,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p>Auto generated code.
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
  * <p>Generated with web3j version 5.0.0.
@@ -87,20 +89,40 @@ public class NRaffleFactory extends Contract {
 
     public static final String FUNC_WITHDRAW = "withdraw";
 
-    public static final Event RAFFLECREATED_EVENT = new Event("RaffleCreated", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint16>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<Bytes32>() {}, new TypeReference<Address>(true) {}));
+    public static final Event RAFFLECREATED_EVENT = new Event("RaffleCreated",
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Address>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint16>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Address>() {
+            }, new TypeReference<Bytes32>() {
+            }, new TypeReference<Address>(true) {
+            }));
     ;
 
-    public static final Event ROLEADMINCHANGED_EVENT = new Event("RoleAdminChanged", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {}, new TypeReference<Bytes32>(true) {}, new TypeReference<Bytes32>(true) {}));
+    public static final Event ROLEADMINCHANGED_EVENT = new Event("RoleAdminChanged",
+            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Bytes32>(true) {
+            }));
     ;
 
-    public static final Event ROLEGRANTED_EVENT = new Event("RoleGranted", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
+    public static final Event ROLEGRANTED_EVENT = new Event("RoleGranted",
+            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }));
     ;
 
-    public static final Event ROLEREVOKED_EVENT = new Event("RoleRevoked", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
+    public static final Event ROLEREVOKED_EVENT = new Event("RoleRevoked",
+            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }));
     ;
 
     @Deprecated
@@ -278,164 +300,175 @@ public class NRaffleFactory extends Contract {
     }
 
     public RemoteFunctionCall<byte[]> CREATOR_ROLE() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_CREATOR_ROLE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_CREATOR_ROLE,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteFunctionCall<byte[]> DEFAULT_ADMIN_ROLE() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_DEFAULT_ADMIN_ROLE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_DEFAULT_ADMIN_ROLE,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> createRaffle(String owner, String nftContract, BigInteger nftTokenId, BigInteger nftStandardId, BigInteger tickets, BigInteger ticketPrice, BigInteger startTimestamp, BigInteger endTimestamp, byte[] vrfKeyHash, BigInteger linkAmount) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_CREATERAFFLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, owner), 
-                new org.web3j.abi.datatypes.Address(160, nftContract), 
-                new org.web3j.abi.datatypes.generated.Uint256(nftTokenId), 
-                new org.web3j.abi.datatypes.generated.Uint256(nftStandardId), 
-                new org.web3j.abi.datatypes.generated.Uint16(tickets), 
-                new org.web3j.abi.datatypes.generated.Uint256(ticketPrice), 
-                new org.web3j.abi.datatypes.generated.Uint256(startTimestamp), 
-                new org.web3j.abi.datatypes.generated.Uint256(endTimestamp), 
-                new org.web3j.abi.datatypes.generated.Bytes32(vrfKeyHash), 
-                new org.web3j.abi.datatypes.generated.Uint256(linkAmount)), 
+                FUNC_CREATERAFFLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, owner),
+                        new org.web3j.abi.datatypes.Address(160, nftContract),
+                        new org.web3j.abi.datatypes.generated.Uint256(nftTokenId),
+                        new org.web3j.abi.datatypes.generated.Uint256(nftStandardId),
+                        new org.web3j.abi.datatypes.generated.Uint16(tickets),
+                        new org.web3j.abi.datatypes.generated.Uint256(ticketPrice),
+                        new org.web3j.abi.datatypes.generated.Uint256(startTimestamp),
+                        new org.web3j.abi.datatypes.generated.Uint256(endTimestamp),
+                        new org.web3j.abi.datatypes.generated.Bytes32(vrfKeyHash),
+                        new org.web3j.abi.datatypes.generated.Uint256(linkAmount)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<BigInteger> getCreateRaffleFee() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETCREATERAFFLEFEE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETCREATERAFFLEFEE,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getOfficeServiceRatio() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETOFFICESERVICERATIO, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETOFFICESERVICERATIO,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getOwnerRewardRatio() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETOWNERREWARDRATIO, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETOWNERREWARDRATIO,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<String> getRaffle(BigInteger index) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETRAFFLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(index)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETRAFFLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(index)),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<BigInteger> getRaffleCount() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETRAFFLECOUNT, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETRAFFLECOUNT,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<byte[]> getRoleAdmin(byte[] role) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETROLEADMIN, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETROLEADMIN,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role)),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteFunctionCall<BigInteger> getSwapDuration() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETSWAPDURATION, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETSWAPDURATION,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> grantRole(byte[] role, String account) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_GRANTROLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role), 
-                new org.web3j.abi.datatypes.Address(160, account)), 
+                FUNC_GRANTROLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role),
+                        new org.web3j.abi.datatypes.Address(160, account)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<Boolean> hasRole(byte[] role, String account) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_HASROLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role), 
-                new org.web3j.abi.datatypes.Address(160, account)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_HASROLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role),
+                        new org.web3j.abi.datatypes.Address(160, account)),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> renounceRole(byte[] role, String account) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_RENOUNCEROLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role), 
-                new org.web3j.abi.datatypes.Address(160, account)), 
+                FUNC_RENOUNCEROLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role),
+                        new org.web3j.abi.datatypes.Address(160, account)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> revokeRole(byte[] role, String account) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_REVOKEROLE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role), 
-                new org.web3j.abi.datatypes.Address(160, account)), 
+                FUNC_REVOKEROLE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(role),
+                        new org.web3j.abi.datatypes.Address(160, account)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setCreateRaffleFee(BigInteger createRaffleFee) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_SETCREATERAFFLEFEE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee)), 
+                FUNC_SETCREATERAFFLEFEE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setOfficeServiceRatio(BigInteger officeServiceRatio) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_SETOFFICESERVICERATIO, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio)), 
+                FUNC_SETOFFICESERVICERATIO,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setOwnerRewardRatio(BigInteger ownerRewardRatio) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_SETOWNERREWARDRATIO, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio)), 
+                FUNC_SETOWNERREWARDRATIO,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setSwapDuration(BigInteger swapDuration) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_SETSWAPDURATION, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(swapDuration)), 
+                FUNC_SETSWAPDURATION,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(swapDuration)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<Boolean> supportsInterface(byte[] interfaceId) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_SUPPORTSINTERFACE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes4(interfaceId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_SUPPORTSINTERFACE,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes4(interfaceId)),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> withdraw(BigInteger amount, String to) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_WITHDRAW, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(amount), 
-                new org.web3j.abi.datatypes.Address(160, to)), 
+                FUNC_WITHDRAW,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(amount),
+                        new org.web3j.abi.datatypes.Address(160, to)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -459,39 +492,39 @@ public class NRaffleFactory extends Contract {
     }
 
     public static RemoteCall<NRaffleFactory> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider, BigInteger officeServiceRatio, BigInteger ownerRewardRatio, BigInteger createRaffleFee, String link_token_contract, String vrfCoordinator) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio), 
-                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio), 
-                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee), 
-                new org.web3j.abi.datatypes.Address(160, link_token_contract), 
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio),
+                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio),
+                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee),
+                new org.web3j.abi.datatypes.Address(160, link_token_contract),
                 new org.web3j.abi.datatypes.Address(160, vrfCoordinator)));
         return deployRemoteCall(NRaffleFactory.class, web3j, credentials, contractGasProvider, BINARY, encodedConstructor);
     }
 
     public static RemoteCall<NRaffleFactory> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider, BigInteger officeServiceRatio, BigInteger ownerRewardRatio, BigInteger createRaffleFee, String link_token_contract, String vrfCoordinator) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio), 
-                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio), 
-                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee), 
-                new org.web3j.abi.datatypes.Address(160, link_token_contract), 
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio),
+                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio),
+                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee),
+                new org.web3j.abi.datatypes.Address(160, link_token_contract),
                 new org.web3j.abi.datatypes.Address(160, vrfCoordinator)));
         return deployRemoteCall(NRaffleFactory.class, web3j, transactionManager, contractGasProvider, BINARY, encodedConstructor);
     }
 
     @Deprecated
     public static RemoteCall<NRaffleFactory> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit, BigInteger officeServiceRatio, BigInteger ownerRewardRatio, BigInteger createRaffleFee, String link_token_contract, String vrfCoordinator) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio), 
-                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio), 
-                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee), 
-                new org.web3j.abi.datatypes.Address(160, link_token_contract), 
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio),
+                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio),
+                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee),
+                new org.web3j.abi.datatypes.Address(160, link_token_contract),
                 new org.web3j.abi.datatypes.Address(160, vrfCoordinator)));
         return deployRemoteCall(NRaffleFactory.class, web3j, credentials, gasPrice, gasLimit, BINARY, encodedConstructor);
     }
 
     @Deprecated
     public static RemoteCall<NRaffleFactory> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit, BigInteger officeServiceRatio, BigInteger ownerRewardRatio, BigInteger createRaffleFee, String link_token_contract, String vrfCoordinator) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio), 
-                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio), 
-                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee), 
-                new org.web3j.abi.datatypes.Address(160, link_token_contract), 
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(officeServiceRatio),
+                new org.web3j.abi.datatypes.generated.Uint16(ownerRewardRatio),
+                new org.web3j.abi.datatypes.generated.Uint256(createRaffleFee),
+                new org.web3j.abi.datatypes.Address(160, link_token_contract),
                 new org.web3j.abi.datatypes.Address(160, vrfCoordinator)));
         return deployRemoteCall(NRaffleFactory.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, encodedConstructor);
     }

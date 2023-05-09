@@ -11,6 +11,7 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
+import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
 import java.io.IOException;
@@ -52,26 +53,26 @@ public class ContractConfig {
         }
     }
 
-//    @Bean
-//    @Autowired
-//    public NRaffle ethNRaffleTrace(Web3j web3j) throws IOException {
-//        NRaffle nRaffle;
-//        try {
-//            Web3ClientVersion web3ClientVersion = web3j.web3ClientVersion().send();
-//            String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-//            System.out.println("clientVersion" + clientVersion);
-//            //加载智能合约
-//            BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
-//            Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
-//
-//            nRaffle = NRaffle.load(contractAddress, web3j, credentials,
-//                    new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
-//            return nRaffle;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw e;
-//        }
-//    }
+    @Bean
+    @Autowired
+    public NRaffle ethNRaffleTrace(Web3j web3j) throws IOException {
+        NRaffle nRaffle;
+        try {
+            Web3ClientVersion web3ClientVersion = web3j.web3ClientVersion().send();
+            String clientVersion = web3ClientVersion.getWeb3ClientVersion();
+            System.out.println("clientVersion" + clientVersion);
+            //加载智能合约
+            BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
+            Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
+
+            nRaffle = NRaffle.load(contractAddress, web3j, credentials,
+                    new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
+            return nRaffle;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     @Bean
     //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
@@ -84,14 +85,14 @@ public class ContractConfig {
                 trace.getContractAddress());
     }
 
-//    @Bean
-//    //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
-//    @Scope("prototype")
-//    @Autowired
-//    public EthFilter ethNRaffleFilter(NRaffle trace1) {
-//        //获取启动时监听的区块
-//        return new EthFilter(DefaultBlockParameterName.EARLIEST,
-//                DefaultBlockParameterName.LATEST,
-//                trace1.getContractAddress());
-//    }
+    @Bean
+    //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
+    @Scope("prototype")
+    @Autowired
+    public EthFilter ethNRaffleFilter(NRaffle trace) {
+        //获取启动时监听的区块
+        return new EthFilter(DefaultBlockParameterName.EARLIEST,
+                DefaultBlockParameterName.LATEST,
+                trace.getContractAddress());
+    }
 }
