@@ -14,6 +14,7 @@ import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint16;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint8;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
@@ -35,10 +36,10 @@ public class ListenContractEvent implements ApplicationRunner {
      */
     private Logger log = LoggerFactory.getLogger(ListenContractEvent.class);
 
-//    @Autowired
-//    private Web3j web3j;
+    @Autowired
+    private Web3j web3j;
 
-    //如果多个监听，必须要注入新的过滤器
+
     @Autowired
     private EthFilter ethNRaffleFactoryFilter;
 
@@ -49,7 +50,7 @@ public class ListenContractEvent implements ApplicationRunner {
     @Autowired
     private NRaffleFactory nraffleFactory;
 
-    @Autowired
+  @Autowired
     private NRaffle nRaffle;
 
     @Autowired

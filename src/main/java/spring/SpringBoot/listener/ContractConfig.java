@@ -23,7 +23,7 @@ import java.math.BigInteger;
 public class ContractConfig {
 
     //智能合约部署地址
-    private String contractAddress = "0x05896f5A26b44929a85B5445C876f1CB3948E0B8";
+    private String contractAddress = "0x69499bDA273c7980d98Fb042593086d5b22Ab517";
 
     @Bean
     @Scope("prototype")
