@@ -20,7 +20,7 @@ import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
-import java.math.BigInteger;
+import javax.annotation.Resource;
 import java.util.Arrays;
 
 /**
@@ -46,11 +46,11 @@ public class ListenContractEvent implements ApplicationRunner {
     private EthFilter ethNRaffleFilter;
 
 
-    @Autowired
+    @Resource
     private NRaffleFactory nraffleFactory;
 
-    @Autowired
-    private NRaffle nRaffle;
+    @Resource
+    private NRaffle nraffle;
 
     @Autowired
     private RaffleInfoService raffleInfoService;
@@ -115,15 +115,19 @@ public class ListenContractEvent implements ApplicationRunner {
      */
     public void TicketsPurchasedListener() {
         Event event = new Event("TicketsPurchased",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {},
-                        new TypeReference<Address>(true) {},
-                        new TypeReference<Uint16>() {},
-                        new TypeReference<Uint16>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                                                },
+                        new TypeReference<Address>(true) {
+                        },
+                        new TypeReference<Uint16>() {
+                        },
+                        new TypeReference<Uint16>() {
+                        }));
 
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听TicketsPurchased");
 
-        nRaffle.ticketsPurchasedEventFlowable(ethNRaffleFilter).subscribe(response -> {
+        nraffle.ticketsPurchasedEventFlowable(ethNRaffleFilter).subscribe(response -> {
             log.info("buyer:" + response.buyer);
             //更新插入参与表记录
         });
@@ -134,13 +138,16 @@ public class ListenContractEvent implements ApplicationRunner {
      */
     public void ChangeStateListener() {
         Event event = new Event("ChangeState",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Uint8>() {
+                }, new TypeReference<Uint256>() {
+                }));
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:ChangeState");
 
-        nRaffle.changeStateEventFlowable(ethNRaffleFilter).subscribe(response -> {
+        nraffle.changeStateEventFlowable(ethNRaffleFilter).subscribe(response -> {
             log.info("newState:" + response.newState);
-            RaffleInfo raffleInfo= new RaffleInfo();
+            RaffleInfo raffleInfo = new RaffleInfo();
             raffleInfo.setRaffleaddress(response.raffleAddress);
             raffleInfo.setRafflestatus(response.newState.intValue());
             raffleInfoService.updateRaffleInfo(raffleInfo);
@@ -152,16 +159,18 @@ public class ListenContractEvent implements ApplicationRunner {
      */
     public void WinnerDrawnListener() {
         Event event = new Event("WinnerDrawn",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Uint16>() {
+                }, new TypeReference<Address>() {
+                }));
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:WinnerDrawn");
 
-        nRaffle.winnerDrawnEventFlowable(ethNRaffleFilter).subscribe(response -> {
+        nraffle.winnerDrawnEventFlowable(ethNRaffleFilter).subscribe(response -> {
             log.info("owner:" + response.owner + "ticketNumber:" + response.ticketNumber);
             // 根据合约地址，更新db 中的king字段
         });
     }
-
 
 
 }
