@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.web3j.abi.EventEncoder;
-import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
@@ -73,8 +72,6 @@ public class NRaffle extends Contract {
     public static final String FUNC_GETSTATE = "getState";
 
     public static final String FUNC_GETSWAPSTATUS = "getSwapStatus";
-
-    public static final String FUNC_GETTICKETNUMBERRANGE = "getTicketNumberRange";
 
     public static final String FUNC_GETTICKETNUMBERRANGELENGTH = "getTicketNumberRangeLength";
 
@@ -145,35 +142,31 @@ public class NRaffle extends Contract {
     public static final String FUNC_WITHDRAWPAYMENTS = "withdrawPayments";
 
     public static final Event CHANGESTATE_EVENT = new Event("ChangeState", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
     ;
 
     public static final Event NFTVERIFIED_EVENT = new Event("NFTVerified", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
     ;
 
     public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
     ;
 
-    public static final Event TICKETSASSIGNED_EVENT = new Event("TicketsAssigned", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}));
-    ;
-
     public static final Event TICKETSPURCHASED_EVENT = new Event("TicketsPurchased", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Uint16>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Uint16>() {}));
     ;
 
     public static final Event TRANSFERETH_EVENT = new Event("TransferETH", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
     ;
 
     public static final Event TRANSFERNFT_EVENT = new Event("TransferNFT", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}, new TypeReference<Uint8>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}, new TypeReference<Uint8>() {}));
     ;
 
     public static final Event WINNERDRAWN_EVENT = new Event("WinnerDrawn", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
     ;
 
     @Deprecated
@@ -200,6 +193,7 @@ public class NRaffle extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             ChangeStateEventResponse typedResponse = new ChangeStateEventResponse();
             typedResponse.log = eventValues.getLog();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
             typedResponse.newState = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.timestamp = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
@@ -214,6 +208,7 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(CHANGESTATE_EVENT, log);
                 ChangeStateEventResponse typedResponse = new ChangeStateEventResponse();
                 typedResponse.log = log;
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.newState = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.timestamp = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
                 return typedResponse;
@@ -233,7 +228,8 @@ public class NRaffle extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             NFTVerifiedEventResponse typedResponse = new NFTVerifiedEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.nftContract = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.nftContract = (String) eventValues.getIndexedValues().get(1).getValue();
             typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.nftStandard = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
@@ -248,7 +244,8 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(NFTVERIFIED_EVENT, log);
                 NFTVerifiedEventResponse typedResponse = new NFTVerifiedEventResponse();
                 typedResponse.log = log;
-                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(1).getValue();
                 typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.nftStandard = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
                 return typedResponse;
@@ -295,44 +292,14 @@ public class NRaffle extends Contract {
         return ownershipTransferredEventFlowable(filter);
     }
 
-    public List<TicketsAssignedEventResponse> getTicketsAssignedEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(TICKETSASSIGNED_EVENT, transactionReceipt);
-        ArrayList<TicketsAssignedEventResponse> responses = new ArrayList<TicketsAssignedEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
-            TicketsAssignedEventResponse typedResponse = new TicketsAssignedEventResponse();
-            typedResponse.log = eventValues.getLog();
-            typedResponse.ticketsLeft = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-            responses.add(typedResponse);
-        }
-        return responses;
-    }
-
-    public Flowable<TicketsAssignedEventResponse> ticketsAssignedEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, TicketsAssignedEventResponse>() {
-            @Override
-            public TicketsAssignedEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TICKETSASSIGNED_EVENT, log);
-                TicketsAssignedEventResponse typedResponse = new TicketsAssignedEventResponse();
-                typedResponse.log = log;
-                typedResponse.ticketsLeft = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                return typedResponse;
-            }
-        });
-    }
-
-    public Flowable<TicketsAssignedEventResponse> ticketsAssignedEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(TICKETSASSIGNED_EVENT));
-        return ticketsAssignedEventFlowable(filter);
-    }
-
     public List<TicketsPurchasedEventResponse> getTicketsPurchasedEvents(TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(TICKETSPURCHASED_EVENT, transactionReceipt);
         ArrayList<TicketsPurchasedEventResponse> responses = new ArrayList<TicketsPurchasedEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             TicketsPurchasedEventResponse typedResponse = new TicketsPurchasedEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.buyer = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.buyer = (String) eventValues.getIndexedValues().get(1).getValue();
             typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.ticketsLeft = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
@@ -347,7 +314,8 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TICKETSPURCHASED_EVENT, log);
                 TicketsPurchasedEventResponse typedResponse = new TicketsPurchasedEventResponse();
                 typedResponse.log = log;
-                typedResponse.buyer = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.buyer = (String) eventValues.getIndexedValues().get(1).getValue();
                 typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.ticketsLeft = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
                 return typedResponse;
@@ -367,7 +335,8 @@ public class NRaffle extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             TransferETHEventResponse typedResponse = new TransferETHEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(1).getValue();
             typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.currentState = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
@@ -382,7 +351,8 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFERETH_EVENT, log);
                 TransferETHEventResponse typedResponse = new TransferETHEventResponse();
                 typedResponse.log = log;
-                typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(1).getValue();
                 typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.currentState = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
                 return typedResponse;
@@ -402,8 +372,9 @@ public class NRaffle extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             TransferNFTEventResponse typedResponse = new TransferNFTEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(0).getValue();
-            typedResponse.nftContract = (String) eventValues.getIndexedValues().get(1).getValue();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(1).getValue();
+            typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
             typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.nftStandard = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             typedResponse.currentState = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
@@ -419,8 +390,9 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFERNFT_EVENT, log);
                 TransferNFTEventResponse typedResponse = new TransferNFTEventResponse();
                 typedResponse.log = log;
-                typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(1).getValue();
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.receiverAddress = (String) eventValues.getIndexedValues().get(1).getValue();
+                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
                 typedResponse.nftTokenId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.nftStandard = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
                 typedResponse.currentState = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
@@ -441,6 +413,7 @@ public class NRaffle extends Contract {
         for (Contract.EventValuesWithLog eventValues : valueList) {
             WinnerDrawnEventResponse typedResponse = new WinnerDrawnEventResponse();
             typedResponse.log = eventValues.getLog();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
             typedResponse.ticketNumber = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             typedResponse.owner = (String) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
@@ -455,6 +428,7 @@ public class NRaffle extends Contract {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(WINNERDRAWN_EVENT, log);
                 WinnerDrawnEventResponse typedResponse = new WinnerDrawnEventResponse();
                 typedResponse.log = log;
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.ticketNumber = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
                 typedResponse.owner = (String) eventValues.getNonIndexedValues().get(1).getValue();
                 return typedResponse;
@@ -856,67 +830,35 @@ public class NRaffle extends Contract {
         return new NRaffle(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<NRaffle> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider, String _nftContract, BigInteger _nftTokenId, BigInteger _nftStandardId, BigInteger _tickets, BigInteger _ticketPrice, BigInteger _startTimestamp, BigInteger _endTimestamp, String _vrfCoordinator, byte[] _vrfKeyHash) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _nftContract), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftTokenId), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftStandardId), 
-                new org.web3j.abi.datatypes.generated.Uint16(_tickets), 
-                new org.web3j.abi.datatypes.generated.Uint256(_ticketPrice), 
-                new org.web3j.abi.datatypes.generated.Uint256(_startTimestamp), 
-                new org.web3j.abi.datatypes.generated.Uint256(_endTimestamp), 
-                new org.web3j.abi.datatypes.Address(160, _vrfCoordinator), 
-                new org.web3j.abi.datatypes.generated.Bytes32(_vrfKeyHash)));
-        return deployRemoteCall(NRaffle.class, web3j, credentials, contractGasProvider, BINARY, encodedConstructor);
-    }
-
-    public static RemoteCall<NRaffle> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider, String _nftContract, BigInteger _nftTokenId, BigInteger _nftStandardId, BigInteger _tickets, BigInteger _ticketPrice, BigInteger _startTimestamp, BigInteger _endTimestamp, String _vrfCoordinator, byte[] _vrfKeyHash) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _nftContract), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftTokenId), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftStandardId), 
-                new org.web3j.abi.datatypes.generated.Uint16(_tickets), 
-                new org.web3j.abi.datatypes.generated.Uint256(_ticketPrice), 
-                new org.web3j.abi.datatypes.generated.Uint256(_startTimestamp), 
-                new org.web3j.abi.datatypes.generated.Uint256(_endTimestamp), 
-                new org.web3j.abi.datatypes.Address(160, _vrfCoordinator), 
-                new org.web3j.abi.datatypes.generated.Bytes32(_vrfKeyHash)));
-        return deployRemoteCall(NRaffle.class, web3j, transactionManager, contractGasProvider, BINARY, encodedConstructor);
+    public static RemoteCall<NRaffle> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(NRaffle.class, web3j, credentials, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<NRaffle> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit, String _nftContract, BigInteger _nftTokenId, BigInteger _nftStandardId, BigInteger _tickets, BigInteger _ticketPrice, BigInteger _startTimestamp, BigInteger _endTimestamp, String _vrfCoordinator, byte[] _vrfKeyHash) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _nftContract), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftTokenId), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftStandardId), 
-                new org.web3j.abi.datatypes.generated.Uint16(_tickets), 
-                new org.web3j.abi.datatypes.generated.Uint256(_ticketPrice), 
-                new org.web3j.abi.datatypes.generated.Uint256(_startTimestamp), 
-                new org.web3j.abi.datatypes.generated.Uint256(_endTimestamp), 
-                new org.web3j.abi.datatypes.Address(160, _vrfCoordinator), 
-                new org.web3j.abi.datatypes.generated.Bytes32(_vrfKeyHash)));
-        return deployRemoteCall(NRaffle.class, web3j, credentials, gasPrice, gasLimit, BINARY, encodedConstructor);
+    public static RemoteCall<NRaffle> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(NRaffle.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static RemoteCall<NRaffle> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(NRaffle.class, web3j, transactionManager, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<NRaffle> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit, String _nftContract, BigInteger _nftTokenId, BigInteger _nftStandardId, BigInteger _tickets, BigInteger _ticketPrice, BigInteger _startTimestamp, BigInteger _endTimestamp, String _vrfCoordinator, byte[] _vrfKeyHash) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _nftContract), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftTokenId), 
-                new org.web3j.abi.datatypes.generated.Uint256(_nftStandardId), 
-                new org.web3j.abi.datatypes.generated.Uint16(_tickets), 
-                new org.web3j.abi.datatypes.generated.Uint256(_ticketPrice), 
-                new org.web3j.abi.datatypes.generated.Uint256(_startTimestamp), 
-                new org.web3j.abi.datatypes.generated.Uint256(_endTimestamp), 
-                new org.web3j.abi.datatypes.Address(160, _vrfCoordinator), 
-                new org.web3j.abi.datatypes.generated.Bytes32(_vrfKeyHash)));
-        return deployRemoteCall(NRaffle.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, encodedConstructor);
+    public static RemoteCall<NRaffle> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(NRaffle.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 
     public static class ChangeStateEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public BigInteger newState;
 
         public BigInteger timestamp;
     }
 
     public static class NFTVerifiedEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public String nftContract;
 
         public BigInteger nftTokenId;
@@ -930,11 +872,9 @@ public class NRaffle extends Contract {
         public String newOwner;
     }
 
-    public static class TicketsAssignedEventResponse extends BaseEventResponse {
-        public BigInteger ticketsLeft;
-    }
-
     public static class TicketsPurchasedEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public String buyer;
 
         public BigInteger count;
@@ -943,6 +883,8 @@ public class NRaffle extends Contract {
     }
 
     public static class TransferETHEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public String receiverAddress;
 
         public BigInteger amount;
@@ -951,6 +893,8 @@ public class NRaffle extends Contract {
     }
 
     public static class TransferNFTEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public String receiverAddress;
 
         public String nftContract;
@@ -963,6 +907,8 @@ public class NRaffle extends Contract {
     }
 
     public static class WinnerDrawnEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
         public BigInteger ticketNumber;
 
         public String owner;

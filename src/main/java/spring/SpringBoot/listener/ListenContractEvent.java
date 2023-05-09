@@ -13,12 +13,14 @@ import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint16;
 import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.abi.datatypes.generated.Uint8;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
@@ -27,11 +29,11 @@ import java.util.Arrays;
  * @author
  */
 @Component
-public class ServiceRunner implements ApplicationRunner {
+public class ListenContractEvent implements ApplicationRunner {
     /**
      * 日志记录
      */
-    private Logger log = LoggerFactory.getLogger(ServiceRunner.class);
+    private Logger log = LoggerFactory.getLogger(ListenContractEvent.class);
 
 //    @Autowired
 //    private Web3j web3j;
@@ -55,15 +57,16 @@ public class ServiceRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments var1) {
-        uploadNRaffleFactory();
-        uploadNRaffle();
+        RaffleCreatedListener();
+        TicketsPurchasedListener();
+        ChangeStateListener();
         this.log.info("This will be execute when the project was started!");
     }
 
     /**
-     * 收到上链事件
+     * listen:RaffleCreated
      */
-    public void uploadNRaffleFactory() {
+    public void RaffleCreatedListener() {
         Event event = new Event("RaffleCreated",
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
                 }, new TypeReference<Address>() {
@@ -108,19 +111,57 @@ public class ServiceRunner implements ApplicationRunner {
     }
 
     /**
-     * 收到上链事件
+     * listen:TicketsPurchased
      */
-    public void uploadNRaffle() {
+    public void TicketsPurchasedListener() {
         Event event = new Event("TicketsPurchased",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
-                }, new TypeReference<Uint16>() {
-                }, new TypeReference<Uint16>() {
-                }));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {},
+                        new TypeReference<Address>(true) {},
+                        new TypeReference<Uint16>() {},
+                        new TypeReference<Uint16>() {}));
+
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听TicketsPurchased");
 
         nRaffle.ticketsPurchasedEventFlowable(ethNRaffleFilter).subscribe(response -> {
             log.info("buyer:" + response.buyer);
+            //更新插入参与表记录
         });
     }
+
+    /**
+     * listen:TicketsPurchased
+     */
+    public void ChangeStateListener() {
+        Event event = new Event("ChangeState",
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
+        ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
+        log.info("启动监听:ChangeState");
+
+        nRaffle.changeStateEventFlowable(ethNRaffleFilter).subscribe(response -> {
+            log.info("newState:" + response.newState);
+            RaffleInfo raffleInfo= new RaffleInfo();
+            raffleInfo.setRaffleaddress(response.raffleAddress);
+            raffleInfo.setRafflestatus(response.newState.intValue());
+            raffleInfoService.updateRaffleInfo(raffleInfo);
+        });
+    }
+
+    /**
+     * listen:TicketsPurchased
+     */
+    public void WinnerDrawnListener() {
+        Event event = new Event("WinnerDrawn",
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
+        ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
+        log.info("启动监听:WinnerDrawn");
+
+        nRaffle.winnerDrawnEventFlowable(ethNRaffleFilter).subscribe(response -> {
+            log.info("owner:" + response.owner + "ticketNumber:" + response.ticketNumber);
+            // 根据合约地址，更新db 中的king字段
+        });
+    }
+
+
+
 }

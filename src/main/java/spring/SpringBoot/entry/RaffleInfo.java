@@ -16,6 +16,7 @@ public class RaffleInfo implements Serializable {
     private Integer id;
 
 
+
     /**
      * txHash 交易hash
      */
@@ -52,6 +53,7 @@ public class RaffleInfo implements Serializable {
      */
     private Double ticketprice;
 
+
     /**
      * 抽奖活动开始时间（时间戳）
      */
@@ -80,6 +82,13 @@ public class RaffleInfo implements Serializable {
     private String king;
 
     private static final long serialVersionUID = 1L;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTxHash() {
         return txHash;
@@ -89,7 +98,6 @@ public class RaffleInfo implements Serializable {
         this.txHash = txHash;
     }
 
-
     public String getRaffleaddress() {
         return raffleaddress;
     }
@@ -98,6 +106,13 @@ public class RaffleInfo implements Serializable {
         this.raffleaddress = raffleaddress;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
     public String getTokenId() {
         return tokenId;
@@ -115,5 +130,71 @@ public class RaffleInfo implements Serializable {
         this.contractAddress = contractAddress;
     }
 
+    public Integer getTickets() {
+        return tickets;
+    }
 
+    public void setTickets(Integer tickets) {
+        this.tickets = tickets;
+    }
+
+    public Double getTicketprice() {
+        return ticketprice;
+    }
+
+    public void setTicketprice(Double ticketprice) {
+        this.ticketprice = ticketprice;
+    }
+
+    public Long getStarttimestamp() {
+        return starttimestamp;
+    }
+
+    public void setStarttimestamp(Long starttimestamp) {
+        this.starttimestamp = starttimestamp;
+    }
+
+    public Long getEndtimestamp() {
+        return endtimestamp;
+    }
+
+    public void setEndtimestamp(Long endtimestamp) {
+        this.endtimestamp = endtimestamp;
+    }
+
+    public Integer getRafflestatus() {
+        return rafflestatus;
+    }
+
+    public void setRafflestatus(Integer rafflestatus) {
+        this.rafflestatus = rafflestatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getKing() {
+        return king;
+    }
+
+    public void setKing(String king) {
+        this.king = king;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }
