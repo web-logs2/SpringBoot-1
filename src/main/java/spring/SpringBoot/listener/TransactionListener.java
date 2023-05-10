@@ -13,7 +13,9 @@ import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
+import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.service.ParticipantInfoService;
 import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
@@ -32,6 +34,9 @@ public class TransactionListener {
   private final ScheduledExecutorService executorService;
 
   private RaffleInfo raffleInfo;
+
+  @Autowired
+  ParticipantInfoService participantInfoService;
 
   private Map<String, Object> map;
 
@@ -72,6 +77,12 @@ public class TransactionListener {
                   verifyNFTPresenceBeforeStart(map.get("address").toString());
 //                  executorService.shutdown();
                   break;
+                case "TicketsPurchased":
+                  ParticipantInfo participantInfo =  new ParticipantInfo();
+                  participantInfo.setParticipantAddress(map.get("participantAddress").toString());
+                  participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
+                  participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
+                  int a = participantInfoService.createParticipantInfo(participantInfo);
                 default:
                   System.out.println("Unknown fruit selected");
               }
@@ -91,22 +102,17 @@ public class TransactionListener {
 
   private void verifyNFTPresenceBeforeStart(String address) {
 
-
     Web3j web3 = Web3j.build(new HttpService("https://Sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
-
     //私钥
     Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
-
     BigInteger gasPrice = null;
     try {
       gasPrice = web3.ethGasPrice().send().getGasPrice();
     } catch (IOException e) {
       e.printStackTrace();
     }
-
     NRaffle NRaffleContract = NRaffle.load(address, web3, credentials,
       new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
-
     System.out.println("verifyNFTPresenceBeforeStart方法内执行");
 
 

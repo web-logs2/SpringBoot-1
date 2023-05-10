@@ -10,4 +10,6 @@ public interface RaffleContractService {
     String verifyNFTPresenceBeforeStart(String address);
 
     BigInteger getState(String address);
+
+
 }
