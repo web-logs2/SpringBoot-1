@@ -148,7 +148,7 @@ public class ListenContractEvent implements ApplicationRunner {
                 }, new TypeReference<Uint8>() {
                 }, new TypeReference<Uint256>() {
                 }));
-        ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
+      changeStateFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:ChangeState");
 
         nraffle.changeStateEventFlowable(changeStateFilter).subscribe(response -> {
@@ -169,7 +169,7 @@ public class ListenContractEvent implements ApplicationRunner {
                 }, new TypeReference<Uint16>() {
                 }, new TypeReference<Address>() {
                 }));
-        ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
+      winnerDrawnFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:WinnerDrawn");
 
         nraffle.winnerDrawnEventFlowable(winnerDrawnFilter).subscribe(response -> {
