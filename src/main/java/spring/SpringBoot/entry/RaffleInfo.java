@@ -1,12 +1,13 @@
 package spring.SpringBoot.entry;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import lombok.Data;
 
 /**
  * raffle_info
- * @author 
+ * @author
  */
 @Data
 public class RaffleInfo implements Serializable {
@@ -67,7 +68,7 @@ public class RaffleInfo implements Serializable {
     /**
      *  抽奖活动状态
      */
-    private Integer rafflestatus;
+    private BigInteger rafflestatus;
 
     /**
      * 创建时间
@@ -162,11 +163,11 @@ public class RaffleInfo implements Serializable {
         this.endtimestamp = endtimestamp;
     }
 
-    public Integer getRafflestatus() {
+    public BigInteger getRafflestatus() {
         return rafflestatus;
     }
 
-    public void setRafflestatus(Integer rafflestatus) {
+    public void setRafflestatus(BigInteger rafflestatus) {
         this.rafflestatus = rafflestatus;
     }
 
@@ -197,4 +198,5 @@ public class RaffleInfo implements Serializable {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
+
 }

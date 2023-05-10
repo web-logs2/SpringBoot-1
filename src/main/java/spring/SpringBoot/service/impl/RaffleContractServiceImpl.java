@@ -58,14 +58,13 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         //new一个合约实例
         NRaffle NRaffleContract = NRaffle.load(address,web3,credentials,
                 new StaticGasProvider(gasPrice,BigInteger.valueOf(3000000L)));
-        RemoteFunctionCall<BigInteger> status = NRaffleContract.getState();
-        BigInteger value = null;
-        try {
-            value = status.send();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return value;
+      BigInteger value = null;
+      try {
+        value = NRaffleContract.getState().send();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return value;
     }
 
     public RaffleContractServiceImpl() throws IOException {

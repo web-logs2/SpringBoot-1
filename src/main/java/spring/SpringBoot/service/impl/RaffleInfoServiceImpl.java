@@ -6,9 +6,11 @@ import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
+import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.vo.TokenRaffleVo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     @Autowired
     TokenInfoMapper tokenInfoMapper;
 
+    @Autowired
+    RaffleContractService raffleContractService;
+
     @Override
     public List<TokenRaffleVo> getRaffleInfoListByOwner(String owner) {
         List<TokenRaffleVo> list = new ArrayList<>();
@@ -29,6 +34,16 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         for (RaffleInfo raffleInfo:raffleInfos){
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+          if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
+            BigInteger status = raffleContractService.getState(raffleInfo.getRaffleaddress());
+            if(!status.equals(raffleInfo.getRafflestatus())){
+              raffleInfo.setRafflestatus(status);
+              //更新db
+              updateRaffleInfo(raffleInfo);
+
+            }
+          }
+
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);
             list.add(tokenRaffleVo);

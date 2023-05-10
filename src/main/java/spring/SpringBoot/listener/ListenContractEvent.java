@@ -22,6 +22,7 @@ import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
@@ -35,9 +36,9 @@ public class ListenContractEvent implements ApplicationRunner {
      * 日志记录
      */
     private Logger log = LoggerFactory.getLogger(ListenContractEvent.class);
-
-    @Autowired
-    private Web3j web3j;
+//
+//    @Autowired
+//    private Web3j web3j;
 
 
     @Autowired
@@ -64,7 +65,7 @@ public class ListenContractEvent implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments var1) {
         RaffleCreatedListener();
-        TicketsPurchasedListener();
+//        TicketsPurchasedListener();
 //        ChangeStateListener();
         this.log.info("This will be execute when the project was started!");
     }
@@ -102,7 +103,7 @@ public class ListenContractEvent implements ApplicationRunner {
                 raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
                 raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
                 raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
-                raffleInfo.setRafflestatus(0);
+                raffleInfo.setRafflestatus(new BigInteger("0"));
 
                 raffleInfoService.createRaffleInfo(raffleInfo);
                 log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
@@ -151,7 +152,7 @@ public class ListenContractEvent implements ApplicationRunner {
             log.info("newState:" + response.newState);
             RaffleInfo raffleInfo = new RaffleInfo();
             raffleInfo.setRaffleaddress(response.raffleAddress);
-            raffleInfo.setRafflestatus(response.newState.intValue());
+            raffleInfo.setRafflestatus(response.newState);
             raffleInfoService.updateRaffleInfo(raffleInfo);
         });
     }
