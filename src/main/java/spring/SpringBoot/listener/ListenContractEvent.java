@@ -50,13 +50,9 @@ public class ListenContractEvent implements ApplicationRunner {
     @Resource
     private NRaffleFactory nraffleFactory;
 
-<<<<<<< HEAD
-  @Autowired
-    private NRaffle nRaffle;
-=======
+
     @Resource
     private NRaffle nraffle;
->>>>>>> 0051e89a46ff9eee36dbd6306790a4fe1f014cb7
 
     @Autowired
     private RaffleInfoService raffleInfoService;
@@ -177,11 +173,5 @@ public class ListenContractEvent implements ApplicationRunner {
             // 根据合约地址，更新db 中的king字段
         });
     }
-
-
-<<<<<<< HEAD
-
 }
-=======
-}
->>>>>>> 0051e89a46ff9eee36dbd6306790a4fe1f014cb7
+
