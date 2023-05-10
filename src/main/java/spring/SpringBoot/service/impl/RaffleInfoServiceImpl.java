@@ -24,11 +24,11 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 
     @Override
     public List<TokenRaffleVo> getRaffleInfoListByOwner(String owner) {
-        TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         List<TokenRaffleVo> list = new ArrayList<>();
         List<RaffleInfo> raffleInfos =  raffleInfoMapper.getRaffleInfoListByOwner(owner);
         for (RaffleInfo raffleInfo:raffleInfos){
-            TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+          TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
+          TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);
             list.add(tokenRaffleVo);
