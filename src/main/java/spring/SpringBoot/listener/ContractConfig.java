@@ -95,4 +95,28 @@ public class ContractConfig {
                 DefaultBlockParameterName.LATEST,
                 trace.getContractAddress());
     }
+
+
+  @Bean
+  //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
+  @Scope("prototype")
+  @Autowired
+  public EthFilter changeStateFilter(NRaffle trace) {
+    //获取启动时监听的区块
+    return new EthFilter(DefaultBlockParameterName.EARLIEST,
+      DefaultBlockParameterName.LATEST,
+      trace.getContractAddress());
+  }
+
+  @Bean
+  //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
+  @Scope("prototype")
+  @Autowired
+  public EthFilter winnerDrawnFilter(NRaffle trace) {
+    //获取启动时监听的区块
+    return new EthFilter(DefaultBlockParameterName.EARLIEST,
+      DefaultBlockParameterName.LATEST,
+      trace.getContractAddress());
+  }
+
 }

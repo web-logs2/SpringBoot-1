@@ -46,10 +46,14 @@ public class ListenContractEvent implements ApplicationRunner {
     @Autowired
     private EthFilter ethNRaffleFilter;
 
+   @Autowired
+   private EthFilter changeStateFilter;
+
+   @Autowired
+   private EthFilter winnerDrawnFilter;
 
     @Resource
     private NRaffleFactory nraffleFactory;
-
 
     @Resource
     private NRaffle nraffle;
@@ -147,7 +151,7 @@ public class ListenContractEvent implements ApplicationRunner {
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:ChangeState");
 
-        nraffle.changeStateEventFlowable(ethNRaffleFilter).subscribe(response -> {
+        nraffle.changeStateEventFlowable(changeStateFilter).subscribe(response -> {
             log.info("newState:" + response.newState);
             RaffleInfo raffleInfo = new RaffleInfo();
             raffleInfo.setRaffleaddress(response.raffleAddress);
@@ -168,7 +172,7 @@ public class ListenContractEvent implements ApplicationRunner {
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听:WinnerDrawn");
 
-        nraffle.winnerDrawnEventFlowable(ethNRaffleFilter).subscribe(response -> {
+        nraffle.winnerDrawnEventFlowable(winnerDrawnFilter).subscribe(response -> {
             log.info("owner:" + response.owner + "ticketNumber:" + response.ticketNumber);
             // 根据合约地址，更新db 中的king字段
         });
