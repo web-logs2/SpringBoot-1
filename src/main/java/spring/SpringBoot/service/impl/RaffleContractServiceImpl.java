@@ -7,17 +7,11 @@ import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
-import spring.SpringBoot.entry.RaffleInfo;
-import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.service.RaffleContractService;
-import spring.SpringBoot.solidity.LeaveMsg;
 import spring.SpringBoot.solidity.NRaffle;
-import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -34,16 +28,19 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
 
     @Override
-    public void verifyNFTPresenceBeforeStart(String address) {
+    public String verifyNFTPresenceBeforeStart(String address) {
         //new一个合约实例
         NRaffle NRaffleContract = NRaffle.load(address,web3,credentials,
                 new StaticGasProvider(gasPrice,BigInteger.valueOf(3000000L)));
+
+      System.out.println("verifyNFTPresenceBeforeStart方法内执行");
 
 
         RemoteFunctionCall<TransactionReceipt>  verifyNFT = NRaffleContract.verifyNFTPresenceBeforeStart();
         TransactionReceipt transactionReceipt = null;
         try {
             transactionReceipt = verifyNFT.sendAsync().get();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -53,6 +50,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         String transactionHash = transactionReceipt.getTransactionHash();
         System.out.println("verifyNFTPresenceBeforeStart-transactionHash="+transactionHash);
         }
+        return "ok";
     }
 
     @Override

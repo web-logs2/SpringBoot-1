@@ -145,31 +145,28 @@ public class NRaffle extends Contract {
 
   public static final Event CHANGESTATE_EVENT = new Event("ChangeState",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
-  ;
+
 
   public static final Event NFTVERIFIED_EVENT = new Event("NFTVerified",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
-  ;
+
 
   public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
-  ;
 
   public static final Event TICKETSPURCHASED_EVENT = new Event("TicketsPurchased",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Uint16>() {}));
-  ;
 
   public static final Event TRANSFERETH_EVENT = new Event("TransferETH",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
-  ;
+
 
   public static final Event TRANSFERNFT_EVENT = new Event("TransferNFT",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}, new TypeReference<Uint8>() {}));
-  ;
 
   public static final Event WINNERDRAWN_EVENT = new Event("WinnerDrawn",
     Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
-  ;
+
 
   @Deprecated
   protected NRaffle(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {

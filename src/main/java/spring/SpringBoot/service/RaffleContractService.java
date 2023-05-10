@@ -1,10 +1,13 @@
 package spring.SpringBoot.service;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigInteger;
+
 
 public interface RaffleContractService {
 
-    void verifyNFTPresenceBeforeStart(String address);
+    String verifyNFTPresenceBeforeStart(String address);
 
     BigInteger getState(String address);
 }

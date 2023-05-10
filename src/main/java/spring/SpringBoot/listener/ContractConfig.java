@@ -93,7 +93,7 @@ public class ContractConfig {
         //获取启动时监听的区块
         return new EthFilter(DefaultBlockParameterName.EARLIEST,
                 DefaultBlockParameterName.LATEST,
-                trace.getContractAddress());
+                "0x642bc3a6d2fd88808df4b19ab3a3cbe9e33e099f");
     }
 
 

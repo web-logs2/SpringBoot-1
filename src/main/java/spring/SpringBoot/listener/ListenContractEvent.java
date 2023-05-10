@@ -65,7 +65,7 @@ public class ListenContractEvent implements ApplicationRunner {
     public void run(ApplicationArguments var1) {
         RaffleCreatedListener();
         TicketsPurchasedListener();
-        ChangeStateListener();
+//        ChangeStateListener();
         this.log.info("This will be execute when the project was started!");
     }
 
@@ -121,14 +121,10 @@ public class ListenContractEvent implements ApplicationRunner {
      */
     public void TicketsPurchasedListener() {
         Event event = new Event("TicketsPurchased",
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
-                                                },
-                        new TypeReference<Address>(true) {
-                        },
-                        new TypeReference<Uint16>() {
-                        },
-                        new TypeReference<Uint16>() {
-                        }));
+          Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+          }, new TypeReference<Address>(true) {
+          }, new TypeReference<Uint16>() {
+          }, new TypeReference<Uint16>() {}));
 
         ethNRaffleFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听TicketsPurchased");
