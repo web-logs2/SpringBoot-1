@@ -1,6 +1,7 @@
 
 package spring.SpringBoot.listener;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,19 +9,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.service.ParticipantInfoService;
 
 import java.util.Map;
 
     @Controller
     @RequestMapping("/api/listener")
     public class ListenTransaction {
+        @Autowired
+        ParticipantInfoService participantInfoService;
 
         @RequestMapping("/listen-transaction")
         public void listenTransaction(@RequestParam Map<String,Object> map) {
             // 在这里启动新的线程来监听交易状态new Thread(() -> {
             new Thread(() -> {
                 try {
-                    TransactionListener listener = new TransactionListener(map);
+                    TransactionListener listener = new TransactionListener(map,participantInfoService);
                     listener.start();
                 } catch (Exception e) {
                     e.printStackTrace();
