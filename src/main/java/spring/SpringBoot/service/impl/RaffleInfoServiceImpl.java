@@ -47,7 +47,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
       BigInteger status = raffleContractService.getState(raffleInfo.getRaffleaddress());
       if(!status.equals(raffleInfo.getRafflestatus())){
-        raffleInfo.setRafflestatus(status);
+        raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(status)));
         updateRaffleInfo(raffleInfo);
       }
     }

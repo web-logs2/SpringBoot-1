@@ -103,7 +103,7 @@ public class ListenContractEvent implements ApplicationRunner {
                 raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
                 raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
                 raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
-                raffleInfo.setRafflestatus(new BigInteger("0"));
+                raffleInfo.setRafflestatus(0);
 
                 raffleInfoService.createRaffleInfo(raffleInfo);
                 log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
@@ -152,7 +152,7 @@ public class ListenContractEvent implements ApplicationRunner {
             log.info("newState:" + response.newState);
             RaffleInfo raffleInfo = new RaffleInfo();
             raffleInfo.setRaffleaddress(response.raffleAddress);
-            raffleInfo.setRafflestatus(response.newState);
+            raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(response.newState)));
             raffleInfoService.updateRaffleInfo(raffleInfo);
         });
     }
