@@ -75,6 +75,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+      if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
+        raffleInfo = correctStatus(raffleInfo);
+      }
         tokenRaffleVo.setRaffleInfo(raffleInfo);
         tokenRaffleVo.setTokenInfo(tokenInfo);
         return tokenRaffleVo;
