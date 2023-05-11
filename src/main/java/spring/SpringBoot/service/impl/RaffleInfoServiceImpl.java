@@ -34,9 +34,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         for (RaffleInfo raffleInfo:raffleInfos){
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
-          if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
             raffleInfo = correctStatus(raffleInfo);
-          }
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);
             list.add(tokenRaffleVo);
@@ -46,13 +44,14 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 
   @Override
     public RaffleInfo correctStatus(RaffleInfo raffleInfo){
+    if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
       BigInteger status = raffleContractService.getState(raffleInfo.getRaffleaddress());
       if(!status.equals(raffleInfo.getRafflestatus())){
         raffleInfo.setRafflestatus(status);
         updateRaffleInfo(raffleInfo);
       }
+    }
       return raffleInfo;
-
     }
 
     @Override
@@ -75,9 +74,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
-      if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
         raffleInfo = correctStatus(raffleInfo);
-      }
         tokenRaffleVo.setRaffleInfo(raffleInfo);
         tokenRaffleVo.setTokenInfo(tokenInfo);
         return tokenRaffleVo;
