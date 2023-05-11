@@ -15,9 +15,12 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.mapper.ParticipantInfoMapper;
+import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
 import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
+import spring.SpringBoot.service.impl.RaffleInfoServiceImpl;
 import spring.SpringBoot.solidity.NRaffle;
 
 import java.io.IOException;
@@ -42,6 +45,9 @@ public class TransactionListener {
 
   @Autowired
   RaffleInfoService raffleInfoService;
+
+  @Autowired
+  ParticipantInfoMapper participantInfoMapper;
 
 
   public TransactionListener(Map<String, Object> map) throws IOException {
@@ -82,7 +88,9 @@ public class TransactionListener {
                   participantInfo.setParticipantAddress(map.get("participantAddress").toString());
                   participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
                   participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
-                  int a = participantInfoService.createParticipantInfo(participantInfo);
+//                  int a = participantInfoService.createParticipantInfo(participantInfo);
+                  int a = participantInfoMapper.insertSelective(participantInfo);
+                  break;
                 default:
                   System.out.println("Unknown fruit selected");
               }

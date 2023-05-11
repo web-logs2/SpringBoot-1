@@ -9,6 +9,7 @@ import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.ParticipantInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
+import spring.SpringBoot.vo.TokenRaffleVo;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class ParticipantInfoController {
      */
     @RequestMapping("/getParticipantInfoList")
     public Object getParticipantInfoList(@RequestParam String userAddress) {
-        List<ParticipantInfo> participantInfos = participantInfoService.getParticipantInfos(userAddress);
+      List<TokenRaffleVo> participantInfos = participantInfoService.getParticipantInfos(userAddress);
         return ResponseUtil.ok(participantInfos);
     }
 
