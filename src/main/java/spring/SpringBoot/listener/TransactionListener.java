@@ -86,6 +86,7 @@ public class TransactionListener {
                                     participantInfo.setParticipantAddress(map.get("participantAddress").toString());
                                     participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
+                                    //todo 再set下token等一些必填字段
                                     participantInfoService.createParticipantInfo(participantInfo);
                                     break;
                                 default:
