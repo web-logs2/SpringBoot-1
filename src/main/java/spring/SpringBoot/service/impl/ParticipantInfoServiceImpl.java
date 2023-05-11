@@ -12,6 +12,7 @@ import spring.SpringBoot.service.ParticipantInfoService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.vo.TokenRaffleVo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
       for(ParticipantInfo participantInfo:participantInfos){
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(participantInfo.getRaffleaddress());
+        //纠正DB状态偏差
+        if(null !=raffleInfo & !(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
+          raffleInfo = raffleInfoService.correctStatus(raffleInfo);
+        }
         tokenRaffleVo.setRaffleInfo(raffleInfo);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
         tokenRaffleVo.setTokenInfo(tokenInfo);

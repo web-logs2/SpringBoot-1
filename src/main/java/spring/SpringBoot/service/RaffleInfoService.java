@@ -18,4 +18,6 @@ public interface RaffleInfoService {
     TokenRaffleVo getDetailByRaffleAddress(String raffleAddress);
 
     RaffleInfo  getRaffleDetailByRaffleAddress(String raffleAddress);
+
+  RaffleInfo correctStatus(RaffleInfo raffleInfo);
 }
