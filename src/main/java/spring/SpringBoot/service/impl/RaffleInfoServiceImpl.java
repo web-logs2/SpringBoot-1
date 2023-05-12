@@ -48,9 +48,30 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
       BigInteger status = raffleContractService.getState(raffleInfo.getRaffleaddress());
       if(!status.equals(raffleInfo.getRafflestatus())){
         raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(status)));
-        updateRaffleInfo(raffleInfo);
       }
     }
+    if(new BigInteger("5").equals(raffleInfo.getRafflestatus())
+            &&new BigInteger("0").equals(raffleInfo.getSwapStatus())){
+        BigInteger status = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
+        if(!status.equals(raffleInfo.getSwapStatus())){
+            raffleInfo.setSwapStatus(Integer.valueOf(String.valueOf(status)));
+            updateRaffleInfo(raffleInfo);
+        }
+        if(null == raffleInfo.getKing()){
+            String king = raffleContractService.getKing(raffleInfo.getRaffleaddress());
+            if(null!=king&&""!=king){
+                raffleInfo.setKing(king);
+            }
+        }
+        if(null == raffleInfo.getWinnerDrawTimestamp()){
+            BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress());
+            if(null!=winnerDrawTimestamp){
+                raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
+            }
+        }
+
+    }
+      updateRaffleInfo(raffleInfo);
       return raffleInfo;
     }
 

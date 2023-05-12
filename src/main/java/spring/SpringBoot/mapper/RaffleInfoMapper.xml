@@ -36,6 +36,21 @@
         contract_address = #{contractAddress,jdbcType=VARCHAR} and (raffleStatus !=4 or raffleStatus!=5)
     </select>
 
+    <select id="getExecSwapRaffleInfos" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_info
+        WHERE swapStatus = 0 AND king IS NOT NULL AND UNIX_TIMESTAMP(NOW()) > (winnerDrawTimestamp + (2 * 24 * 60 * 60))
+    </select>
+
+    <select id="getTransferAllIfCancelledRaffleInfos" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_info ri
+        JOIN participant_info pi ON ri.raffleAddress = pi.raffleAddress
+        WHERE ri.rafflestatus = 5 AND (ri.endTimestamp + (2 * 24 * 60 * 60) > UNIX_TIMESTAMP(NOW())) AND pi.raffleAddress > 0
+    </select>
+
     <select id="getRaffleInfoListByOwner" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -161,6 +176,12 @@
             </if>
             <if test="king != null">
                 king = #{king,jdbcType=VARCHAR},
+            </if>
+            <if test="swapStatus != null">
+                swapStatus = #{swapStatus,jdbcType=INTEGER},
+            </if>
+            <if test="winnerDrawTimestamp != null">
+                winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=INTEGER},
             </if>
         </set>
         where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}

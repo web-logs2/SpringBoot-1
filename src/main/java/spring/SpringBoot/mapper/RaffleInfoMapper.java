@@ -23,4 +23,7 @@ public interface RaffleInfoMapper {
     List<RaffleInfo> getRaffleInfoListByOwner(String owner);
 
     RaffleInfo getRaffleInfoByCondition(Map map);
+
+    List<RaffleInfo> getExecSwapRaffleInfos();
+    List<RaffleInfo> getTransferAllIfCancelledRaffleInfos();
 }

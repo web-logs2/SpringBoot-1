@@ -11,5 +11,15 @@ public interface RaffleContractService {
 
     BigInteger getState(String address);
 
+    BigInteger getSwapStauts(String address);
 
+    String getKing(String address);
+
+    BigInteger getWinnerDrawTimestamp(String address);
+
+    void transferAllIfCompletedWithNFT(String address);
+
+    void execSwap();
+
+    void execTransferAllIfCancelled();
 }
