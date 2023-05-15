@@ -40,7 +40,7 @@
         select
         <include refid="Base_Column_List"/>
         from raffle_info
-        WHERE swapStatus = 0 AND king IS NOT NULL AND UNIX_TIMESTAMP(NOW()) > (winnerDrawTimestamp + (2 * 24 * 60 * 60))
+        WHERE swap_status = 0 AND king IS NOT NULL AND UNIX_TIMESTAMP(NOW()) > (winnerDrawTimestamp + (2 * 24 * 60 * 60))
     </select>
 
     <select id="getTransferAllIfCancelledRaffleInfos" resultMap="BaseResultMap">
@@ -178,7 +178,7 @@
                 king = #{king,jdbcType=VARCHAR},
             </if>
             <if test="swapStatus != null">
-                swapStatus = #{swapStatus,jdbcType=INTEGER},
+                swap_status = #{swapStatus,jdbcType=INTEGER},
             </if>
             <if test="winnerDrawTimestamp != null">
                 winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=INTEGER},
