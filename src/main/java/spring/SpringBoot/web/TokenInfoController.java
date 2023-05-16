@@ -22,7 +22,7 @@ public class TokenInfoController {
      * @return
      */
     @RequestMapping("/getTokenInfoByOwner")
-    public Object getTokenInfoByOwner(@RequestParam String owner) {
+    public Object getTokenInfoByOwner(@RequestParam("owner") String owner) {
         return ResponseUtil.ok(tokenInfoService.getTokenInfoByOwner(owner));
     }
 

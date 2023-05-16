@@ -19,8 +19,9 @@ public class TaskJob {
     @Autowired
     RaffleContractService raffleContractService;
 
-    @Scheduled(cron = "0 */10 * * * ?")
-    public void job1() throws Exception {
+//    @Scheduled(cron = "0 */10 * * * ?")
+@Scheduled(cron = "0 */1 * * * ?")
+public void job1() throws Exception {
         System.out.println("transferAllIfCompletedWithNFT定义的定时开始执行"+ LocalDateTime.now() );
         raffleContractService.execSwap();
         System.out.println("transferAllIfCompletedWithNFT执行结束"+ LocalDateTime.now() );
@@ -37,7 +38,9 @@ public class TaskJob {
 //        System.out.println("【定时任务】执行读合约返回信息："+value.toString());
     }
 
-    @Scheduled(cron = "0 0 */12 * * ?")
+//    @Scheduled(cron = "0 0 */12 * * ?")
+//    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void execTransferAllIfCancelledJob() throws Exception {
         System.out.println("execTransferAllIfCancelled定义的定时开始执行"+ LocalDateTime.now() );
         raffleContractService.execTransferAllIfCancelled();

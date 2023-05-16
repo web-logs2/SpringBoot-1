@@ -146,6 +146,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execSwap() {
          List<RaffleInfo> raffleInfoList=raffleInfoMapper.getExecSwapRaffleInfos();
+        System.out.println("execSwap共执行数据："+raffleInfoList.size());
         for(RaffleInfo raffleInfo:raffleInfoList){
             RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
             if(new BigInteger("0").equals(raffleInfo1.getSwapStatus())){
@@ -157,6 +158,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execTransferAllIfCancelled() {
         List<RaffleInfo> raffleInfoList=raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
+        System.out.println("execTransferAllIfCancelled共执行数据："+raffleInfoList.size());
         for(RaffleInfo raffleInfo:raffleInfoList){
           transferAllIfCancelled(raffleInfo.getRaffleaddress());
         }

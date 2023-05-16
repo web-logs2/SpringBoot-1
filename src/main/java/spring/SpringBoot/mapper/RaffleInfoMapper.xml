@@ -45,7 +45,8 @@
 
     <select id="getTransferAllIfCancelledRaffleInfos" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+              ri.id, ri.raffleAddress, ri.owner, ri.token_id, ri.contract_address, ri.tickets, ri.ticketPrice, ri.startTimestamp,
+              ri.endTimestamp, ri.raffleStatus, ri.create_time, ri.update_time, ri.king, ri.swap_status, ri.winnerDrawTimestamp
         from raffle_info ri
         JOIN participant_info pi ON ri.raffleAddress = pi.raffleAddress
         WHERE ri.rafflestatus = 5 AND (ri.endTimestamp + (2 * 24 * 60 * 60) > UNIX_TIMESTAMP(NOW())) AND pi.raffleAddress > 0
