@@ -9,4 +9,6 @@ public interface TokenInfoService {
 
     int createTokenInfo(TokenInfo tokenInfo);
 
+    int updateOwner(TokenInfo tokenInfo);
+
 }
