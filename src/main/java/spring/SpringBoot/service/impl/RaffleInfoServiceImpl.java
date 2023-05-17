@@ -39,7 +39,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
           Integer participants = participantInfoMapper.getParticipantCount(raffleInfo.getRaffleaddress());
-            raffleInfo.setParticipants(participants);
+            raffleInfo.setParticipants(null == participants?0:participants);
             raffleInfo = correctStatus(raffleInfo);
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);

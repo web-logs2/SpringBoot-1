@@ -28,7 +28,7 @@
 
   <select id="getParticipantCount" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-     count(id)
+     count(*)
     from participant_info
     where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
   </select>

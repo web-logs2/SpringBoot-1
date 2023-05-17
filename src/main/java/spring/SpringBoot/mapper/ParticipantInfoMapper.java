@@ -21,5 +21,5 @@ public interface ParticipantInfoMapper {
 
     List<ParticipantInfo> getParticipantInfos(String participantAddress);
 
-    int getParticipantCount(String raffleaddress);
+    Integer getParticipantCount(String raffleaddress);
 }
