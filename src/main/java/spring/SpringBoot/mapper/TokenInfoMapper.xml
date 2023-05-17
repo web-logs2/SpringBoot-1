@@ -155,7 +155,7 @@
     update token_info
     <set>
       <if test="owner != null">
-         owner = #{owner,jdbcType=VARCHAR},
+        `owner` = #{owner,jdbcType=VARCHAR},
       </if>
     </set>
     where contract_address = #{contractAddress,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR}
