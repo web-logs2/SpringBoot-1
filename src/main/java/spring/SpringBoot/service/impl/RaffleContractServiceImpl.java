@@ -158,6 +158,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execTransferAllIfCancelled() {
         List<RaffleInfo> raffleInfoList=raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
+        //获取数据逻辑要修改为：结束时间后+5天，swapstatus状态为0.发送请求后，修改状态为999（表明退款全部完成）
         System.out.println("execTransferAllIfCancelled共执行数据："+raffleInfoList.size());
         for(RaffleInfo raffleInfo:raffleInfoList){
           transferAllIfCancelled(raffleInfo.getRaffleaddress());

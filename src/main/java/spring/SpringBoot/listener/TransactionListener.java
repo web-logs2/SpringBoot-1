@@ -80,7 +80,8 @@ public class TransactionListener {
 
                             switch (map.get("op").toString()) {
                                 case "verifyNFTPresenceBeforeStart":
-                                    verifyNFTPresenceBeforeStart(map.get("address").toString());
+                                    verifyNFTPresenceBeforeStart(map.get("newOwner").toString());
+                                    //这里报错了
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     break;
                                 case "TicketsPurchased":
@@ -98,7 +99,7 @@ public class TransactionListener {
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo);
                                     break;
                                 case "UpdateSwapStatus":
-                                    RaffleInfo raffleInfo1 = null;
+                                    RaffleInfo raffleInfo1 = new RaffleInfo();
                                     raffleInfo1.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
                                     raffleInfo1.setRaffleaddress(map.get("raffleaddress").toString());
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo1);
