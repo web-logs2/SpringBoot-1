@@ -26,6 +26,13 @@
     where participant_address = #{participantAddress,jdbcType=VARCHAR}
   </select>
 
+  <select id="getParticipantCount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+     count(id)
+    from participant_info
+    where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from participant_info
     where id = #{id,jdbcType=INTEGER}

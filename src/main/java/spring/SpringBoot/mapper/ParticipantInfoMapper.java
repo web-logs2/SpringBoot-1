@@ -20,4 +20,6 @@ public interface ParticipantInfoMapper {
     int updateByPrimaryKey(ParticipantInfo record);
 
     List<ParticipantInfo> getParticipantInfos(String participantAddress);
+
+    int getParticipantCount(String raffleaddress);
 }

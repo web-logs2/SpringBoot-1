@@ -25,5 +25,6 @@ public interface RaffleInfoMapper {
     RaffleInfo getRaffleInfoByCondition(Map map);
 
     List<RaffleInfo> getExecSwapRaffleInfos();
+
     List<RaffleInfo> getTransferAllIfCancelledRaffleInfos();
 }

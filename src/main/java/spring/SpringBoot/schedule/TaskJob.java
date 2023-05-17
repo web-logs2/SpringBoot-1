@@ -26,16 +26,6 @@ public void job1() throws Exception {
         raffleContractService.execSwap();
         System.out.println("transferAllIfCompletedWithNFT执行结束"+ LocalDateTime.now() );
 
-//        //例子：写方法
-//        RemoteFunctionCall<TransactionReceipt> setWord = contract.store(BigInteger.valueOf(317));
-//        TransactionReceipt transactionReceipt = setWord.sendAsync().get();
-//        String transactionHash = transactionReceipt.getTransactionHash();
-//        System.out.println("【定时任务】执行交易Hash值："+transactionHash);
-//
-//        //例子：读方法
-//        RemoteFunctionCall<BigInteger> randomWord = contract.retrieve();
-//        BigInteger value = randomWord.send();
-//        System.out.println("【定时任务】执行读合约返回信息："+value.toString());
     }
 
 //    @Scheduled(cron = "0 0 */12 * * ?")

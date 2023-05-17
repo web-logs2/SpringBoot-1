@@ -1,11 +1,7 @@
 package spring.SpringBoot.listener;
 
-import ch.qos.logback.classic.util.LogbackMDCAdapter;
-import org.apache.ibatis.transaction.TransactionException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteFunctionCall;
@@ -17,12 +13,10 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
-import spring.SpringBoot.mapper.ParticipantInfoMapper;
+import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
-import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
-import spring.SpringBoot.service.impl.RaffleInfoServiceImpl;
 import spring.SpringBoot.solidity.NRaffle;
 
 import java.io.IOException;
@@ -38,21 +32,29 @@ public class TransactionListener {
     private final Web3j web3j;
     private final ScheduledExecutorService executorService;
 
-    private RaffleInfo raffleInfo;
 
     private Map<String, Object> map;
 
-    @Autowired
+
     ParticipantInfoService participantInfoService;
 
     @Autowired
     RaffleInfoService raffleInfoService;
 
-    public TransactionListener(Map<String, Object> map, ParticipantInfoService participantInfoService) {
+    TokenInfoMapper tokenInfoMapper;
+
+    RaffleInfoMapper raffleInfoMapper;
+
+
+    public TransactionListener(Map<String, Object> map, ParticipantInfoService participantInfoService,
+                               TokenInfoMapper tokenInfoMapper,
+                               RaffleInfoMapper raffleInfoMapper) {
         txHash = map.get("txHash").toString();
         this.map = map;
         web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336"));
         this.participantInfoService = participantInfoService;
+        this.tokenInfoMapper = tokenInfoMapper;
+        this.raffleInfoMapper = raffleInfoMapper;
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -65,7 +67,7 @@ public class TransactionListener {
                     EthGetTransactionReceipt ethGetTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).send();
                     if (ethGetTransactionReceipt.getTransactionReceipt().isPresent()) {
                         TransactionReceipt transactionReceipt = ethGetTransactionReceipt.getTransactionReceipt().get();
-                        if (transactionReceipt.getStatus().equals("0x0")) {
+                        if (("0x0").equals(transactionReceipt.getStatus())) {
                             // 交易确认失败，不做任何操作，中断线程
                             System.out.println(Thread.currentThread().getId() + "Transaction confirmed: " + txHash);
                             executorService.shutdown();
@@ -79,15 +81,27 @@ public class TransactionListener {
                             switch (map.get("op").toString()) {
                                 case "verifyNFTPresenceBeforeStart":
                                     verifyNFTPresenceBeforeStart(map.get("address").toString());
-//                  executorService.shutdown();
+                                    tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     break;
                                 case "TicketsPurchased":
                                     ParticipantInfo participantInfo = new ParticipantInfo();
                                     participantInfo.setParticipantAddress(map.get("participantAddress").toString());
                                     participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
-                                    //todo 再set下token等一些必填字段
                                     participantInfoService.createParticipantInfo(participantInfo);
+                                    break;
+                                case "UpdateTokenOwner":
+                                    tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
+                                    RaffleInfo raffleInfo = null;
+                                    raffleInfo.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
+                                    raffleInfo.setRaffleaddress(map.get("raffleAddress").toString());
+                                    raffleInfoMapper.updateRaffleInfo(raffleInfo);
+                                    break;
+                                case "UpdateSwapStatus":
+                                    RaffleInfo raffleInfo1 = null;
+                                    raffleInfo1.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
+                                    raffleInfo1.setRaffleaddress(map.get("raffleaddress").toString());
+                                    raffleInfoMapper.updateRaffleInfo(raffleInfo1);
                                     break;
                                 default:
                                     System.out.println("Unknown fruit selected");

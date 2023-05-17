@@ -77,6 +77,10 @@ public class RaffleInfo implements Serializable {
 
      */
     private Integer swapStatus;
+    /**
+     *  参与者数量
+     */
+    private Integer participants;
 
     /**
      * 开奖日期，兑换创窗口期按照这个+2天计算
@@ -207,5 +211,12 @@ public class RaffleInfo implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+    public Integer getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Integer participants) {
+        this.participants = participants;
     }
 }

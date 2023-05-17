@@ -22,4 +22,6 @@ public interface TokenInfoMapper {
 
     int updateByPrimaryKey(TokenInfo record);
 
+    int updateOwnerInt(String owner,String contractAddress,String tokenId);
+
 }

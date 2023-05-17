@@ -35,9 +35,5 @@ public class TokenInfoServiceImpl implements TokenInfoService {
         return -1;
     }
 
-    @Override
-    public int updateOwner(TokenInfo tokenInfo) {
-        return 0;
-    }
 
 }

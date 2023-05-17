@@ -150,4 +150,14 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateOwnerInt">
+    update token_info
+    <set>
+      <if test="owner != null">
+         `owner` = #{owner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where contract_address = #{contractAddress,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR}
+  </update>
 </mapper>

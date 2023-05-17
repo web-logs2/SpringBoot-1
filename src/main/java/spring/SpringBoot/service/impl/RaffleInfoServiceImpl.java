@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
+import spring.SpringBoot.mapper.ParticipantInfoMapper;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.RaffleContractService;
@@ -27,6 +28,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     @Autowired
     RaffleContractService raffleContractService;
 
+    @Autowired
+    ParticipantInfoMapper participantInfoMapper;
+
     @Override
     public List<TokenRaffleVo> getRaffleInfoListByOwner(String owner) {
         List<TokenRaffleVo> list = new ArrayList<>();
@@ -34,6 +38,8 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         for (RaffleInfo raffleInfo:raffleInfos){
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+          Integer participants = participantInfoMapper.getParticipantCount(raffleInfo.getRaffleaddress());
+            raffleInfo.setParticipants(participants);
             raffleInfo = correctStatus(raffleInfo);
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);
