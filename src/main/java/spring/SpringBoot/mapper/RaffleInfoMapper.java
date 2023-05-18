@@ -27,4 +27,6 @@ public interface RaffleInfoMapper {
     List<RaffleInfo> getExecSwapRaffleInfos();
 
     List<RaffleInfo> getTransferAllIfCancelledRaffleInfos();
+
+    List<RaffleInfo> getCancelIfUnsoldRaffleInfos();
 }

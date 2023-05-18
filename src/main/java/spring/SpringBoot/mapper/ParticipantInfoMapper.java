@@ -1,5 +1,6 @@
 package spring.SpringBoot.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.ParticipantInfo;
 
@@ -21,5 +22,10 @@ public interface ParticipantInfoMapper {
 
     List<ParticipantInfo> getParticipantInfos(String participantAddress);
 
-    Integer getParticipantCount(String raffleaddress);
+    List<ParticipantInfo> ParticipantInfos(String raffleaddress);
+
+
+    Integer getParticipantCount(@Param("raffleaddress") String raffleaddress);
+
+//    (@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId);
 }

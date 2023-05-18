@@ -19,7 +19,9 @@ public interface RaffleContractService {
 
     void transferAllIfCompletedWithNFT(String address);
 
-    void execSwap();
+    void execSwapTransferAllIfCompletedWithNFT();
 
     void execTransferAllIfCancelled();
+
+    void execCancelIfUnsold();
 }

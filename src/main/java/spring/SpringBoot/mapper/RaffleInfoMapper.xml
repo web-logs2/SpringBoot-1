@@ -52,6 +52,13 @@
         WHERE ri.rafflestatus = 5 AND (ri.endTimestamp + (2 * 24 * 60 * 60) > UNIX_TIMESTAMP(NOW())) AND pi.raffleAddress > 0
     </select>
 
+    <select id="getCancelIfUnsoldRaffleInfos" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_info
+        WHERE rafflestatus = 2 AND UNIX_TIMESTAMP(NOW()) > (endTimestamp)
+    </select>
+
     <select id="getRaffleInfoListByOwner" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

@@ -26,7 +26,14 @@
     where participant_address = #{participantAddress,jdbcType=VARCHAR}
   </select>
 
-  <select id="getParticipantCount" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="ParticipantInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from participant_info
+    where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getParticipantCount"  parameterType="java.lang.String" resultType="java.lang.Integer">
     select
      count(*)
     from participant_info

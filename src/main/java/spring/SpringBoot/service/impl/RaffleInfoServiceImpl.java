@@ -2,6 +2,7 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.ParticipantInfoMapper;
@@ -39,7 +40,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
           Integer participants = participantInfoMapper.getParticipantCount(raffleInfo.getRaffleaddress());
-            raffleInfo.setParticipants(null == participants?0:participants);
+//            List<ParticipantInfo> participantInfos = new  ArrayList<>();
+//            participantInfos = participantInfoMapper.ParticipantInfos(raffleInfo.getRaffleaddress());
+          raffleInfo.setParticipants(null == participants?0:participants);
             raffleInfo = correctStatus(raffleInfo);
             tokenRaffleVo.setRaffleInfo(raffleInfo);
             tokenRaffleVo.setTokenInfo(tokenInfo);
@@ -100,6 +103,10 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     public TokenRaffleVo getDetailByRaffleAddress(String raffleAddress) {
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
+
+        Integer participantCount = participantInfoMapper.getParticipantCount(raffleAddress);
+        raffleInfo.setParticipants(null == participantCount?0:participantCount);
+        raffleInfo.setParticipants(participantCount);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
         raffleInfo = correctStatus(raffleInfo);
         tokenRaffleVo.setRaffleInfo(raffleInfo);
