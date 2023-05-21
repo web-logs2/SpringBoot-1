@@ -22,10 +22,13 @@ public interface ParticipantInfoMapper {
 
     List<ParticipantInfo> getParticipantInfos(String participantAddress);
 
+    List<ParticipantInfo> getParticipantInfosByRaffleAddress(String raffleaddress);
+
+    List<ParticipantInfo>  getParticipantInfosGroupByRaffleAddress(String participantAddress);
+
     List<ParticipantInfo> ParticipantInfos(String raffleaddress);
 
 
     Integer getParticipantCount(@Param("raffleaddress") String raffleaddress);
 
-//    (@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId);
 }

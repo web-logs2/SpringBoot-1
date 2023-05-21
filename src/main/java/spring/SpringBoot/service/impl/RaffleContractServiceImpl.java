@@ -145,7 +145,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
 
-    public void execCancelIfUnsold(String address) {
+    public void cancelIfUnsold(String address) {
         NRaffle NRaffleContract = NRaffle.load(address,web3,credentials,
                 new StaticGasProvider(gasPrice,BigInteger.valueOf(3000000L)));
         try {
@@ -177,27 +177,19 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         }
     }
 
+    /**
+     * 到期未完成抽奖活动，变更为取消状态
+     */
     @Override
     public void execCancelIfUnsold() {
         List<RaffleInfo> raffleInfoList=raffleInfoMapper.getCancelIfUnsoldRaffleInfos();
         //到期未完成抽奖活动清理
         System.out.println("execTransferAllIfCancelled共执行数据："+raffleInfoList.size());
         for(RaffleInfo raffleInfo:raffleInfoList){
-            transferAllIfCancelled(raffleInfo.getRaffleaddress());//这是一个合约方法
+            cancelIfUnsold(raffleInfo.getRaffleaddress());//这是一个合约方法
         }
     }
 
-    public void execCancelIfUnsold(List<String> addresses) {
-        for (String address : addresses) {
-            NRaffle NRaffleContract = NRaffle.load(address, web3, credentials,
-                    new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
-            try {
-                NRaffleContract.cancelIfUnsold().send();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public RaffleContractServiceImpl() throws IOException {
     }

@@ -33,11 +33,13 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
 
     @Override
     public List<TokenRaffleVo> getParticipantInfos(String participantAddress) {
-      List<ParticipantInfo> participantInfos = participantInfoMapper.getParticipantInfos(participantAddress);
+      List<ParticipantInfo> participantInfos = participantInfoMapper.getParticipantInfosGroupByRaffleAddress(participantAddress);
       List<TokenRaffleVo> list = new ArrayList<>();
       for(ParticipantInfo participantInfo:participantInfos){
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(participantInfo.getRaffleaddress());
+        Integer participantCount = participantInfoMapper.getParticipantCount(participantInfo.getRaffleaddress());
+        raffleInfo.setParticipants(null == participantCount?0:participantCount);
         //纠正DB状态偏差
         raffleInfo = raffleInfoService.correctStatus(raffleInfo);
         tokenRaffleVo.setRaffleInfo(raffleInfo);

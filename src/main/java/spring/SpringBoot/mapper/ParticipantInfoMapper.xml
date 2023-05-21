@@ -19,11 +19,25 @@
     from participant_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getParticipantInfosGroupByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT raffleAddress,participant_address, SUM(ticket) AS totalTicket
+    FROM participant_info
+    where participant_address = #{participantAddress,jdbcType=VARCHAR}
+    GROUP BY raffleAddress;
+  </select>
   <select id="getParticipantInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from participant_info
     where participant_address = #{participantAddress,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="getParticipantInfosByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from participant_info
+    where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
   </select>
 
   <select id="ParticipantInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -34,8 +48,7 @@
   </select>
 
   <select id="getParticipantCount"  parameterType="java.lang.String" resultType="java.lang.Integer">
-    select
-     count(*)
+    select SUM(ticket) AS totalTicket
     from participant_info
     where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
   </select>

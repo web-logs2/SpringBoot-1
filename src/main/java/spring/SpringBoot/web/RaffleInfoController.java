@@ -26,7 +26,7 @@ public class RaffleInfoController {
      * @return
      */
     @RequestMapping("/getRaffleInfoListByOwner")
-    public Object getRaffleInfoListByOwner(@RequestParam String owner) {
+    public Object getRaffleInfoListByOwner(@RequestParam("owner") String owner) {
         List<TokenRaffleVo> tokenRaffleVos = raffleInfoService.getRaffleInfoListByOwner(owner);
         return ResponseUtil.ok(tokenRaffleVos);
     }

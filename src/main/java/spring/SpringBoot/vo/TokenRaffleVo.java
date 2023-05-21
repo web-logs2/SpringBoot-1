@@ -1,12 +1,17 @@
 package spring.SpringBoot.vo;
 
+import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
+
+import java.util.List;
 
 public class TokenRaffleVo {
     TokenInfo tokenInfo;
 
     RaffleInfo raffleInfo;
+
+    List<ParticipantInfo> participantInfos;
 
     public TokenInfo getTokenInfo() {
         return tokenInfo;
@@ -22,6 +27,14 @@ public class TokenRaffleVo {
 
     public void setRaffleInfo(RaffleInfo raffleInfo) {
         this.raffleInfo = raffleInfo;
+    }
+
+    public List<ParticipantInfo> getParticipantInfos() {
+        return participantInfos;
+    }
+
+    public void setParticipantInfos(List<ParticipantInfo> participantInfos) {
+        this.participantInfos = participantInfos;
     }
 
 
