@@ -11,6 +11,7 @@ import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
+import spring.SpringBoot.constant.Constant;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
@@ -45,13 +46,12 @@ public class TransactionListener {
 
     RaffleInfoMapper raffleInfoMapper;
 
-
     public TransactionListener(Map<String, Object> map, ParticipantInfoService participantInfoService,
                                TokenInfoMapper tokenInfoMapper,
                                RaffleInfoMapper raffleInfoMapper) {
         txHash = map.get("txHash").toString();
         this.map = map;
-        web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336"));
+        web3j = Web3j.build(new HttpService(Constant.SEPOLIAURL));
         this.participantInfoService = participantInfoService;
         this.tokenInfoMapper = tokenInfoMapper;
         this.raffleInfoMapper = raffleInfoMapper;
@@ -121,9 +121,9 @@ public class TransactionListener {
 
     private void verifyNFTPresenceBeforeStart(String address) {
 
-        Web3j web3 = Web3j.build(new HttpService("https://Sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
+        Web3j web3 = Web3j.build(new HttpService(Constant.SEPOLIAURL));
         //私钥
-        Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
+        Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
         BigInteger gasPrice = null;
         try {
             gasPrice = web3.ethGasPrice().send().getGasPrice();
@@ -131,7 +131,7 @@ public class TransactionListener {
             e.printStackTrace();
         }
         NRaffle NRaffleContract = NRaffle.load(address, web3, credentials,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         System.out.println("verifyNFTPresenceBeforeStart方法内执行");
 
 

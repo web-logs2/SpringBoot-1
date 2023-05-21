@@ -10,10 +10,10 @@ import org.web3j.protocol.http.HttpService;
 import java.util.concurrent.ExecutionException;
 
 public class ATest {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        Web3j client = Web3j.build(new HttpService("https://sepolia.infura.io/v3/0xd9145CCE52D386f254917e481eB44e9943F39138"));
-        Web3ClientVersion clientVersion = client.web3ClientVersion().sendAsync().get();
-        System.out.println(clientVersion.getWeb3ClientVersion());
+//    public static void main(String[] args) throws ExecutionException, InterruptedException {
+//        Web3j client = Web3j.build(new HttpService("https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336"));
+//        Web3ClientVersion clientVersion = client.web3ClientVersion().sendAsync().get();
+//        System.out.println(clientVersion.getWeb3ClientVersion());
         // => Geth/v1.10.15-omnibus-hotfix-f4decf48/linux-amd64/go1.17.6
 //
 //        Web3j client = Web3j.build(new HttpService("https://ropsten.infura.io/v3/You Infura Project Id"));
@@ -29,5 +29,5 @@ public class ATest {
 //        // => 741270235881990866
 
 
-    }
+//    }
 }

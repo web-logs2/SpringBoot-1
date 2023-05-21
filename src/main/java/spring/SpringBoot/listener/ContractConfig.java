@@ -11,6 +11,7 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
+import spring.SpringBoot.constant.Constant;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
@@ -23,13 +24,10 @@ import java.math.BigInteger;
 @Configuration
 public class ContractConfig {
 
-    //智能合约部署地址
-    private String contractAddress = "0x69499bDA273c7980d98Fb042593086d5b22Ab517";
-
     @Bean
     @Scope("prototype")
     public Web3j web3j() {
-        return Web3j.build(new HttpService("https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336"));
+        return Web3j.build(new HttpService(Constant.SEPOLIAURL));
     }
 
     @Bean
@@ -42,10 +40,10 @@ public class ContractConfig {
             System.out.println("clientVersion" + clientVersion);
             //加载智能合约
             BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
-            Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
+            Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
 
-            nraffleFactory = NRaffleFactory.load(contractAddress, web3j, credentials,
-                    new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
+            nraffleFactory = NRaffleFactory.load(Constant.CONTRACTADDRESS, web3j, credentials,
+                    new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
             return nraffleFactory;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,10 +61,10 @@ public class ContractConfig {
             System.out.println("clientVersion" + clientVersion);
             //加载智能合约
             BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
-            Credentials credentials = Credentials.create("acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e");
+            Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
 
-            nRaffle = NRaffle.load(contractAddress, web3j, credentials,
-                    new StaticGasProvider(gasPrice, BigInteger.valueOf(3000000L)));
+            nRaffle = NRaffle.load(Constant.CONTRACTADDRESS, web3j, credentials,
+                    new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
             return nRaffle;
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +91,7 @@ public class ContractConfig {
         //获取启动时监听的区块
         return new EthFilter(DefaultBlockParameterName.EARLIEST,
                 DefaultBlockParameterName.LATEST,
-                "0x642bc3a6d2fd88808df4b19ab3a3cbe9e33e099f");
+                trace.getContractAddress());
     }
 
 
