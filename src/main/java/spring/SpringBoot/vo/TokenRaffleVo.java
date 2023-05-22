@@ -13,6 +13,17 @@ public class TokenRaffleVo {
 
     List<ParticipantInfo> participantInfos;
 
+    Integer myTickets;
+
+    public Integer getMyTickets() {
+        return myTickets;
+    }
+
+    public void setMyTickets(Integer myTickets) {
+        this.myTickets = myTickets;
+    }
+
+
     public TokenInfo getTokenInfo() {
         return tokenInfo;
     }

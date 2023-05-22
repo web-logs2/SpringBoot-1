@@ -40,6 +40,8 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
         RaffleInfo raffleInfo =  raffleInfoMapper.getDetailByRaffleAddress(participantInfo.getRaffleaddress());
         Integer participantCount = participantInfoMapper.getParticipantCount(participantInfo.getRaffleaddress());
         raffleInfo.setParticipants(null == participantCount?0:participantCount);
+        Integer myTickets = participantInfoMapper.getMytickets(participantInfo.getRaffleaddress(),participantAddress);
+        tokenRaffleVo.setMyTickets(null == myTickets?0:myTickets);
         //纠正DB状态偏差
         raffleInfo = raffleInfoService.correctStatus(raffleInfo);
         tokenRaffleVo.setRaffleInfo(raffleInfo);
