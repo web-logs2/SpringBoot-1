@@ -31,4 +31,6 @@ public interface ParticipantInfoMapper {
 
     Integer getParticipantCount(@Param("raffleaddress") String raffleaddress);
 
+    Integer getMytickets(@Param("raffleaddress") String raffleaddress,@Param("participantAddress") String participantAddress);
+
 }
