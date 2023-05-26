@@ -106,7 +106,6 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 //        票的数量
         Integer participantCount = participantInfoMapper.getParticipantCount(raffleAddress);
         raffleInfo.setParticipants(null == participantCount?0:participantCount);
-        raffleInfo.setParticipants(participantCount);
         List<ParticipantInfo> participantInfoList = participantInfoMapper.getParticipantInfosByRaffleAddress(raffleAddress);
         tokenRaffleVo.setParticipantInfos(participantInfoList);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());

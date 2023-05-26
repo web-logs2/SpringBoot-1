@@ -55,7 +55,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        if (null == transactionReceipt) {
+        if (null != transactionReceipt) {
             String transactionHash = transactionReceipt.getTransactionHash();
             System.out.println("verifyNFTPresenceBeforeStart-transactionHash=" + transactionHash);
         }
