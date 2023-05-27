@@ -26,4 +26,9 @@ public class RaffleContractController {
         return raffleContractService.getState(contractAddress);
     }
 
+    @RequestMapping("/getKing")
+    public String getKing(@RequestParam  String contractAddress) {
+        return raffleContractService.getKing(contractAddress);
+    }
+
 }

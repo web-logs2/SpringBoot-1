@@ -21,6 +21,7 @@ public class TokenInfoServiceImpl implements TokenInfoService {
 
     @Override
     public int createTokenInfo(TokenInfo tokenInfo) {
+        //增加一个是不是本人nft的校验。
         if (null != tokenInfo && null != tokenInfo.getContractAddress() && "" != tokenInfo.getContractAddress() &&
                 null != tokenInfo.getTokenId() && "" != tokenInfo.getTokenId()) {
             if (""==tokenInfo.getImage() &&""==tokenInfo.getName() && ""==tokenInfo.getDesc()){

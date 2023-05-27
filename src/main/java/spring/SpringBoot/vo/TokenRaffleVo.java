@@ -15,6 +15,7 @@ public class TokenRaffleVo {
 
     Integer myTickets;
 
+
     public Integer getMyTickets() {
         return myTickets;
     }

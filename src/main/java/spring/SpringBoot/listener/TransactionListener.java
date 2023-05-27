@@ -92,8 +92,9 @@ public class TransactionListener {
                                     participantInfoService.createParticipantInfo(participantInfo);
                                     break;
                                 case "UpdateTokenOwner":
+                                    //增加功能：取回nft如果状态没更新过来，做个补救。监控下返回的error信息。来有不同的处理
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
-                                    RaffleInfo raffleInfo = null;
+                                    RaffleInfo raffleInfo = new RaffleInfo();
                                     raffleInfo.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
                                     raffleInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo);

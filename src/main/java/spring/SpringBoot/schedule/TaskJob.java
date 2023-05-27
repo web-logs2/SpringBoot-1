@@ -3,15 +3,9 @@ package spring.SpringBoot.schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.web3j.protocol.core.RemoteFunctionCall;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.impl.ContractService;
-import spring.SpringBoot.solidity.LeaveMsg;
-import spring.SpringBoot.solidity.NRaffle;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Component("taskJob")

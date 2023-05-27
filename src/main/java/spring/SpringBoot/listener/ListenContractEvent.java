@@ -14,7 +14,6 @@ import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint16;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint8;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.service.RaffleInfoService;
@@ -22,7 +21,6 @@ import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
