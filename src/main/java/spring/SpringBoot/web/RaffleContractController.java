@@ -31,4 +31,9 @@ public class RaffleContractController {
         return raffleContractService.getKing(contractAddress);
     }
 
+    @RequestMapping("/test")
+    public void  test() {
+         raffleContractService.test();
+    }
+
 }

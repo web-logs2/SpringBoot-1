@@ -53,19 +53,23 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 
   @Override
     public RaffleInfo correctStatus(RaffleInfo raffleInfo){
-    if(!(new BigInteger("4").equals(raffleInfo.getRafflestatus())||new BigInteger("5").equals(raffleInfo.getRafflestatus()))){
-      BigInteger status = raffleContractService.getState(raffleInfo.getRaffleaddress());
-      if(!status.equals(raffleInfo.getRafflestatus())){
-        raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(status)));
+      int raffleStatusByDb = raffleInfo.getRafflestatus();
+      int swapStatusStatusByDb = raffleInfo.getSwapStatus();
+      int cancelledExtractedStatus = raffleInfo.getCancelledExtractedStatus();
+        //!4  !5的时候，raffleStatus会变化
+    if(4!=raffleStatusByDb && 5!=raffleStatusByDb){
+      BigInteger raffleStatusByChain = raffleContractService.getState(raffleInfo.getRaffleaddress());
+      if(raffleStatusByChain != null && !raffleStatusByChain.equals(raffleStatusByDb)){
+        raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(raffleStatusByChain)));
       }
     }
-    if(new BigInteger("5").equals(raffleInfo.getRafflestatus())
-            &&new BigInteger("0").equals(raffleInfo.getSwapStatus())){
-        BigInteger status = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
-        if(!status.equals(raffleInfo.getSwapStatus())){
-            raffleInfo.setSwapStatus(Integer.valueOf(String.valueOf(status)));
-            updateRaffleInfo(raffleInfo);
+    if(4==raffleStatusByDb && 0==swapStatusStatusByDb){
+        // 4:已经完成   && 0：说明还未进行选择，需要纠正状态。  1：eth  2：nft
+        BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
+        if(0 !=swapStautsByChain.intValue() ){
+            raffleInfo.setSwapStatus(swapStautsByChain.intValue());
         }
+
         if(null == raffleInfo.getKing()){
             String king = raffleContractService.getKing(raffleInfo.getRaffleaddress());
             if(null!=king&&""!=king){
@@ -78,8 +82,24 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
                 raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
             }
         }
+     }
 
-    }
+    // 5:是终态，和兑换状态有关
+//    if(new BigInteger("5").equals(raffleInfo.getRafflestatus())
+//            &&new BigInteger("0").equals(raffleInfo.getSwapStatus())){
+//        BigInteger swapStauts = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
+//        if(swapStauts != null && !swapStauts.equals(raffleInfo.getSwapStatus())){
+//            raffleInfo.setSwapStatus(Integer.valueOf(String.valueOf(swapStauts)));
+//            updateRaffleInfo(raffleInfo);
+//        }
+//        if(null == raffleInfo.getWinnerDrawTimestamp()){
+//            BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress());
+//            if(null!=winnerDrawTimestamp){
+//                raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
+//            }
+//        }
+
+//    }
       updateRaffleInfo(raffleInfo);
       return raffleInfo;
     }

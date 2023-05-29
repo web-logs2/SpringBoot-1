@@ -24,4 +24,5 @@ public interface RaffleContractService {
     void execTransferAllIfCancelled();
 
     void execCancelIfUnsold();
+    void test();
 }

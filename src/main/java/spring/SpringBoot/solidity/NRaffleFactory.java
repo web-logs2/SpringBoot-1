@@ -102,28 +102,24 @@ public class NRaffleFactory extends Contract {
             }, new TypeReference<Bytes32>() {
             }, new TypeReference<Address>(true) {
             }));
-    ;
 
     public static final Event ROLEADMINCHANGED_EVENT = new Event("RoleAdminChanged",
             Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
             }, new TypeReference<Bytes32>(true) {
             }, new TypeReference<Bytes32>(true) {
             }));
-    ;
 
     public static final Event ROLEGRANTED_EVENT = new Event("RoleGranted",
             Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
             }, new TypeReference<Address>(true) {
             }, new TypeReference<Address>(true) {
             }));
-    ;
 
     public static final Event ROLEREVOKED_EVENT = new Event("RoleRevoked",
             Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {
             }, new TypeReference<Address>(true) {
             }, new TypeReference<Address>(true) {
             }));
-    ;
 
     @Deprecated
     protected NRaffleFactory(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {

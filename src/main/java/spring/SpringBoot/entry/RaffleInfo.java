@@ -60,6 +60,8 @@ public class RaffleInfo implements Serializable {
      */
     private Integer rafflestatus;
 
+
+
     /**
      * 创建时间
      */
@@ -77,6 +79,16 @@ public class RaffleInfo implements Serializable {
 
      */
     private Integer swapStatus;
+
+    /**
+     *  取消退回状态
+     *  0：默认值
+     *  100：eth已退回
+     *  200：nft已退回
+     *  999：全部已退回
+     */
+    private Integer cancelledExtractedStatus;
+
     /**
      *  参与者数量
      */
@@ -215,6 +227,14 @@ public class RaffleInfo implements Serializable {
     public Integer getParticipants() {
         return participants;
     }
+    public Integer getCancelledExtractedStatus() {
+        return cancelledExtractedStatus;
+    }
+
+    public void setCancelledExtractedStatus(Integer cancelledExtractedStatus) {
+        this.cancelledExtractedStatus = cancelledExtractedStatus;
+    }
+
 
     public void setParticipants(Integer participants) {
         this.participants = participants;

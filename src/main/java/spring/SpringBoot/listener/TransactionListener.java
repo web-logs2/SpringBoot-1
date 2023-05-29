@@ -10,6 +10,8 @@ import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
+import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.constant.Constant;
 import spring.SpringBoot.entry.ParticipantInfo;
@@ -96,6 +98,7 @@ public class TransactionListener {
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     RaffleInfo raffleInfo = new RaffleInfo();
                                     raffleInfo.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
+                                    raffleInfo.setCancelledExtractedStatus(Integer.parseInt(map.get("cancelledExtractedStatus").toString()));
                                     raffleInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo);
                                     break;
@@ -115,6 +118,7 @@ public class TransactionListener {
             } catch (Exception e) {
                 // 异常处理
                 e.printStackTrace();
+                executorService.shutdown();
             }
             System.out.println(Thread.currentThread().getId() + "Transaction error: " + txHash);
         }, 0, 5, TimeUnit.SECONDS);
@@ -125,13 +129,16 @@ public class TransactionListener {
         Web3j web3 = Web3j.build(new HttpService(Constant.SEPOLIAURL));
         //私钥
         Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
+        long chainId = Constant.FANTOM_TESTNET;
+        TransactionManager txManager = new RawTransactionManager(web3, credentials, chainId);
+
         BigInteger gasPrice = null;
         try {
             gasPrice = web3.ethGasPrice().send().getGasPrice();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        NRaffle NRaffleContract = NRaffle.load(address, web3, credentials,
+        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         System.out.println("verifyNFTPresenceBeforeStart方法内执行");
 
