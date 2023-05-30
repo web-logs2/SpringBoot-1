@@ -1,7 +1,9 @@
 package spring.SpringBoot.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.entry.TokenInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ public interface RaffleInfoMapper {
     List<RaffleInfo> getRaffleInfoListByOwner(String owner);
 
     RaffleInfo getRaffleInfoByCondition(Map map);
+
+    RaffleInfo getWaitingForNftRaffleInfos(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId,@Param("owner") String owner);
 
     List<RaffleInfo> getExecSwapRaffleInfos();
 

@@ -43,6 +43,14 @@ public class TokenInfo implements Serializable {
      */
     private String name;
 
+
+
+
+    /**
+     * RaffleAddress
+     */
+    private String waitingForNftRaffleAddress;
+
     /**
      * 描述
      */
@@ -136,6 +144,13 @@ public class TokenInfo implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+    public String getWaitingForNftRaffleAddress() {
+        return waitingForNftRaffleAddress;
+    }
+
+    public void setWaitingForNftRaffleAddress(String waitingForNftRaffleAddress) {
+        this.waitingForNftRaffleAddress = waitingForNftRaffleAddress;
     }
 
     private static final long serialVersionUID = 1L;

@@ -18,7 +18,7 @@ public class TokenInfoController {
 
     /**
      * 根据owner获取TokenInfo信息
-     *
+     *getTokenInfoByOwner
      * @return
      */
     @RequestMapping("/getTokenInfoByOwner")

@@ -15,6 +15,7 @@ public class TaskJob {
     @Autowired
     RaffleContractService raffleContractService;
 
+    //king 没有选择后，给的默认选择
     @Scheduled(cron = "0 */30 * * * ?")
 //@Scheduled(cron = "0 */1 * * * ?")
 public void job1() throws Exception {

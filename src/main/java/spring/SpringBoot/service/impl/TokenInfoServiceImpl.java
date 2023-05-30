@@ -2,7 +2,9 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
+import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.TokenInfoService;
 
@@ -14,9 +16,20 @@ public class TokenInfoServiceImpl implements TokenInfoService {
     @Autowired
     TokenInfoMapper tokenInfoMapper;
 
+    @Autowired
+    RaffleInfoMapper raffleInfoMapper;
+
     @Override
     public List<TokenInfo> getTokenInfoByOwner(String owner) {
-        return tokenInfoMapper.selectByOwner(owner);
+        List<TokenInfo> tokenInfos = tokenInfoMapper.selectByOwner(owner);
+        for(TokenInfo tokenInfo:tokenInfos){
+            RaffleInfo raffleInfo =  raffleInfoMapper.getWaitingForNftRaffleInfos(tokenInfo.getContractAddress(),tokenInfo.getTokenId(),tokenInfo.getOwner());
+            if(null != raffleInfo){
+                String RaffleAddress = raffleInfo.getRaffleaddress();
+                tokenInfo.setWaitingForNftRaffleAddress(RaffleAddress);
+            }
+        }
+        return tokenInfos;
     }
 
     @Override

@@ -113,6 +113,19 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
+    public BigInteger getPurchasedTicketCount(String address) {
+        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger purchasedTicketCount = null;
+        try {
+            purchasedTicketCount = NRaffleContract.getPurchasedTicketCount(address).send();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return purchasedTicketCount;
+    }
+
+    @Override
     public BigInteger getWinnerDrawTimestamp(String address) {
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));

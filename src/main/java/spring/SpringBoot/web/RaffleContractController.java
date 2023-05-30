@@ -31,6 +31,11 @@ public class RaffleContractController {
         return raffleContractService.getKing(contractAddress);
     }
 
+    @RequestMapping("/getPurchasedTicketCount")
+    public BigInteger getPurchasedTicketCount(@RequestParam  String contractAddress) {
+        return raffleContractService.getPurchasedTicketCount(contractAddress);
+    }
+
     @RequestMapping("/test")
     public void  test() {
          raffleContractService.test();

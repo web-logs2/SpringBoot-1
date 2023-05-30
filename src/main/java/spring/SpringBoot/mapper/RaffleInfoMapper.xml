@@ -44,6 +44,14 @@
         WHERE swap_status = 0 AND king IS NOT NULL AND UNIX_TIMESTAMP(NOW()) > (winnerDrawTimestamp + (2 * 24 * 60 * 60))
     </select>
 
+    <select id="getWaitingForNftRaffleInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_info
+        WHERE LOWER(`owner`) = LOWER(#{owner,jdbcType=VARCHAR}) and LOWER(token_id) = LOWER(#{tokenId,jdbcType=VARCHAR}) and
+        LOWER(contract_address) = LOWER(#{contractAddress,jdbcType=VARCHAR}) and raffleStatus = 0
+    </select>
+
     <select id="getTransferAllIfCancelledRaffleInfos" resultMap="BaseResultMap">
         select
               ri.id, ri.raffleAddress, ri.owner, ri.token_id, ri.contract_address, ri.tickets, ri.ticketPrice, ri.startTimestamp,
