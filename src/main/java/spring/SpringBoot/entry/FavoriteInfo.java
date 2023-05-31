@@ -25,6 +25,8 @@ public class FavoriteInfo implements Serializable {
      */
     private String raffleaddress;
 
+
+
     /**
      * 被订阅者钱包
      */
@@ -41,4 +43,28 @@ public class FavoriteInfo implements Serializable {
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;
+
+    public String getSubscriberWallet() {
+        return subscriberWallet;
+    }
+
+    public void setSubscriberWallet(String subscriberWallet) {
+        this.subscriberWallet = subscriberWallet;
+    }
+
+    public String getRaffleaddress() {
+        return raffleaddress;
+    }
+
+    public void setRaffleaddress(String raffleaddress) {
+        this.raffleaddress = raffleaddress;
+    }
+
+    public String getSubscribeeWallet() {
+        return subscribeeWallet;
+    }
+
+    public void setSubscribeeWallet(String subscribeeWallet) {
+        this.subscribeeWallet = subscribeeWallet;
+    }
 }
