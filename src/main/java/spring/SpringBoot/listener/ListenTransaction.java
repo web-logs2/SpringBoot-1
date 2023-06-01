@@ -10,8 +10,10 @@ import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-    @Controller
+@Controller
     @RequestMapping("/api/listener")
     public class ListenTransaction {
 
@@ -24,18 +26,29 @@ import java.util.Map;
         @Autowired
         RaffleInfoMapper raffleInfoMapper;
 
+        private ExecutorService threadPool = Executors.newFixedThreadPool(100);
+
         @RequestMapping("/listen-transaction")
         public void listenTransaction(@RequestParam Map<String,Object> map) {
-            // 在这里启动新的线程来监听交易状态new Thread(() -> {
-            new Thread(() -> {
+            threadPool.execute(() -> {
                 try {
-                    TransactionListener listener = new TransactionListener(map,participantInfoService,tokenInfoMapper,raffleInfoMapper);
+                    TransactionListener listener = new TransactionListener(map, participantInfoService, tokenInfoMapper, raffleInfoMapper);
                     listener.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 // 在这里使用Web3j或The Graph等库来监听交易状态
-            }).start();
+            });
+            // 在这里启动新的线程来监听交易状态new Thread(() -> {
+//            new Thread(() -> {
+//                try {
+//                    TransactionListener listener = new TransactionListener(map,participantInfoService,tokenInfoMapper,raffleInfoMapper);
+//                    listener.start();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                // 在这里使用Web3j或The Graph等库来监听交易状态
+//            }).start();
         }
 
 

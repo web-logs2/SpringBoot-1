@@ -15,7 +15,7 @@ public interface RaffleContractService {
 
     String getKing(String address);
 
-    BigInteger getPurchasedTicketCount(String address);
+    BigInteger getPurchasedTicketCount(String address,String owner);
 
     BigInteger getWinnerDrawTimestamp(String address);
 
@@ -27,4 +27,12 @@ public interface RaffleContractService {
 
     void execCancelIfUnsold();
     void test();
+
+    BigInteger getWinnerTicketNumber(String raffleAddress);
+
+    BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner);
+
+    BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index);
+
+    BigInteger getTicketNumberRange(String raffleAddress, String owner, BigInteger index);
 }

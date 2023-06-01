@@ -113,7 +113,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public BigInteger getPurchasedTicketCount(String address) {
+    public BigInteger getPurchasedTicketCount(String address,String owner) {
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         BigInteger purchasedTicketCount = null;
@@ -225,6 +225,89 @@ public class RaffleContractServiceImpl implements RaffleContractService {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 获胜票的index
+     * @param raffleAddress
+     * @return
+     */
+    @Override
+    public BigInteger getWinnerTicketNumber(String raffleAddress) {
+        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+
+        try {
+            value = NRaffleContract.getWinnerTicketNumber().send();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    /**
+     * 用户购买了多少次
+     * @param raffleAddress
+     * @param owner
+     * @return
+     */
+    @Override
+    public BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner) {
+        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+
+        try {
+            value = NRaffleContract.getAssignedTicketNumberRanges(owner).send();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    /**
+     * 用户每次购买的numberRange的编号（index）
+     * @param raffleAddress
+     * @param owner
+     * @return
+     */
+    @Override
+    public BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index) {
+        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+
+        try {
+            value = NRaffleContract.getAssignedTicketNumberRange(owner,index).send();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    /**
+     * 获取到这个range的详情
+     * @param raffleAddress
+     * @param owner
+     * @return
+     */
+    @Override
+    public BigInteger getTicketNumberRange(String raffleAddress, String owner, BigInteger index) {
+        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+
+        try {
+            value = NRaffleContract.getTicketNumberRangeLength().send();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
 

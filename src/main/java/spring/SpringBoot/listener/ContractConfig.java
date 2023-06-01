@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
@@ -77,10 +78,27 @@ public class ContractConfig {
     @Scope("prototype")
     @Autowired
     public EthFilter ethNRaffleFactoryFilter(NRaffleFactory trace) {
-        //获取启动时监听的区块
-        return new EthFilter(DefaultBlockParameterName.EARLIEST,
+       Web3j web3j = Web3j.build(new HttpService(Constant.SEPOLIAURL));
+        BigInteger currentBlockNumber = BigInteger.ZERO; // Default value
+
+//        BigInteger startBlockNumber = currentBlockNumber.subtract(BigInteger.valueOf(2));
+//        long currentTimestamp = System.currentTimeMillis() / 1000;
+
+
+        try {
+             currentBlockNumber = web3j.ethBlockNumber().send().getBlockNumber();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return new EthFilter(DefaultBlockParameter.valueOf(currentBlockNumber),
                 DefaultBlockParameterName.LATEST,
                 trace.getContractAddress());
+        //获取启动时监听的区块
+//        return new EthFilter(DefaultBlockParameterName.EARLIEST,
+//                DefaultBlockParameterName.LATEST,
+//                trace.getContractAddress());
     }
 
     @Bean

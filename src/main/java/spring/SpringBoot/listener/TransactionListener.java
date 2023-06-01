@@ -83,8 +83,9 @@ public class TransactionListener {
                             switch (map.get("op").toString()) {
                                 case "verifyNFTPresenceBeforeStart":
                                     verifyNFTPresenceBeforeStart(map.get("newOwner").toString());
-                                    //这里报错了
+                                    //这里报错了,切换链后，会报错
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
+                                    //准入nft后需要给raffle做个标记已经转入nft了，方便前端隐藏取回nft的按钮
                                     break;
                                 case "TicketsPurchased":
                                     ParticipantInfo participantInfo = new ParticipantInfo();

@@ -17,23 +17,28 @@ public class RaffleContractController {
     RaffleContractService raffleContractService;
 
     @RequestMapping("/verifyNFTPresenceBeforeStart")
-    public void verifyNFTPresenceBeforeStart(@RequestParam  String contractAddress) {
-        raffleContractService.verifyNFTPresenceBeforeStart(contractAddress);
+    public void verifyNFTPresenceBeforeStart(@RequestParam  String raffleAddress) {
+        raffleContractService.verifyNFTPresenceBeforeStart(raffleAddress);
     }
 
     @RequestMapping("/getState")
-    public BigInteger getState(@RequestParam  String contractAddress) {
-        return raffleContractService.getState(contractAddress);
+    public BigInteger getState(@RequestParam  String raffleAddress) {
+        return raffleContractService.getState(raffleAddress);
     }
 
     @RequestMapping("/getKing")
-    public String getKing(@RequestParam  String contractAddress) {
-        return raffleContractService.getKing(contractAddress);
+    public String getKing(@RequestParam  String raffleAddress) {
+        return raffleContractService.getKing(raffleAddress);
     }
 
     @RequestMapping("/getPurchasedTicketCount")
-    public BigInteger getPurchasedTicketCount(@RequestParam  String contractAddress) {
-        return raffleContractService.getPurchasedTicketCount(contractAddress);
+    public BigInteger getPurchasedTicketCount(@RequestParam  String raffleAddress,@RequestParam  String owner) {
+        return raffleContractService.getPurchasedTicketCount(raffleAddress,owner);
+    }
+
+    @RequestMapping("/getWinnerTicketNumber")
+    public BigInteger getWinnerTicketNumber(@RequestParam  String raffleAddress) {
+        return raffleContractService.getWinnerTicketNumber(raffleAddress);
     }
 
     @RequestMapping("/test")
