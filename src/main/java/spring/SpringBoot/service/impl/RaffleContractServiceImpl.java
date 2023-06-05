@@ -2,6 +2,11 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint16;
+import org.web3j.tuples.generated.Tuple3;
+
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteFunctionCall;
@@ -17,10 +22,12 @@ import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
+import spring.SpringBoot.entry.TicketNumberRange;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -292,24 +299,29 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     /**
      * 获取到这个range的详情
      * @param raffleAddress
-     * @param owner
-     * @return
+     * @param
      */
-    @Override
-    public BigInteger getTicketNumberRange(String raffleAddress, String owner, BigInteger index) {
-        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
-        BigInteger value = null;
-
-        try {
-            value = NRaffleContract.getTicketNumberRangeLength().send();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return value;
-    }
-
+//    @Override
+//    public void getTicketNumberRange(String raffleAddress,BigInteger index) {
+//        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
+//                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+//        Object value = null;
+//
+//        try {
+//            Tuple3<Address, Uint16, Uint16> result = NRaffleContract.getTicketNumberRange(index).send();
+//
+//            Address owner = result.component1();
+//            Uint16 from = result.component2();
+//            Uint16 to = result.component3();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    import java.lang.reflect.Method;
+//import java.util.concurrent.Future;
 
     public RaffleContractServiceImpl() throws IOException {
     }

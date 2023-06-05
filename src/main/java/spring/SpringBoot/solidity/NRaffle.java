@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.web3j.abi.EventEncoder;
+
+import org.web3j.tuples.generated.Tuple3;
 import org.web3j.abi.TypeReference;
+
+import org.web3j.abi.EventEncoder;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.Event;
@@ -29,6 +32,9 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
+import spring.SpringBoot.entry.MyTuple3;
+import spring.SpringBoot.entry.TicketNumberRange;
+
 
 /**
  * <p>Auto generated code.
@@ -72,6 +78,8 @@ public class NRaffle extends Contract {
     public static final String FUNC_GETSTATE = "getState";
 
     public static final String FUNC_GETSWAPSTATUS = "getSwapStatus";
+
+    public static final String FUNC_GETTICKETNUMBERRANGE = "getTicketNumberRange";
 
     public static final String FUNC_GETTICKETNUMBERRANGELENGTH = "getTicketNumberRangeLength";
 
@@ -577,12 +585,60 @@ public class NRaffle extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
+//    public RemoteFunctionCall<TransactionReceipt> getTicketNumberRange(BigInteger index) {
+//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGE,
+//
+//                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(index)),
+//                Collections.<TypeReference<?>>emptyList());
+//        return executeRemoteCallTransaction(function);
+//    }
+
+
     public RemoteFunctionCall<BigInteger> getTicketNumberRangeLength() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGELENGTH, 
-                Arrays.<Type>asList(), 
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGELENGTH,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
+
+//    public RemoteFunctionCall<TicketNumberRange> getTicketNumberRange(BigInteger index,NRaffle NRaffleContract) {
+//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+//                "getTicketNumberRange",
+//                Arrays.asList(new Uint16(index)),
+//                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Uint16>() {}, new TypeReference<Uint16>() {})
+//        );
+//        return new RemoteFunctionCall<>(function, new Callable<TicketNumberRange>() {
+//            @Override
+//            public TicketNumberRange call() throws Exception {
+//                return null;
+//            }
+//        });
+//    }
+
+//
+//
+//    public RemoteFunctionCall<Type> getTicketNumberRange(BigInteger index) {
+//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+//                "getTicketNumberRange",
+//                Arrays.asList(new Uint16(index)),
+//                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Uint16>() {},new TypeReference<Uint16>() {})
+//
+//        );
+//        TypeReference<MyTuple3> typeReference = new TypeReference<MyTuple3>() {};
+//
+//        try {
+//            Type a = executeRemoteCallSingleValueReturn(function).send();
+//           RemoteFunctionCall<Object> aa =  executeRemoteCallSingleValueReturn(function,
+//                   Object.class);
+//
+//            int  b=0;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return executeRemoteCallSingleValueReturn(function);
+//    }
+
+
 
     public RemoteFunctionCall<BigInteger> getTickets() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETS, 

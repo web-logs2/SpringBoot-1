@@ -34,5 +34,5 @@ public interface RaffleContractService {
 
     BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index);
 
-    BigInteger getTicketNumberRange(String raffleAddress, String owner, BigInteger index);
+//    void getTicketNumberRange(String raffleAddress, BigInteger index);
 }

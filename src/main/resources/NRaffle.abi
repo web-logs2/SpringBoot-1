@@ -420,6 +420,19 @@
 		"type": "function"
 	},
 	{
+    		"inputs": [
+    			{
+    				"internalType": "uint16",
+    				"name": "index",
+    				"type": "uint16"
+    			}
+    		],
+    		"name": "getTicketNumberRange",
+            "outputs": [],
+    		"stateMutability": "view",
+    		"type": "function"
+    	},
+	{
 		"inputs": [],
 		"name": "getTicketNumberRangeLength",
 		"outputs": [
