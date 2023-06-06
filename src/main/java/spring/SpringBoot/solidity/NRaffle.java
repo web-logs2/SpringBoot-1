@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.web3j.tuples.generated.Tuple3;
-import org.web3j.abi.TypeReference;
-
 import org.web3j.abi.EventEncoder;
+import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.Event;
@@ -32,9 +29,6 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
-import spring.SpringBoot.entry.MyTuple3;
-import spring.SpringBoot.entry.TicketNumberRange;
-
 
 /**
  * <p>Auto generated code.
@@ -149,7 +143,9 @@ public class NRaffle extends Contract {
 
     public static final String FUNC_VRFREQUESTID = "vrfRequestId";
 
-    public static final String FUNC_WITHDRAWPAYMENTS = "withdrawPayments";
+    public static final String FUNC_GETREFUNDTICKETS = "getRefundTickets";
+
+    public static final String FUNC_GETSOLDTICKETS = "getSoldTickets";
 
     public static final Event CHANGESTATE_EVENT = new Event("ChangeState", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}));
@@ -181,6 +177,10 @@ public class NRaffle extends Contract {
 
     public static final Event WINNERDRAWN_EVENT = new Event("WinnerDrawn", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
+    ;
+
+    public static final Event RETRYIFNORNG_EVENT = new Event("RetryIfNoRNG", 
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}));
     ;
 
     @Deprecated
@@ -585,60 +585,12 @@ public class NRaffle extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-//    public RemoteFunctionCall<TransactionReceipt> getTicketNumberRange(BigInteger index) {
-//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGE,
-//
-//                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint16(index)),
-//                Collections.<TypeReference<?>>emptyList());
-//        return executeRemoteCallTransaction(function);
-//    }
-
-
     public RemoteFunctionCall<BigInteger> getTicketNumberRangeLength() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGELENGTH,
-                Arrays.<Type>asList(),
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETNUMBERRANGELENGTH, 
+                Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
-
-//    public RemoteFunctionCall<TicketNumberRange> getTicketNumberRange(BigInteger index,NRaffle NRaffleContract) {
-//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-//                "getTicketNumberRange",
-//                Arrays.asList(new Uint16(index)),
-//                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Uint16>() {}, new TypeReference<Uint16>() {})
-//        );
-//        return new RemoteFunctionCall<>(function, new Callable<TicketNumberRange>() {
-//            @Override
-//            public TicketNumberRange call() throws Exception {
-//                return null;
-//            }
-//        });
-//    }
-
-//
-//
-//    public RemoteFunctionCall<Type> getTicketNumberRange(BigInteger index) {
-//        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-//                "getTicketNumberRange",
-//                Arrays.asList(new Uint16(index)),
-//                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Uint16>() {},new TypeReference<Uint16>() {})
-//
-//        );
-//        TypeReference<MyTuple3> typeReference = new TypeReference<MyTuple3>() {};
-//
-//        try {
-//            Type a = executeRemoteCallSingleValueReturn(function).send();
-//           RemoteFunctionCall<Object> aa =  executeRemoteCallSingleValueReturn(function,
-//                   Object.class);
-//
-//            int  b=0;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return executeRemoteCallSingleValueReturn(function);
-//    }
-
-
 
     public RemoteFunctionCall<BigInteger> getTickets() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETTICKETS, 
@@ -907,12 +859,51 @@ public class NRaffle extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> withdrawPayments(String payee) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_WITHDRAWPAYMENTS, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, payee)), 
-                Collections.<TypeReference<?>>emptyList());
-        return executeRemoteCallTransaction(function);
+    public List<RetryIfNoRNGEventResponse> getRetryIfNoRNGEvents(TransactionReceipt transactionReceipt) {
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(RETRYIFNORNG_EVENT, transactionReceipt);
+        ArrayList<RetryIfNoRNGEventResponse> responses = new ArrayList<RetryIfNoRNGEventResponse>(valueList.size());
+        for (Contract.EventValuesWithLog eventValues : valueList) {
+            RetryIfNoRNGEventResponse typedResponse = new RetryIfNoRNGEventResponse();
+            typedResponse.log = eventValues.getLog();
+            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.retryTimes = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+            responses.add(typedResponse);
+        }
+        return responses;
+    }
+
+    public Flowable<RetryIfNoRNGEventResponse> retryIfNoRNGEventFlowable(EthFilter filter) {
+        return web3j.ethLogFlowable(filter).map(new Function<Log, RetryIfNoRNGEventResponse>() {
+            @Override
+            public RetryIfNoRNGEventResponse apply(Log log) {
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(RETRYIFNORNG_EVENT, log);
+                RetryIfNoRNGEventResponse typedResponse = new RetryIfNoRNGEventResponse();
+                typedResponse.log = log;
+                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
+                typedResponse.retryTimes = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+                return typedResponse;
+            }
+        });
+    }
+
+    public Flowable<RetryIfNoRNGEventResponse> retryIfNoRNGEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(RETRYIFNORNG_EVENT));
+        return retryIfNoRNGEventFlowable(filter);
+    }
+
+    public RemoteFunctionCall<BigInteger> getRefundTickets() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETREFUNDTICKETS, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public RemoteFunctionCall<BigInteger> getSoldTickets() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETSOLDTICKETS, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint16>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     @Deprecated
@@ -1021,5 +1012,11 @@ public class NRaffle extends Contract {
         public BigInteger ticketNumber;
 
         public String owner;
+    }
+
+    public static class RetryIfNoRNGEventResponse extends BaseEventResponse {
+        public String raffleAddress;
+
+        public BigInteger retryTimes;
     }
 }
