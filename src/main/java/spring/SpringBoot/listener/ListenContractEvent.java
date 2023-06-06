@@ -87,29 +87,6 @@ public class ListenContractEvent implements ApplicationRunner {
 
         ethNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
         log.info("启动监听RaffleCreated");
-//        nraffleFactory.raffleCreatedEventFlowable(ethNRaffleFactoryFilter).subscribe(response -> {
-//            RaffleInfo result = raffleInfoService.getRaffleDetailByRaffleAddress(response.raffleAddress);
-//            if (null == result) {
-//                RaffleInfo raffleInfo = new RaffleInfo();
-//                raffleInfo.setContractAddress(response.nftContract);
-//                raffleInfo.setOwner(response.owner);
-//                raffleInfo.setRaffleaddress(response.raffleAddress);
-//                raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
-//                raffleInfo.setTickets(response.tickets.intValue());
-//                raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
-//                raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
-//                raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
-//                raffleInfo.setRafflestatus(0);
-//
-//                raffleInfoService.createRaffleInfo(raffleInfo);
-//                log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
-//            } else {
-//                log.info("该raffleAddress活动已存在！raffleAddress:" + response.raffleAddress);
-//            }
-//        });
-//    }
-
-
         nraffleFactory.raffleCreatedEventFlowable(ethNRaffleFactoryFilter)
                 .subscribe(
                         response -> {

@@ -106,6 +106,36 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         return value;
     }
 
+    // 已出售的tickets数量
+    @Override
+    public BigInteger getSoldTickets(String address) {
+        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+        try {
+//            value = NRaffleContract.getSoldTickets().send();
+            value = NRaffleContract.getSwapStatus().send();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+    // 已退还的tickets数量
+    @Override
+    public BigInteger getRefundTickets(String address) {
+        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        BigInteger value = null;
+        try {
+//            value = NRaffleContract.getRefundTickets().send();
+            value = NRaffleContract.getSwapStatus().send();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
     @Override
     public String getKing(String address) {
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
@@ -163,17 +193,27 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         }
     }
 
-
+    /**
+     * 所有的都返回
+     * @param address
+     */
     public void transferAllIfCancelled(String address) {
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         try {
-            NRaffleContract.transferAllIfCancelled().send();
+//            if(2 == raffleAsset){
+//                NRaffleContract.transferNFTToOwnerIfCancelled().send();
+//
+//            }
+//            if(999==raffleAsset){
+//                NRaffleContract.transferAllIfCancelled().send();
+//            }
+           NRaffleContract.transferAllIfCancelled().send();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public void cancelIfUnsold(String address) {
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
@@ -182,6 +222,23 @@ public class RaffleContractServiceImpl implements RaffleContractService {
             NRaffleContract.cancelIfUnsold().send();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // 失败后的重试
+    @Override
+    public void execRetryIfNoRNG() {
+
+        List<RaffleInfo> raffleInfoList = raffleInfoMapper.getExecRetryIfNoRNGRaffleInfos();
+
+        for(RaffleInfo raffleInfo:raffleInfoList){
+            NRaffle NRaffleContract = NRaffle.load(raffleInfo.getRaffleaddress(), web3, txManager,
+                    new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+            try {
+                NRaffleContract.retryIfNoRNG().send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -200,7 +257,6 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execTransferAllIfCancelled() {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
-        //获取数据逻辑要修改为：结束时间后+5天，swapstatus状态为0.发送请求后，修改状态为999（表明退款全部完成）
         System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
             transferAllIfCancelled(raffleInfo.getRaffleaddress());
@@ -212,13 +268,18 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      */
     @Override
     public void execCancelIfUnsold() {
+
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getCancelIfUnsoldRaffleInfos();
         //到期未完成抽奖活动清理
         System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
-            cancelIfUnsold(raffleInfo.getRaffleaddress());//这是一个合约方法
+            cancelIfUnsold(raffleInfo.getRaffleaddress());
         }
     }
+
+    /**
+     * 更新
+     */
 
     @Override
     public void test() {
@@ -298,7 +359,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
     /**
      * 获取到这个range的详情
-     * @param raffleAddress
+     * @param
      * @param
      */
 //    @Override

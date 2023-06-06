@@ -85,29 +85,72 @@ public class TransactionListener {
                                     verifyNFTPresenceBeforeStart(map.get("newOwner").toString());
                                     //这里报错了,切换链后，会报错
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
-                                    //准入nft后需要给raffle做个标记已经转入nft了，方便前端隐藏取回nft的按钮
+                                    RaffleInfo raffleInfo3 = new RaffleInfo();
+                                    raffleInfo3.setRaffleaddress(map.get("newOwner").toString());
+                                    int raffleAssets = raffleInfoMapper.getDetailByRaffleAddress(map.get("newOwner").toString()).getRaffleAssets();
+                                    if(0==raffleAssets){
+                                        raffleInfo3.setRaffleAssets(2);
+                                    }
+                                    raffleInfoMapper.updateRaffleInfo(raffleInfo3);
                                     break;
                                 case "TicketsPurchased":
                                     ParticipantInfo participantInfo = new ParticipantInfo();
                                     participantInfo.setParticipantAddress(map.get("participantAddress").toString());
                                     participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
+                                    RaffleInfo raffleInfo1 = new RaffleInfo();
+                                    raffleInfo1.setRaffleaddress(map.get("raffleAddress").toString());
+                                    int raffleAssets1 = raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets();
+                                    if(2==raffleAssets1){
+                                        raffleInfo1.setRaffleAssets(999);
+                                    }
+                                    if(0==raffleAssets1){
+                                        raffleInfo1.setRaffleAssets(1);
+                                    }
                                     participantInfoService.createParticipantInfo(participantInfo);
+                                    raffleInfoMapper.updateRaffleInfo(raffleInfo1);
                                     break;
                                 case "UpdateTokenOwner":
                                     //增加功能：取回nft如果状态没更新过来，做个补救。监控下返回的error信息。来有不同的处理
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     RaffleInfo raffleInfo = new RaffleInfo();
                                     raffleInfo.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
-                                    raffleInfo.setCancelledExtractedStatus(Integer.parseInt(map.get("cancelledExtractedStatus").toString()));
+                                    if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        raffleInfo.setRaffleAssets(1);
+                                    }
+                                    if(2 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        raffleInfo.setRaffleAssets(0);
+                                    }
                                     raffleInfo.setRaffleaddress(map.get("raffleAddress").toString());
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo);
                                     break;
                                 case "UpdateSwapStatus":
-                                    RaffleInfo raffleInfo1 = new RaffleInfo();
-                                    raffleInfo1.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
-                                    raffleInfo1.setRaffleaddress(map.get("raffleaddress").toString());
-                                    raffleInfoMapper.updateRaffleInfo(raffleInfo1);
+                                    RaffleInfo raffleInfo2 = new RaffleInfo();
+                                    raffleInfo2.setSwapStatus(Integer.parseInt(map.get("swapStatus").toString()));
+                                    raffleInfo2.setRaffleaddress(map.get("raffleaddress").toString());
+                                    raffleInfoMapper.updateRaffleInfo(raffleInfo2);
+                                    break;
+                                case "updateRaffleAssets":
+                                    RaffleInfo raffle = new RaffleInfo();
+                                    //判断如果取回的是：NFT
+                                    if(2 == Integer.parseInt(map.get("updateRaffleAsset").toString())){
+                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                            raffle.setRaffleAssets(1);
+                                        }
+                                        if( 2 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                            raffle.setRaffleAssets(0);
+                                        }
+                                    }
+                                    if(1 == Integer.parseInt(map.get("updateRaffleAsset").toString())){
+                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                            raffle.setRaffleAssets(2);
+                                        }
+                                        if(1 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                            raffle.setRaffleAssets(0);
+                                        }
+                                    }
+                                    raffle.setRaffleaddress(map.get("raffleaddress").toString());
+                                    raffleInfoMapper.updateRaffleInfo(raffle);
                                     break;
                                 default:
                                     System.out.println("Unknown fruit selected");

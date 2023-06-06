@@ -89,6 +89,17 @@ public class RaffleInfo implements Serializable {
      */
     private Integer cancelledExtractedStatus;
 
+
+
+    /**
+     * 账号内所拥有的资产状态
+     NFT = 2,//账号内有NFT
+     ETH = 1,//账号内有eth
+     ALL = 999,//都有
+     NO = 0,//默认是0，未进行任何操作
+     */
+    private Integer raffleAssets;
+
     /**
      *  参与者数量
      */
@@ -233,6 +244,13 @@ public class RaffleInfo implements Serializable {
 
     public void setCancelledExtractedStatus(Integer cancelledExtractedStatus) {
         this.cancelledExtractedStatus = cancelledExtractedStatus;
+    }
+    public Integer getRaffleAssets() {
+        return raffleAssets;
+    }
+
+    public void setRaffleAssets(Integer raffleAssets) {
+        this.raffleAssets = raffleAssets;
     }
 
 

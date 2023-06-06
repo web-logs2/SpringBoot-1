@@ -28,9 +28,13 @@ public interface RaffleInfoMapper {
 
     RaffleInfo getWaitingForNftRaffleInfos(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId,@Param("owner") String owner);
 
+    //以下是定时任务的查询
     List<RaffleInfo> getExecSwapRaffleInfos();
 
     List<RaffleInfo> getTransferAllIfCancelledRaffleInfos();
 
     List<RaffleInfo> getCancelIfUnsoldRaffleInfos();
+
+    List<RaffleInfo> getExecRetryIfNoRNGRaffleInfos();
+
 }

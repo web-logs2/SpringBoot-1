@@ -926,17 +926,5 @@
 		"stateMutability": "view",
 		"type": "function"
 	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "payee",
-				"type": "address"
-			}
-		],
-		"name": "withdrawPayments",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
+
 ]

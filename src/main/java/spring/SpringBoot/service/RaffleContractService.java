@@ -13,6 +13,14 @@ public interface RaffleContractService {
 
     BigInteger getSwapStauts(String address);
 
+    //
+
+    // 已出售的tickets数量
+    BigInteger getSoldTickets(String address);
+
+    // 已退还的tickets数量
+    BigInteger getRefundTickets(String address);
+
     String getKing(String address);
 
     BigInteger getPurchasedTicketCount(String address,String owner);
@@ -24,6 +32,8 @@ public interface RaffleContractService {
     void execSwapTransferAllIfCompletedWithNFT();
 
     void execTransferAllIfCancelled();
+
+    void execRetryIfNoRNG();
 
     void execCancelIfUnsold();
     void test();

@@ -83,21 +83,41 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
             }
         }
      }
+//     5:是终态，和兑换状态有关
+    if(new BigInteger("5").equals(raffleInfo.getRafflestatus()) &&
+            !(new BigInteger("0").equals(raffleInfo.getRaffleAssets()))) {
+        //取消状态，getSwapStauts  = 1，即为已退回
+        BigInteger nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
+        BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress());
+        BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress());
+        int raffleAssetsByDb = raffleInfo.getRaffleAssets();
+        if(new BigInteger("1").equals(nftBackStatus)){
+            if(raffleAssetsByDb == 999){
+                if(soldTickets.equals(refundTickets)){
+                    raffleInfo.setRaffleAssets(0);
+                }else {
+                    raffleInfo.setRaffleAssets(1);
+                }
+            }
+            if(raffleAssetsByDb == 1){
+                raffleInfo.setRaffleAssets(0);
+            }
+        }
+        if(soldTickets.equals(refundTickets)){
+            if(raffleAssetsByDb == 999){
+                if(new BigInteger("1").equals(nftBackStatus)){
+                    raffleInfo.setRaffleAssets(0);
+                }else {
+                    raffleInfo.setRaffleAssets(2);
+                }
+            }
+        }else {
+            if(!new BigInteger("1").equals(nftBackStatus)){
+                raffleInfo.setRaffleAssets(999);
+            }
+        }
 
-    // 5:是终态，和兑换状态有关
-//    if(new BigInteger("5").equals(raffleInfo.getRafflestatus())
-//            &&new BigInteger("0").equals(raffleInfo.getSwapStatus())){
-//        BigInteger swapStauts = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
-//        if(swapStauts != null && !swapStauts.equals(raffleInfo.getSwapStatus())){
-//            raffleInfo.setSwapStatus(Integer.valueOf(String.valueOf(swapStauts)));
-//            updateRaffleInfo(raffleInfo);
-//        }
-//        if(null == raffleInfo.getWinnerDrawTimestamp()){
-//            BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress());
-//            if(null!=winnerDrawTimestamp){
-//                raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
-//            }
-//        }
+       }
 
 //    }
       updateRaffleInfo(raffleInfo);
