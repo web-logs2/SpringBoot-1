@@ -926,25 +926,6 @@
 		"stateMutability": "view",
 		"type": "function"
 	},
-	{
-    		"anonymous": false,
-    		"inputs": [
-    			{
-    				"indexed": true,
-    				"internalType": "address",
-    				"name": "raffleAddress",
-    				"type": "address"
-    			},
-    			{
-    				"indexed": false,
-    				"internalType": "uint16",
-    				"name": "retryTimes",
-    				"type": "uint16"
-    			}
-    		],
-    		"name": "RetryIfNoRNG",
-    		"type": "event"
-    	},
     	{
     		"inputs": [],
     		"name": "getRefundTickets",

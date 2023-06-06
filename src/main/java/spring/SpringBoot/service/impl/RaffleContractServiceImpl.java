@@ -113,8 +113,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         BigInteger value = null;
         try {
-//            value = NRaffleContract.getSoldTickets().send();
-            value = NRaffleContract.getSwapStatus().send();
+            value = NRaffleContract.getSoldTickets().send();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,8 +126,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
                 new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
         BigInteger value = null;
         try {
-//            value = NRaffleContract.getRefundTickets().send();
-            value = NRaffleContract.getSwapStatus().send();
+            value = NRaffleContract.getRefundTickets().send();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -179,10 +179,6 @@ public class NRaffle extends Contract {
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}, new TypeReference<Address>() {}));
     ;
 
-    public static final Event RETRYIFNORNG_EVENT = new Event("RetryIfNoRNG", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint16>() {}));
-    ;
-
     @Deprecated
     protected NRaffle(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
@@ -859,39 +855,6 @@ public class NRaffle extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public List<RetryIfNoRNGEventResponse> getRetryIfNoRNGEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(RETRYIFNORNG_EVENT, transactionReceipt);
-        ArrayList<RetryIfNoRNGEventResponse> responses = new ArrayList<RetryIfNoRNGEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
-            RetryIfNoRNGEventResponse typedResponse = new RetryIfNoRNGEventResponse();
-            typedResponse.log = eventValues.getLog();
-            typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
-            typedResponse.retryTimes = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-            responses.add(typedResponse);
-        }
-        return responses;
-    }
-
-    public Flowable<RetryIfNoRNGEventResponse> retryIfNoRNGEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, RetryIfNoRNGEventResponse>() {
-            @Override
-            public RetryIfNoRNGEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(RETRYIFNORNG_EVENT, log);
-                RetryIfNoRNGEventResponse typedResponse = new RetryIfNoRNGEventResponse();
-                typedResponse.log = log;
-                typedResponse.raffleAddress = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.retryTimes = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                return typedResponse;
-            }
-        });
-    }
-
-    public Flowable<RetryIfNoRNGEventResponse> retryIfNoRNGEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(RETRYIFNORNG_EVENT));
-        return retryIfNoRNGEventFlowable(filter);
-    }
-
     public RemoteFunctionCall<BigInteger> getRefundTickets() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETREFUNDTICKETS, 
                 Arrays.<Type>asList(), 
@@ -1012,11 +975,5 @@ public class NRaffle extends Contract {
         public BigInteger ticketNumber;
 
         public String owner;
-    }
-
-    public static class RetryIfNoRNGEventResponse extends BaseEventResponse {
-        public String raffleAddress;
-
-        public BigInteger retryTimes;
     }
 }
