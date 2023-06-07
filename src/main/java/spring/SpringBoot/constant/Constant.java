@@ -2,7 +2,7 @@ package spring.SpringBoot.constant;
 
 public class Constant {
 //    public static final String CONTRACTADDRESS = "0x69499bDA273c7980d98Fb042593086d5b22Ab517";
-    public static final String CONTRACTADDRESS = "0x4fAa2bF3EdC9B9B2f37411AD84cc659eA9456907";
+    public static final String CONTRACTADDRESS = "0xFe970248A59562674c7b02143b236BCd554fA9E7";
     public static final String SEPOLIAURL = "https://rpcapi-tracing.testnet.fantom.network";
     public static final long  FANTOM_TESTNET = 4002;
 

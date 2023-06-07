@@ -45,6 +45,11 @@ public class TokenInfo implements Serializable {
 
 
 
+    /**
+     * chain
+     */
+    private String chain;
+
 
     /**
      * RaffleAddress
@@ -147,6 +152,14 @@ public class TokenInfo implements Serializable {
     }
     public String getWaitingForNftRaffleAddress() {
         return waitingForNftRaffleAddress;
+    }
+
+    public String getChain() {
+        return chain;
+    }
+
+    public void setChain(String chain) {
+        this.chain = chain;
     }
 
     public void setWaitingForNftRaffleAddress(String waitingForNftRaffleAddress) {
