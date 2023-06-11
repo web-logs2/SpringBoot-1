@@ -63,7 +63,7 @@
               ri.raffle_assets,ri.winnerDrawTimestamp
         from raffle_info ri
         JOIN participant_info pi ON ri.raffleAddress = pi.raffleAddress
-        WHERE ri.rafflestatus = 5 AND ri.raffleAssets != 0 AND (UNIX_TIMESTAMP(NOW()) > ri.endTimestamp + (2 * 24 * 60 * 60) )
+        WHERE ri.rafflestatus = 5 AND ri.raffle_assets != 0 AND (UNIX_TIMESTAMP(NOW()) > ri.endTimestamp + (2 * 24 * 60 * 60) )
     </select>
 
     <select id="getCancelIfUnsoldRaffleInfos" resultMap="BaseResultMap">
@@ -226,7 +226,7 @@
             <if test="winnerDrawTimestamp != null">
                 winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=INTEGER},
             </if>
-            updateTime = CURRENT_TIMESTAMP
+            update_time = CURRENT_TIMESTAMP
         </set>
         where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
     </update>
