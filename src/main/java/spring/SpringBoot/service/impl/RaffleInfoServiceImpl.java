@@ -55,29 +55,30 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     public RaffleInfo correctStatus(RaffleInfo raffleInfo){
       int raffleStatusByDb = raffleInfo.getRafflestatus();
       int swapStatusStatusByDb = raffleInfo.getSwapStatus();
-      int cancelledExtractedStatus = raffleInfo.getCancelledExtractedStatus();
+      String raffleAddress = raffleInfo.getRaffleaddress();
+      Long chainId = raffleContractService.getTokenChainIdByRaffleAddress(raffleAddress);
         //!4  !5的时候，raffleStatus会变化
     if(4!=raffleStatusByDb && 5!=raffleStatusByDb){
-      BigInteger raffleStatusByChain = raffleContractService.getState(raffleInfo.getRaffleaddress());
+      BigInteger raffleStatusByChain = raffleContractService.getState(raffleAddress,chainId);
       if(raffleStatusByChain != null && !raffleStatusByChain.equals(raffleStatusByDb)){
         raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(raffleStatusByChain)));
       }
     }
     if(4==raffleStatusByDb && 0==swapStatusStatusByDb){
         // 4:已经完成   && 0：说明还未进行选择，需要纠正状态。  1：eth  2：nft
-        BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
+        BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleAddress,chainId);
         if(0 !=swapStautsByChain.intValue() ){
             raffleInfo.setSwapStatus(swapStautsByChain.intValue());
         }
 
         if(null == raffleInfo.getKing()){
-            String king = raffleContractService.getKing(raffleInfo.getRaffleaddress());
+            String king = raffleContractService.getKing(raffleInfo.getRaffleaddress(),chainId);
             if(null!=king&&""!=king){
                 raffleInfo.setKing(king);
             }
         }
         if(null == raffleInfo.getWinnerDrawTimestamp()){
-            BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress());
+            BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress(),chainId);
             if(null!=winnerDrawTimestamp){
                 raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
             }
@@ -87,9 +88,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     if(new BigInteger("5").equals(raffleInfo.getRafflestatus()) &&
             !(new BigInteger("0").equals(raffleInfo.getRaffleAssets()))) {
         //取消状态，getSwapStauts  = 1，即为已退回
-        BigInteger nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress());
-        BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress());
-        BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress());
+        BigInteger nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId);
+        BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress(),chainId);
+        BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
         if(new BigInteger("1").equals(nftBackStatus)){
             if(raffleAssetsByDb == 999){

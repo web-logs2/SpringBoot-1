@@ -1,33 +1,34 @@
 package spring.SpringBoot.service;
 
 import org.springframework.stereotype.Component;
+import spring.SpringBoot.solidity.NRaffle;
 
 import java.math.BigInteger;
 
 
 public interface RaffleContractService {
 
-    String verifyNFTPresenceBeforeStart(String address);
+    NRaffle createNRaffle(String address, Long chainId);
 
-    BigInteger getState(String address);
+    String verifyNFTPresenceBeforeStart(String address, Long chainId);
 
-    BigInteger getSwapStauts(String address);
+    BigInteger getState(String address,Long chainId);
 
-    //
+    BigInteger getSwapStauts(String address,Long chainId);
 
     // 已出售的tickets数量
-    BigInteger getSoldTickets(String address);
+    BigInteger getSoldTickets(String address,Long chainId);
 
     // 已退还的tickets数量
-    BigInteger getRefundTickets(String address);
+    BigInteger getRefundTickets(String address,Long chainId);
 
-    String getKing(String address);
+    String getKing(String address,Long chainId);
 
-    BigInteger getPurchasedTicketCount(String address,String owner);
+    BigInteger getPurchasedTicketCount(String address,String owner,Long chainId);
 
-    BigInteger getWinnerDrawTimestamp(String address);
+    BigInteger getWinnerDrawTimestamp(String address,Long chainId);
 
-    void transferAllIfCompletedWithNFT(String address);
+    void transferAllIfCompletedWithNFT(String address,Long chainId);
 
     void execSwapTransferAllIfCompletedWithNFT();
 
@@ -36,13 +37,14 @@ public interface RaffleContractService {
     void execRetryIfNoRNG();
 
     void execCancelIfUnsold();
-    void test();
 
-    BigInteger getWinnerTicketNumber(String raffleAddress);
+    public Long getTokenChainIdByRaffleAddress(String raffleAddress);
 
-    BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner);
+    BigInteger getWinnerTicketNumber(String raffleAddress,Long chainId);
 
-    BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index);
+    BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner,Long chainId);
+
+    BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index,Long chainId);
 
 //    void getTicketNumberRange(String raffleAddress, BigInteger index);
 }

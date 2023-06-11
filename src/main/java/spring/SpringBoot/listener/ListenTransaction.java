@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
+import spring.SpringBoot.service.RaffleContractService;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -26,13 +27,16 @@ import java.util.concurrent.Executors;
         @Autowired
         RaffleInfoMapper raffleInfoMapper;
 
+        @Autowired
+        RaffleContractService raffleContractService;
+
         private ExecutorService threadPool = Executors.newFixedThreadPool(100);
 
         @RequestMapping("/listen-transaction")
         public void listenTransaction(@RequestParam Map<String,Object> map) {
             threadPool.execute(() -> {
                 try {
-                    TransactionListener listener = new TransactionListener(map, participantInfoService, tokenInfoMapper, raffleInfoMapper);
+                    TransactionListener listener = new TransactionListener(map, participantInfoService, tokenInfoMapper, raffleInfoMapper,raffleContractService);
                     listener.start();
                 } catch (Exception e) {
                     e.printStackTrace();

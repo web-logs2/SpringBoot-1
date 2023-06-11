@@ -2,10 +2,6 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.web3j.abi.datatypes.Address;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.generated.Uint16;
-import org.web3j.tuples.generated.Tuple3;
 
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
@@ -15,19 +11,20 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.StaticGasProvider;
+import spring.SpringBoot.constant.ChainConstants;
 import spring.SpringBoot.constant.Constant;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
+import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
-import spring.SpringBoot.entry.TicketNumberRange;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -38,28 +35,41 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Autowired
     RaffleInfoService raffleInfoService;
 
-    long chainId = Constant.FANTOM_TESTNET;
-
-
-    Web3j web3 = Web3j.build(new HttpService(Constant.SEPOLIAURL));
-
-    //私钥
-    Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
-
-    BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
-
-    TransactionManager txManager = new RawTransactionManager(web3, credentials, chainId);
-
-
+    @Autowired
+    TokenInfoMapper tokenInfoMapper;
 
     @Override
-    public String verifyNFTPresenceBeforeStart(String address) {
-        //new一个合约实例
+    public Long getTokenChainIdByRaffleAddress(String raffleAddress){
+        RaffleInfo raffleInfo = raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
+        TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(),raffleInfo.getTokenId());
+        return Long.valueOf(tokenInfo.getChain());
+    }
+
+    @Override
+    public NRaffle createNRaffle(String address,Long chainId){
+        ChainConstants.Chain chain = ChainConstants.CHAIN_CONFIGS.get(chainId);
+        Web3j web3 = Web3j.build(new HttpService(chain.getNode()));
+        //私钥
+        Credentials credentials = Credentials.create(chain.getPrivatekey());
+
+        BigInteger gasPrice = null;
+        try {
+            gasPrice = web3.ethGasPrice().send().getGasPrice();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TransactionManager txManager = new RawTransactionManager(web3, credentials, chainId);
 
         NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+                new StaticGasProvider(gasPrice, BigInteger.valueOf(chain.getGasPrice())));
+        return NRaffleContract;
+    }
 
-        System.out.println("verifyNFTPresenceBeforeStart方法内执行");
+    @Override
+    public String verifyNFTPresenceBeforeStart(String address,Long chainId) {
+        //new一个合约实例
+        NRaffle NRaffleContract=createNRaffle(address,chainId);
 
         RemoteFunctionCall<TransactionReceipt> verifyNFT = NRaffleContract.verifyNFTPresenceBeforeStart();
         TransactionReceipt transactionReceipt = null;
@@ -79,10 +89,9 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public BigInteger getState(String address) {
+    public BigInteger getState(String address,Long chainId) {
         //new一个合约实例
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger value = null;
         try {
             value = NRaffleContract.getState().send();
@@ -94,9 +103,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public BigInteger getSwapStauts(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getSwapStauts(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger value = null;
         try {
             value = NRaffleContract.getSwapStatus().send();
@@ -108,9 +116,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
     // 已出售的tickets数量
     @Override
-    public BigInteger getSoldTickets(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getSoldTickets(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger value = null;
         try {
             value = NRaffleContract.getSoldTickets().send();
@@ -121,9 +128,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
     // 已退还的tickets数量
     @Override
-    public BigInteger getRefundTickets(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getRefundTickets(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger value = null;
         try {
             value = NRaffleContract.getRefundTickets().send();
@@ -135,9 +141,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public String getKing(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public String getKing(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         String king = null;
         try {
             king = NRaffleContract.getWinnerAddress().send();
@@ -148,9 +153,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public BigInteger getPurchasedTicketCount(String address,String owner) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getPurchasedTicketCount(String address,String owner,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger purchasedTicketCount = null;
         try {
             purchasedTicketCount = NRaffleContract.getPurchasedTicketCount(address).send();
@@ -161,9 +165,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     }
 
     @Override
-    public BigInteger getWinnerDrawTimestamp(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getWinnerDrawTimestamp(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         BigInteger winnerDrawTimestamp = null;
         try {
             winnerDrawTimestamp = NRaffleContract.getWinnerDrawTimestamp().send();
@@ -181,9 +184,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      * @param address
      */
     @Override
-    public void transferAllIfCompletedWithNFT(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public void transferAllIfCompletedWithNFT(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         try {
             NRaffleContract.transferAllIfCompletedWithNFT().send();
         } catch (Exception e) {
@@ -195,9 +197,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      * 所有的都返回
      * @param address
      */
-    public void transferAllIfCancelled(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public void transferAllIfCancelled(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         try {
 //            if(2 == raffleAsset){
 //                NRaffleContract.transferNFTToOwnerIfCancelled().send();
@@ -213,9 +214,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         }
     }
 
-    public void cancelIfUnsold(String address) {
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public void cancelIfUnsold(String address,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(address,chainId);
         try {
             NRaffleContract.cancelIfUnsold().send();
         } catch (Exception e) {
@@ -228,10 +228,9 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     public void execRetryIfNoRNG() {
 
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getExecRetryIfNoRNGRaffleInfos();
-
         for(RaffleInfo raffleInfo:raffleInfoList){
-            NRaffle NRaffleContract = NRaffle.load(raffleInfo.getRaffleaddress(), web3, txManager,
-                    new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+            NRaffle NRaffleContract = createNRaffle(raffleInfo.getRaffleaddress(),chainId);
             try {
                 NRaffleContract.retryIfNoRNG().send();
             } catch (Exception e) {
@@ -246,8 +245,9 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         System.out.println("execSwap共执行数据：" + raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
             RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
+            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
             if (new BigInteger("0").equals(raffleInfo1.getSwapStatus())) {
-                transferAllIfCompletedWithNFT(raffleInfo.getRaffleaddress());
+                transferAllIfCompletedWithNFT(raffleInfo1.getRaffleaddress(),chainId);
             }
         }
     }
@@ -257,7 +257,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
         System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
-            transferAllIfCancelled(raffleInfo.getRaffleaddress());
+            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+            transferAllIfCancelled(raffleInfo.getRaffleaddress(),chainId);
         }
     }
 
@@ -271,26 +272,9 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         //到期未完成抽奖活动清理
         System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
-            cancelIfUnsold(raffleInfo.getRaffleaddress());
+            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+            cancelIfUnsold(raffleInfo.getRaffleaddress(),chainId);
         }
-    }
-
-    /**
-     * 更新
-     */
-
-    @Override
-    public void test() {
-        String address = Constant.CONTRACTADDRESS;
-        NRaffleFactory NRaffleContract = NRaffleFactory.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
-        try {
-            
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -299,9 +283,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      * @return
      */
     @Override
-    public BigInteger getWinnerTicketNumber(String raffleAddress) {
-        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getWinnerTicketNumber(String raffleAddress,Long chainId) {
+        NRaffle NRaffleContract =createNRaffle(raffleAddress,chainId);
         BigInteger value = null;
 
         try {
@@ -320,9 +303,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      * @return
      */
     @Override
-    public BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner) {
-        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getAssignedTicketNumberRanges(String raffleAddress, String owner,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(raffleAddress,chainId);
         BigInteger value = null;
 
         try {
@@ -341,9 +323,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
      * @return
      */
     @Override
-    public BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index) {
-        NRaffle NRaffleContract = NRaffle.load(raffleAddress, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+    public BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index,Long chainId) {
+        NRaffle NRaffleContract = createNRaffle(raffleAddress,chainId);
         BigInteger value = null;
 
         try {

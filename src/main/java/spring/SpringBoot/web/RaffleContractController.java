@@ -17,33 +17,28 @@ public class RaffleContractController {
     RaffleContractService raffleContractService;
 
     @RequestMapping("/verifyNFTPresenceBeforeStart")
-    public void verifyNFTPresenceBeforeStart(@RequestParam  String raffleAddress) {
-        raffleContractService.verifyNFTPresenceBeforeStart(raffleAddress);
+    public void verifyNFTPresenceBeforeStart(@RequestParam  String raffleAddress,@RequestParam  Long chainId) {
+        raffleContractService.verifyNFTPresenceBeforeStart(raffleAddress,chainId);
     }
 
     @RequestMapping("/getState")
-    public BigInteger getState(@RequestParam  String raffleAddress) {
-        return raffleContractService.getState(raffleAddress);
+    public BigInteger getState(@RequestParam  String raffleAddress,@RequestParam  Long chainId) {
+        return raffleContractService.getState(raffleAddress,chainId);
     }
 
     @RequestMapping("/getKing")
-    public String getKing(@RequestParam  String raffleAddress) {
-        return raffleContractService.getKing(raffleAddress);
+    public String getKing(@RequestParam  String raffleAddress,@RequestParam  Long chainId) {
+        return raffleContractService.getKing(raffleAddress,chainId);
     }
 
     @RequestMapping("/getPurchasedTicketCount")
-    public BigInteger getPurchasedTicketCount(@RequestParam  String raffleAddress,@RequestParam  String owner) {
-        return raffleContractService.getPurchasedTicketCount(raffleAddress,owner);
+    public BigInteger getPurchasedTicketCount(@RequestParam  String raffleAddress,@RequestParam  String owner,@RequestParam  Long chainId) {
+        return raffleContractService.getPurchasedTicketCount(raffleAddress,owner,chainId);
     }
 
     @RequestMapping("/getWinnerTicketNumber")
-    public BigInteger getWinnerTicketNumber(@RequestParam  String raffleAddress) {
-        return raffleContractService.getWinnerTicketNumber(raffleAddress);
-    }
-
-    @RequestMapping("/test")
-    public void  test() {
-         raffleContractService.test();
+    public BigInteger getWinnerTicketNumber(@RequestParam  String raffleAddress,@RequestParam  Long chainId) {
+        return raffleContractService.getWinnerTicketNumber(raffleAddress,chainId);
     }
 
 }

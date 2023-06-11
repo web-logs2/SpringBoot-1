@@ -2,43 +2,36 @@ package spring.SpringBoot.listener;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.RawTransactionManager;
-import org.web3j.tx.TransactionManager;
-import org.web3j.tx.gas.StaticGasProvider;
-import spring.SpringBoot.constant.Constant;
+
+import spring.SpringBoot.constant.ChainConstants;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
+import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
-import spring.SpringBoot.solidity.NRaffle;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TransactionListener {
     private final String txHash;
-    private final Web3j web3j;
     private final ScheduledExecutorService executorService;
 
 
     private Map<String, Object> map;
 
-
+    Web3j web3j = null;
+    Long chainId;
     ParticipantInfoService participantInfoService;
 
     @Autowired
@@ -47,16 +40,20 @@ public class TransactionListener {
     TokenInfoMapper tokenInfoMapper;
 
     RaffleInfoMapper raffleInfoMapper;
+    RaffleContractService raffleContractService;
 
     public TransactionListener(Map<String, Object> map, ParticipantInfoService participantInfoService,
                                TokenInfoMapper tokenInfoMapper,
-                               RaffleInfoMapper raffleInfoMapper) {
+                               RaffleInfoMapper raffleInfoMapper,
+                               RaffleContractService raffleContractService) {
         txHash = map.get("txHash").toString();
         this.map = map;
-        web3j = Web3j.build(new HttpService(Constant.SEPOLIAURL));
+        chainId = raffleContractService.getTokenChainIdByRaffleAddress(map.get("raffleAddress").toString());
+        web3j = Web3j.build(new HttpService(ChainConstants.CHAIN_CONFIGS.get(chainId).getNode()));
         this.participantInfoService = participantInfoService;
         this.tokenInfoMapper = tokenInfoMapper;
         this.raffleInfoMapper = raffleInfoMapper;
+        this.raffleContractService = raffleContractService;
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -82,7 +79,7 @@ public class TransactionListener {
 
                             switch (map.get("op").toString()) {
                                 case "verifyNFTPresenceBeforeStart":
-                                    verifyNFTPresenceBeforeStart(map.get("newOwner").toString());
+                                    raffleContractService.verifyNFTPresenceBeforeStart(map.get("newOwner").toString(),chainId);
                                     //这里报错了,切换链后，会报错
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     RaffleInfo raffleInfo3 = new RaffleInfo();
@@ -134,22 +131,22 @@ public class TransactionListener {
                                     RaffleInfo raffle = new RaffleInfo();
                                     //判断如果取回的是：NFT
                                     if(2 == Integer.parseInt(map.get("updateRaffleAsset").toString())){
-                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets()){
                                             raffle.setRaffleAssets(1);
                                         }
-                                        if( 2 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        if( 2 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets()){
                                             raffle.setRaffleAssets(0);
                                         }
                                     }
                                     if(1 == Integer.parseInt(map.get("updateRaffleAsset").toString())){
-                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        if(999 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets()){
                                             raffle.setRaffleAssets(2);
                                         }
-                                        if(1 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleaddress").toString()).getRaffleAssets()){
+                                        if(1 == raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets()){
                                             raffle.setRaffleAssets(0);
                                         }
                                     }
-                                    raffle.setRaffleaddress(map.get("raffleaddress").toString());
+                                    raffle.setRaffleaddress(map.get("raffleAddress").toString());
                                     raffleInfoMapper.updateRaffleInfo(raffle);
                                     break;
                                 default:
@@ -168,37 +165,37 @@ public class TransactionListener {
         }, 0, 5, TimeUnit.SECONDS);
     }
 
-    private void verifyNFTPresenceBeforeStart(String address) {
-
-        Web3j web3 = Web3j.build(new HttpService(Constant.SEPOLIAURL));
-        //私钥
-        Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
-        long chainId = Constant.FANTOM_TESTNET;
-        TransactionManager txManager = new RawTransactionManager(web3, credentials, chainId);
-
-        BigInteger gasPrice = null;
-        try {
-            gasPrice = web3.ethGasPrice().send().getGasPrice();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
-                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
-        System.out.println("verifyNFTPresenceBeforeStart方法内执行");
-
-
-        RemoteFunctionCall<TransactionReceipt> verifyNFT = NRaffleContract.verifyNFTPresenceBeforeStart();
-        TransactionReceipt transactionReceipt = null;
-        try {
-            transactionReceipt = verifyNFT.sendAsync().get();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    private void verifyNFTPresenceBeforeStart(String address) {
+//
+//        Web3j web3 = Web3j.build(new HttpService(Constant.SEPOLIAURL));
+//        //私钥
+//        Credentials credentials = Credentials.create(Constant.PRIVATEKEY);
+//        long chainId = Constant.FANTOM_TESTNET;
+//        TransactionManager txManager = new RawTransactionManager(web3, credentials, chainId);
+//
+//        BigInteger gasPrice = null;
+//        try {
+//            gasPrice = web3.ethGasPrice().send().getGasPrice();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        NRaffle NRaffleContract = NRaffle.load(address, web3, txManager,
+//                new StaticGasProvider(gasPrice, BigInteger.valueOf(Constant.GASPRICE)));
+//        System.out.println("verifyNFTPresenceBeforeStart方法内执行");
+//
+//
+//        RemoteFunctionCall<TransactionReceipt> verifyNFT = NRaffleContract.verifyNFTPresenceBeforeStart();
+//        TransactionReceipt transactionReceipt = null;
+//        try {
+//            transactionReceipt = verifyNFT.sendAsync().get();
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }
 
 //    public TransactionListener(RaffleInfo raffleInfo, Web3j web3j) throws IOException {

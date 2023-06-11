@@ -3,6 +3,7 @@ package spring.SpringBoot.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -55,8 +56,10 @@ public class ListenContractEvent implements ApplicationRunner {
 //    private EthFilter winnerDrawnFilter;
 
     @Resource
+    @Qualifier("sepoliaNRaffleFactoryTrace")
     private NRaffleFactory sepoliaNraffleFactory;
     @Resource
+    @Qualifier("fantomNRaffleFactoryTrace")
     private NRaffleFactory fantomNraffleFactory;
 //
 //    @Resource
@@ -92,7 +95,7 @@ public class ListenContractEvent implements ApplicationRunner {
 
 
         sepoliaNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
-        log.info("启动监听RaffleCreated");
+        log.info("sepolia启动监听RaffleCreated");
         sepoliaNraffleFactory.raffleCreatedEventFlowable(sepoliaNRaffleFactoryFilter)
                 .subscribe(
                         response -> {
@@ -144,7 +147,7 @@ public class ListenContractEvent implements ApplicationRunner {
 
 
         fantomNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
-        log.info("启动监听RaffleCreated");
+        log.info("fantom启动监听RaffleCreated");
         fantomNraffleFactory.raffleCreatedEventFlowable(fantomNRaffleFactoryFilter)
                 .subscribe(
                         response -> {
