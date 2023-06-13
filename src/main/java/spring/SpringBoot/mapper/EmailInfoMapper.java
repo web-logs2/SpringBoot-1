@@ -15,6 +15,8 @@ public interface EmailInfoMapper {
 
     EmailInfo selectByEmail(String email);
 
+    EmailInfo selectByWalletId(String walletId);
+
     int updateByPrimaryKeySelective(EmailInfo record);
 
     int updateByPrimaryKey(EmailInfo record);

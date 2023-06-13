@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface FavoriteInfoService {
     List<TokenRaffleVo>  getFavoriteInfoList(String subscriberWallet);
-
     int insertFavoriteInfo(FavoriteInfo record);
 }

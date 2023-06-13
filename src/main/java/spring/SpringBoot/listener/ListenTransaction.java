@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import spring.SpringBoot.constant.ChainConstants;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
@@ -36,7 +39,7 @@ import java.util.concurrent.Executors;
         public void listenTransaction(@RequestParam Map<String,Object> map) {
             threadPool.execute(() -> {
                 try {
-                    TransactionListener listener = new TransactionListener(map, participantInfoService, tokenInfoMapper, raffleInfoMapper,raffleContractService);
+                    TransactionListener listener = new TransactionListener(map,participantInfoService, tokenInfoMapper, raffleInfoMapper,raffleContractService);
                     listener.start();
                 } catch (Exception e) {
                     e.printStackTrace();

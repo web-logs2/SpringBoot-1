@@ -25,6 +25,12 @@
     where subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR}
   </select>
 
+  <select id="getFavoriteInfoListbyRaffleAndSubscriber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from favorite_info
+    where subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR} AND raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from favorite_info
     where id = #{id,jdbcType=INTEGER}

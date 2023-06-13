@@ -36,7 +36,7 @@
         <include refid="Base_Column_List"/>
         from raffle_info
         where `owner` = #{owner,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR} and
-        contract_address = #{contractAddress,jdbcType=VARCHAR} and (raffleStatus !=4 or raffleStatus!=5)
+        contract_address = #{contractAddress,jdbcType=VARCHAR} and rafflestatus IN (0, 1, 2, 3)
     </select>
 
 

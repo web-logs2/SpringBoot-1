@@ -1,5 +1,6 @@
 package spring.SpringBoot.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import spring.SpringBoot.entry.FavoriteInfo;
 
@@ -20,4 +21,6 @@ public interface FavoriteInfoMapper {
     int updateByPrimaryKey(FavoriteInfo record);
 
     List<FavoriteInfo> getFavoriteInfoList(String subscriberWallet);
+
+    List<FavoriteInfo> getFavoriteInfoListbyRaffleAndSubscriber(@Param("subscriberWallet")  String subscriberWallet, @Param("raffleaddress")  String raffleaddress);
 }

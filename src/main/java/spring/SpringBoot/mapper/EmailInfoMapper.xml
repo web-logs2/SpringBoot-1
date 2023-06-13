@@ -16,6 +16,12 @@
     from email_info
     where email = #{email,jdbcType=VARCHAR}
   </select>
+  <select id="selectByWalletId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from email_info
+    where wallet_id = #{walletId,jdbcType=VARCHAR}
+  </select>
   <select id="getEmailInfoList" resultType="spring.SpringBoot.entry.EmailInfo">
     <include refid="Base_Column_List" />
     from email_info

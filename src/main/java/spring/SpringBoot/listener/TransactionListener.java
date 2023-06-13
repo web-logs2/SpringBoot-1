@@ -27,13 +27,11 @@ public class TransactionListener {
     private final String txHash;
     private final ScheduledExecutorService executorService;
 
-
     private Map<String, Object> map;
 
     Web3j web3j = null;
     Long chainId;
     ParticipantInfoService participantInfoService;
-
     @Autowired
     RaffleInfoService raffleInfoService;
 
@@ -46,15 +44,16 @@ public class TransactionListener {
                                TokenInfoMapper tokenInfoMapper,
                                RaffleInfoMapper raffleInfoMapper,
                                RaffleContractService raffleContractService) {
+
         txHash = map.get("txHash").toString();
         this.map = map;
-        chainId = raffleContractService.getTokenChainIdByRaffleAddress(map.get("raffleAddress").toString());
-        web3j = Web3j.build(new HttpService(ChainConstants.CHAIN_CONFIGS.get(chainId).getNode()));
         this.participantInfoService = participantInfoService;
         this.tokenInfoMapper = tokenInfoMapper;
         this.raffleInfoMapper = raffleInfoMapper;
         this.raffleContractService = raffleContractService;
         this.executorService = Executors.newSingleThreadScheduledExecutor();
+        chainId = raffleContractService.getTokenChainIdByRaffleAddress(map.get("raffleAddress").toString());
+        web3j = Web3j.build(new HttpService(ChainConstants.CHAIN_CONFIGS.get(chainId.intValue()).getNode()));
     }
 
     public void start() {
@@ -64,8 +63,12 @@ public class TransactionListener {
                 Transaction transaction = ethTransaction.getTransaction().orElse(null);
                 if (transaction != null) {
                     EthGetTransactionReceipt ethGetTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).send();
+                    System.out.println("ethGetTransactionReceipt=="+ethGetTransactionReceipt);
+
                     if (ethGetTransactionReceipt.getTransactionReceipt().isPresent()) {
                         TransactionReceipt transactionReceipt = ethGetTransactionReceipt.getTransactionReceipt().get();
+                        System.out.println("transactionReceipt=="+transactionReceipt);
+                        System.out.println("transactionReceipt.getStatus=="+transactionReceipt.getStatus());
                         if (("0x0").equals(transactionReceipt.getStatus())) {
                             // 交易确认失败，不做任何操作，中断线程
                             System.out.println(Thread.currentThread().getId() + "Transaction confirmed: " + txHash);

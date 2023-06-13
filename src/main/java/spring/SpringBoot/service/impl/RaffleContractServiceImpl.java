@@ -47,7 +47,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
     @Override
     public NRaffle createNRaffle(String address,Long chainId){
-        ChainConstants.Chain chain = ChainConstants.CHAIN_CONFIGS.get(chainId);
+        ChainConstants.Chain chain = ChainConstants.CHAIN_CONFIGS.get(chainId.intValue());
         Web3j web3 = Web3j.build(new HttpService(chain.getNode()));
         //私钥
         Credentials credentials = Credentials.create(chain.getPrivatekey());

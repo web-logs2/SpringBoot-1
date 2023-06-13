@@ -22,8 +22,12 @@ public class EmailInfoServiceImpl implements EmailInfoService {
     @Override
     public int createEmailInfo(EmailInfo emailInfo) {
         EmailInfo result = emailInfoMapper.selectByEmail(emailInfo.getEmail());
+        EmailInfo result1 = emailInfoMapper.selectByWalletId(emailInfo.getWalletId());
         if (null != result) {
             return -1;
+        }
+        if (null != result1) {
+            return -2;
         }
         return emailInfoMapper.insertSelective(emailInfo);
     }

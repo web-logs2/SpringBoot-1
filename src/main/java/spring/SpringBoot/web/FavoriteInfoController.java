@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.FavoriteInfo;
 import spring.SpringBoot.entry.RaffleInfo;
+import spring.SpringBoot.mapper.FavoriteInfoMapper;
 import spring.SpringBoot.service.FavoriteInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
 import spring.SpringBoot.vo.TokenRaffleVo;
@@ -18,6 +19,9 @@ import java.util.List;
 public class FavoriteInfoController {
     @Autowired
     FavoriteInfoService favoriteInfoService;
+
+    @Autowired
+    FavoriteInfoMapper favoriteInfoMapper;
 
     /**
      * 获取用户关注的 活动列表
@@ -37,9 +41,14 @@ public class FavoriteInfoController {
      */
     @RequestMapping("/createFavorite")
     public Object createFavorite(@RequestBody FavoriteInfo favoriteInfo) {
+        int number = favoriteInfoMapper.getFavoriteInfoListbyRaffleAndSubscriber(favoriteInfo.getSubscriberWallet(),favoriteInfo.getRaffleaddress()).size();
+        if(number>0){
+            return ResponseUtil.fail(-2, "\n" +
+                    "You have already subscribed. Please do not subscribe again.");
+        }
         Object  favoriteInfos = favoriteInfoService.insertFavoriteInfo(favoriteInfo);
         if (favoriteInfos.equals(-1)) {
-            return ResponseUtil.fail(-1, "createFavoriteInfo fail!");
+            return ResponseUtil.fail(-1, "create FavoriteInfo fail!");
         }
         return ResponseUtil.ok(favoriteInfos);
     }

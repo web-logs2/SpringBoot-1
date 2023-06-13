@@ -37,7 +37,10 @@ public class EmailInfoController {
     public Object createEmailInfo(@RequestBody EmailInfo emailInfo) {
         Object result = emailInfoService.createEmailInfo(emailInfo);
         if (result.equals(-1)) {
-            return ResponseUtil.fail(-1, "createEmailInfo fail!");
+            return ResponseUtil.fail(-1, "The email already exists.");
+        }
+        if (result.equals(-2)) {
+            return ResponseUtil.fail(-1, "The address already exists.");
         }
         return ResponseUtil.ok(result);
     }
