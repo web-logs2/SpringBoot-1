@@ -26,6 +26,24 @@ public final class ChainConstants {
                         "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
                         3000000L
                 ));
+        CHAIN_CONFIGS.put(80001,
+                new Chain(
+                        80001,
+                        "polygonMumbai",
+                        "https://matic-mumbai.chainstacklabs.com",
+                        "0x3d92e26916e94574e95944753800DfaCECFC1F5B",
+                        "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
+                        3000000L
+                ));
+        CHAIN_CONFIGS.put(97,
+                new Chain(
+                        97,
+                        "bsc-testnet",
+                        "https://data-seed-prebsc-1-s1.binance.org:8545",
+                        "0xE2A3987805a72F66d6B4CfA53D4873C6365E4230",
+                        "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
+                        3000000L
+                ));
     }
 
     private ChainConstants() {

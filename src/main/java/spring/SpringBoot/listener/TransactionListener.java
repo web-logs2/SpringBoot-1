@@ -83,7 +83,6 @@ public class TransactionListener {
                             switch (map.get("op").toString()) {
                                 case "verifyNFTPresenceBeforeStart":
                                     raffleContractService.verifyNFTPresenceBeforeStart(map.get("newOwner").toString(),chainId);
-                                    //这里报错了,切换链后，会报错
                                     tokenInfoMapper.updateOwnerInt(map.get("newOwner").toString(),map.get("TokenContractAddress").toString(),map.get("tokenId").toString());
                                     RaffleInfo raffleInfo3 = new RaffleInfo();
                                     raffleInfo3.setRaffleaddress(map.get("newOwner").toString());
@@ -92,23 +91,6 @@ public class TransactionListener {
                                         raffleInfo3.setRaffleAssets(2);
                                     }
                                     raffleInfoMapper.updateRaffleInfo(raffleInfo3);
-                                    break;
-                                case "TicketsPurchased":
-                                    ParticipantInfo participantInfo = new ParticipantInfo();
-                                    participantInfo.setParticipantAddress(map.get("participantAddress").toString());
-                                    participantInfo.setRaffleaddress(map.get("raffleAddress").toString());
-                                    participantInfo.setTicket(Integer.valueOf(map.get("ticketNum").toString()));
-                                    RaffleInfo raffleInfo1 = new RaffleInfo();
-                                    raffleInfo1.setRaffleaddress(map.get("raffleAddress").toString());
-                                    int raffleAssets1 = raffleInfoMapper.getDetailByRaffleAddress(map.get("raffleAddress").toString()).getRaffleAssets();
-                                    if(2==raffleAssets1){
-                                        raffleInfo1.setRaffleAssets(999);
-                                    }
-                                    if(0==raffleAssets1){
-                                        raffleInfo1.setRaffleAssets(1);
-                                    }
-                                    participantInfoService.createParticipantInfo(participantInfo);
-                                    raffleInfoMapper.updateRaffleInfo(raffleInfo1);
                                     break;
                                 case "UpdateTokenOwner":
                                     //增加功能：取回nft如果状态没更新过来，做个补救。监控下返回的error信息。来有不同的处理

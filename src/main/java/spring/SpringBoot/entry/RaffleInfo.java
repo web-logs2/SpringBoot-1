@@ -3,6 +3,7 @@ package spring.SpringBoot.entry;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -59,9 +60,6 @@ public class RaffleInfo implements Serializable {
      *  抽奖活动状态
      */
     private Integer rafflestatus;
-
-
-
     /**
      * 创建时间
      */
@@ -104,6 +102,10 @@ public class RaffleInfo implements Serializable {
      *  参与者数量
      */
     private Integer participants;
+
+
+
+    private BigInteger winnerTicketNumber;
 
     /**
      * 开奖日期，兑换创窗口期按照这个+2天计算
@@ -247,6 +249,13 @@ public class RaffleInfo implements Serializable {
     }
     public Integer getRaffleAssets() {
         return raffleAssets;
+    }
+    public BigInteger getWinnerTicketNumber() {
+        return winnerTicketNumber;
+    }
+
+    public void setWinnerTicketNumber(BigInteger winnerTicketNumber) {
+        this.winnerTicketNumber = winnerTicketNumber;
     }
 
     public void setRaffleAssets(Integer raffleAssets) {

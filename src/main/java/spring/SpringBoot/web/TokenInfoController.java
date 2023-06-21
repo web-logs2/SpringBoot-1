@@ -1,11 +1,13 @@
 package spring.SpringBoot.web;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.TokenInfo;
+import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.TokenInfoService;
 import spring.SpringBoot.utils.ResponseUtil;
 
@@ -15,6 +17,9 @@ public class TokenInfoController {
 
     @Autowired
     TokenInfoService tokenInfoService;
+
+    @Autowired
+    TokenInfoMapper tokenInfoMapper;
 
     /**
      * 根据owner获取TokenInfo信息
@@ -41,4 +46,22 @@ public class TokenInfoController {
         }
         return ResponseUtil.ok("create token success!");
     }
+
+    /**
+     * 更新token的owner
+     * @param
+     * @return
+     */
+    @RequestMapping("/updateOwnerInt")
+    public Object updateOwnerInt(@RequestParam("owner") String owner,
+                                 @RequestParam("contractAddress") String contractAddress,
+                                 @RequestParam("tokenId") String tokenId) {
+        Object result = tokenInfoMapper.updateOwnerInt(owner,contractAddress,tokenId);
+        if (result.equals(0)) {
+            return ResponseUtil.fail(2, "token does not exist.");
+        }
+        return ResponseUtil.ok("create token success!");
+    }
 }
+
+

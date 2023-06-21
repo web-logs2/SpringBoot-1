@@ -12,6 +12,7 @@ import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
 import spring.SpringBoot.service.ParticipantInfoService;
 import spring.SpringBoot.service.RaffleContractService;
+import spring.SpringBoot.utils.ResponseUtil;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -41,7 +42,9 @@ import java.util.concurrent.Executors;
                 try {
                     TransactionListener listener = new TransactionListener(map,participantInfoService, tokenInfoMapper, raffleInfoMapper,raffleContractService);
                     listener.start();
+                    ResponseUtil.ok("success");
                 } catch (Exception e) {
+                    ResponseUtil.fail(-1, "fail!");
                     e.printStackTrace();
                 }
                 // 在这里使用Web3j或The Graph等库来监听交易状态

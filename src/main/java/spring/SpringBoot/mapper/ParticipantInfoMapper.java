@@ -22,6 +22,12 @@ public interface ParticipantInfoMapper {
 
     List<ParticipantInfo> getParticipantInfos(String participantAddress);
 
+//    List<ParticipantInfo> getParticipantInfosByParticipantInfo(@Param("raffleaddress") String raffleaddress,
+//                                                               @Param("participantAddress") String participantAddress,
+//                                                               @Param("from") Integer from,
+//                                                               @Param("to") Integer to);
+List<ParticipantInfo> getParticipantInfosByParticipantInfo(ParticipantInfo record);
+
     List<ParticipantInfo> getParticipantInfosByRaffleAddress(String raffleaddress);
 
     List<ParticipantInfo>  getParticipantInfosGroupByRaffleAddress(String participantAddress);

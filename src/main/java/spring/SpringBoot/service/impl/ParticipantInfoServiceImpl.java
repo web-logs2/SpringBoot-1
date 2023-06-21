@@ -54,6 +54,20 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
 
     @Override
     public int createParticipantInfo(ParticipantInfo participantInfo) {
+      RaffleInfo raffleInfo = new RaffleInfo();
+      int raffleAssets = raffleInfoMapper.getDetailByRaffleAddress(participantInfo.getRaffleaddress()).getRaffleAssets();
+      if(2==raffleAssets || 1==raffleAssets){
+        raffleInfo.setRaffleAssets(999);
+      }
+      if(0==raffleAssets){
+        raffleInfo.setRaffleAssets(1);
+      }
+      raffleInfoMapper.updateRaffleInfo(raffleInfo);
+      int participants = participantInfoMapper.getParticipantInfosByParticipantInfo(participantInfo).size();
+      if(0==participants){
         return participantInfoMapper.insertSelective(participantInfo);
+      }else{
+        return  -1;
+      }
     }
 }

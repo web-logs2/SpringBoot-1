@@ -36,9 +36,22 @@ public class ParticipantInfo implements Serializable {
     private Integer ticket;
 
     /**
+     * 票计数的起始值
+     */
+    private Integer from;
+
+
+    /**
+     * 票计数的结束值
+     */
+    private Integer to;
+
+
+    /**
      * 创建时间
      */
     private Date createTime;
+
 
     /**
      * 更新时间
@@ -92,7 +105,21 @@ public class ParticipantInfo implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+    public Integer getFrom() {
+        return from;
+    }
 
+    public void setFrom(Integer from) {
+        this.from = from;
+    }
+
+    public Integer getTo() {
+        return to;
+    }
+
+    public void setTo(Integer to) {
+        this.to = to;
+    }
 
 
     private static final long serialVersionUID = 1L;

@@ -65,7 +65,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
       }
     }
     if(4==raffleStatusByDb && 0==swapStatusStatusByDb){
-        // 4:已经完成   && 0：说明还未进行选择，需要纠正状态。  1：eth  2：nft
+        // 4:已经完成   && 0：说明还未进行选择，需要矫正状态。  1：eth  2：nft
         BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleAddress,chainId);
         if(0 !=swapStautsByChain.intValue() ){
             raffleInfo.setSwapStatus(swapStautsByChain.intValue());
@@ -81,6 +81,12 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
             BigInteger winnerDrawTimestamp = raffleContractService.getWinnerDrawTimestamp(raffleInfo.getRaffleaddress(),chainId);
             if(null!=winnerDrawTimestamp){
                 raffleInfo.setWinnerDrawTimestamp(winnerDrawTimestamp.longValue());
+            }
+        }
+        if(null == raffleInfo.getWinnerTicketNumber()){
+            BigInteger winnerTicketNumber = raffleContractService.getWinnerTicketNumber(raffleInfo.getRaffleaddress(),chainId);
+            if(null != winnerTicketNumber){
+                raffleInfo.setWinnerTicketNumber(winnerTicketNumber);
             }
         }
      }

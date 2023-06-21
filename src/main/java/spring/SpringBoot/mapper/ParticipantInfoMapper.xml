@@ -7,11 +7,13 @@
     <result column="participant_address" jdbcType="VARCHAR" property="participantAddress" />
     <result column="raffleAddress" jdbcType="VARCHAR" property="raffleaddress" />
     <result column="ticket" jdbcType="INTEGER" property="ticket" />
+    <result column="from" jdbcType="INTEGER" property="from" />
+    <result column="to" jdbcType="INTEGER" property="to" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, token_id, participant_address, raffleAddress, ticket, create_time, update_time
+    id, token_id, participant_address, raffleAddress, ticket, `from`, `to`, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -59,16 +61,27 @@
     where raffleAddress = #{raffleaddress,jdbcType=VARCHAR} and participant_address = #{participantAddress,jdbcType=VARCHAR}
   </select>
 
+
+  <select id="getParticipantInfosByParticipantInfo"  parameterType="spring.SpringBoot.entry.ParticipantInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from participant_info
+    where raffleAddress = #{raffleaddress,jdbcType=VARCHAR} and participant_address = #{participantAddress,jdbcType=VARCHAR}
+    and `from` = #{from,jdbcType=INTEGER} and `to` = #{to,jdbcType=INTEGER}
+  </select>
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from participant_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.ParticipantInfo" useGeneratedKeys="true">
     insert into participant_info (token_id, participant_address, raffleAddress,
-      ticket, create_time, update_time
+      ticket, `from`, `to`, create_time, update_time
       )
     values (#{tokenId,jdbcType=VARCHAR}, #{participantAddress,jdbcType=VARCHAR}, #{raffleaddress,jdbcType=VARCHAR},
-      #{ticket,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{ticket,jdbcType=INTEGER}, #{from,jdbcType=INTEGER},#{to,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.ParticipantInfo" useGeneratedKeys="true">
@@ -85,6 +98,12 @@
       </if>
       <if test="ticket != null">
         ticket,
+      </if>
+      <if test="from != null">
+        `from`,
+      </if>
+      <if test="to != null">
+        `to`,
       </if>
       <if test="createTime != null">
         create_time,
@@ -105,6 +124,12 @@
       </if>
       <if test="ticket != null">
         #{ticket,jdbcType=INTEGER},
+      </if>
+      <if test="from != null">
+        #{from,jdbcType=INTEGER},
+      </if>
+      <if test="to != null">
+        #{to,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -129,6 +154,12 @@
       <if test="ticket != null">
         ticket = #{ticket,jdbcType=INTEGER},
       </if>
+      <if test="from != null">
+        `from` = #{from,jdbcType=INTEGER},
+      </if>
+      <if test="to != null">
+        `to` = #{to,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -144,6 +175,8 @@
       participant_address = #{participantAddress,jdbcType=VARCHAR},
         raffleAddress = #{raffleaddress,jdbcType=VARCHAR},
       ticket = #{ticket,jdbcType=INTEGER},
+      `from` = #{from,jdbcType=INTEGER},
+      `to` = #{to,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

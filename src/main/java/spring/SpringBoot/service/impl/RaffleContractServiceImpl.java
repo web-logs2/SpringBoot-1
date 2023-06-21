@@ -42,6 +42,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     public Long getTokenChainIdByRaffleAddress(String raffleAddress){
         RaffleInfo raffleInfo = raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(),raffleInfo.getTokenId());
+
         return Long.valueOf(tokenInfo.getChain());
     }
 

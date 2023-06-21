@@ -46,6 +46,12 @@ public class ListenContractEvent implements ApplicationRunner {
     @Autowired
     private EthFilter fantomNRaffleFactoryFilter;
 
+    @Autowired
+    private EthFilter polygonMumbaiNRaffleFactoryFilter;
+
+    @Autowired
+    private EthFilter bscTestnetNRaffleFactoryFilter;
+
 //    @Autowired
 //    private EthFilter ethNRaffleFilter;
 //
@@ -61,9 +67,14 @@ public class ListenContractEvent implements ApplicationRunner {
     @Resource
     @Qualifier("fantomNRaffleFactoryTrace")
     private NRaffleFactory fantomNraffleFactory;
-//
-//    @Resource
-//    private NRaffle nraffle;
+
+    @Resource
+    @Qualifier("polygonMumbaiNRaffleFactoryTrace")
+    private NRaffleFactory polygonMumbaiNraffleFactory;
+
+    @Resource
+    @Qualifier("bscTestnetNRaffleFactoryTrace")
+    private NRaffleFactory bscTestnetNraffleFactory;
 
     @Autowired
     private RaffleInfoService raffleInfoService;
@@ -72,6 +83,8 @@ public class ListenContractEvent implements ApplicationRunner {
     public void run(ApplicationArguments var1) {
         sepoliaRaffleCreatedListener();
         fantomRaffleCreatedListener();
+        polygonMumbaiRaffleCreatedListener();
+        bscTestnetRaffleCreatedListener();
         this.log.info("This will be execute when the project was started!");
     }
 
@@ -177,6 +190,115 @@ public class ListenContractEvent implements ApplicationRunner {
                         error -> {
                             log.error("订阅活动创建事件时发生错误！", error);
                             // 在这里处理错误情况
+                        }
+                );
+
+    }
+
+    /**
+     * listen:RaffleCreated
+     */
+    public void polygonMumbaiRaffleCreatedListener() {
+        Event event = new Event("RaffleCreated",
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint16>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Bytes32>() {
+                }, new TypeReference<Address>(true) {
+                }));
+
+
+        polygonMumbaiNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
+        log.info("polygonMumbai启动监听RaffleCreated");
+        polygonMumbaiNraffleFactory.raffleCreatedEventFlowable(polygonMumbaiNRaffleFactoryFilter)
+                .subscribe(
+                        response -> {
+                            try {
+                                RaffleInfo result = raffleInfoService.getRaffleDetailByRaffleAddress(response.raffleAddress);
+                                if (null == result) {
+                                    RaffleInfo raffleInfo = new RaffleInfo();
+                                    raffleInfo.setContractAddress(response.nftContract);
+                                    raffleInfo.setOwner(response.owner);
+                                    raffleInfo.setRaffleaddress(response.raffleAddress);
+                                    raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
+                                    raffleInfo.setTickets(response.tickets.intValue());
+                                    raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
+                                    raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
+                                    raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
+                                    raffleInfo.setRafflestatus(0);
+
+                                    raffleInfoService.createRaffleInfo(raffleInfo);
+                                    log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
+                                } else {
+                                    log.info("该raffleAddress活动已存在！raffleAddress:" + response.raffleAddress);
+                                }
+                            } catch (Exception e) {
+                                log.error("处理活动创建事件时发生异常！", e);
+                            }
+                        },
+                        error -> {
+                            log.error("订阅活动创建事件时发生错误！", error);
+                        }
+                );
+
+    }
+
+
+    /**
+     * listen:RaffleCreated
+     */
+    public void bscTestnetRaffleCreatedListener() {
+        Event event = new Event("RaffleCreated",
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint16>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Bytes32>() {
+                }, new TypeReference<Address>(true) {
+                }));
+
+
+        bscTestnetNRaffleFactoryFilter.addSingleTopic(EventEncoder.encode(event));
+        log.info("bscTestnet启动监听RaffleCreated");
+        bscTestnetNraffleFactory.raffleCreatedEventFlowable(bscTestnetNRaffleFactoryFilter)
+                .subscribe(
+                        response -> {
+                            try {
+                                RaffleInfo result = raffleInfoService.getRaffleDetailByRaffleAddress(response.raffleAddress);
+                                if (null == result) {
+                                    RaffleInfo raffleInfo = new RaffleInfo();
+                                    raffleInfo.setContractAddress(response.nftContract);
+                                    raffleInfo.setOwner(response.owner);
+                                    raffleInfo.setRaffleaddress(response.raffleAddress);
+                                    raffleInfo.setTokenId(String.valueOf(response.nftTokenId));
+                                    raffleInfo.setTickets(response.tickets.intValue());
+                                    raffleInfo.setTicketprice(response.ticketPrice.doubleValue());
+                                    raffleInfo.setStarttimestamp(response.startTimestamp.longValue());
+                                    raffleInfo.setEndtimestamp(response.endTimestamp.longValue());
+                                    raffleInfo.setRafflestatus(0);
+
+                                    raffleInfoService.createRaffleInfo(raffleInfo);
+                                    log.info("该raffleAddress活动创建成功！raffleAddress:" + response.raffleAddress);
+                                } else {
+                                    log.info("该raffleAddress活动已存在！raffleAddress:" + response.raffleAddress);
+                                }
+                            } catch (Exception e) {
+                                log.error("处理活动创建事件时发生异常！", e);
+                            }
+                        },
+                        error -> {
+                            log.error("订阅活动创建事件时发生错误！", error);
                         }
                 );
 

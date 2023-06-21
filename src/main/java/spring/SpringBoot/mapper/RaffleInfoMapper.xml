@@ -19,11 +19,12 @@
         <result column="cancelled_extracted_status" jdbcType="INTEGER" property="cancelledExtractedStatus" />
         <result column="raffle_assets" jdbcType="INTEGER" property="raffleAssets" />
         <result column="winnerDrawTimestamp" jdbcType="BIGINT" property="winnerDrawTimestamp" />
+        <result column="winner_ticket_number" jdbcType="BIGINT" property="winnerTicketNumber" />
     </resultMap>
     <sql id="Base_Column_List">
         id, raffleAddress, `owner`, token_id, contract_address, tickets, ticketPrice, startTimestamp,
     endTimestamp, raffleStatus, create_time, update_time, king, swap_status,cancelled_extracted_status,
-    raffle_assets,winnerDrawTimestamp
+    raffle_assets,winnerDrawTimestamp,winner_ticket_number
     </sql>
     <select id="getDetailByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -38,8 +39,6 @@
         where `owner` = #{owner,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR} and
         contract_address = #{contractAddress,jdbcType=VARCHAR} and rafflestatus IN (0, 1, 2, 3)
     </select>
-
-
 
     <select id="getExecSwapRaffleInfos" resultMap="BaseResultMap">
         select
@@ -98,12 +97,13 @@
                                  contract_address, tickets, ticketPrice,
                                  startTimestamp, endTimestamp, raffleStatus,
                                  create_time, update_time, king,
-                                 swap_status, cancelled_extracted_status,winnerDrawTimestamp)
+                                 swap_status, cancelled_extracted_status,winnerDrawTimestamp,winner_ticket_number)
         values (#{raffleaddress,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR},
                 #{contractAddress,jdbcType=VARCHAR}, #{tickets,jdbcType=INTEGER}, #{ticketprice,jdbcType=FLOAT},
                 #{starttimestamp,jdbcType=BIGINT}, #{endtimestamp,jdbcType=BIGINT}, #{rafflestatus,jdbcType=INTEGER},
                 #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{king,jdbcType=VARCHAR},
-                #{swapStatus,jdbcType=INTEGER},#{cancelledExtractedStatus,jdbcType=INTEGER}, #{winnerDrawTimestamp,jdbcType=BIGINT})
+                #{swapStatus,jdbcType=INTEGER},#{cancelledExtractedStatus,jdbcType=INTEGER}, #{winnerDrawTimestamp,jdbcType=BIGINT},
+                #{winnerTicketNumber,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.RaffleInfo"
             useGeneratedKeys="true">
@@ -154,6 +154,10 @@
             <if test="winnerDrawTimestamp != null">
               winnerDrawTimestamp,
             </if>
+            <if test="winnerTicketNumber != null">
+                winnerTicketNumber,
+            </if>
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="raffleaddress != null">
@@ -202,6 +206,10 @@
             <if test="winnerDrawTimestamp != null">
                 #{winnerDrawTimestamp,jdbcType=BIGINT},
             </if>
+            <if test="winnerTicketNumber != null">
+                #{winnerTicketNumber,jdbcType=BIGINT},
+            </if>
+
         </trim>
     </insert>
     <update id="updateRaffleInfo" parameterType="spring.SpringBoot.entry.RaffleInfo">
@@ -226,6 +234,10 @@
             <if test="winnerDrawTimestamp != null">
                 winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=INTEGER},
             </if>
+            <if test="winnerTicketNumber != null">
+                winnerTicketNumber = #{winnerTicketNumber,jdbcType=INTEGER},
+            </if>
+
             update_time = CURRENT_TIMESTAMP
         </set>
         where raffleAddress = #{raffleaddress,jdbcType=VARCHAR}
@@ -246,7 +258,8 @@
             king = #{king,jdbcType=VARCHAR},
             swap_status = #{swapStatus,jdbcType=INTEGER},
             cancelled_extracted_status = #{cancelledExtractedStatus,jdbcType=INTEGER},
-            winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=BIGINT}
+            winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=BIGINT},
+            winnerTicketNumber = #{winnerTicketNumber,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
