@@ -8,7 +8,8 @@ public final class ChainConstants {
 
     static {
         CHAIN_CONFIGS = new HashMap<>();
-        CHAIN_CONFIGS.put(4002, new Chain(
+        CHAIN_CONFIGS.put(4002,
+                new Chain(
                 4002,
                 "fantomTestnet",
                 "https://rpcapi-tracing.testnet.fantom.network",
@@ -30,7 +31,7 @@ public final class ChainConstants {
                 new Chain(
                         80001,
                         "polygonMumbai",
-                        "https://matic-mumbai.chainstacklabs.com",
+                        "https://polygon-mumbai.g.alchemy.com/v2/ejNxExMIpy8ijb1Q4AX-VIG3ngHuTYxl",
                         "0x3d92e26916e94574e95944753800DfaCECFC1F5B",
                         "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
                         3000000L

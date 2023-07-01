@@ -122,8 +122,6 @@ public class ContractConfig {
             throw e;
         }
     }
-
-
     @Bean
     @Autowired
     public NRaffleFactory bscTestnetNRaffleFactoryTrace(Web3j web3jBscTestnet) throws IOException {
@@ -145,12 +143,6 @@ public class ContractConfig {
             throw e;
         }
     }
-
-
-
-
-
-
     @Bean
     //监听这里采用每次都生成一个新的对象，因为同时监听多个事件不能使用同一个实例
     @Scope("prototype")
@@ -167,7 +159,6 @@ public class ContractConfig {
         return new EthFilter(DefaultBlockParameter.valueOf(currentBlockNumber),
                 DefaultBlockParameterName.LATEST,
                 trace.getContractAddress());
-        //获取启动时监听的区块
     }
 
     @Bean

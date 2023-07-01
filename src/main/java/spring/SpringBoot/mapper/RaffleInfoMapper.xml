@@ -155,7 +155,7 @@
               winnerDrawTimestamp,
             </if>
             <if test="winnerTicketNumber != null">
-                winnerTicketNumber,
+                winner_ticket_number,
             </if>
 
         </trim>
@@ -235,7 +235,7 @@
                 winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=INTEGER},
             </if>
             <if test="winnerTicketNumber != null">
-                winnerTicketNumber = #{winnerTicketNumber,jdbcType=INTEGER},
+                winner_ticket_number = #{winnerTicketNumber,jdbcType=INTEGER},
             </if>
 
             update_time = CURRENT_TIMESTAMP
@@ -259,7 +259,7 @@
             swap_status = #{swapStatus,jdbcType=INTEGER},
             cancelled_extracted_status = #{cancelledExtractedStatus,jdbcType=INTEGER},
             winnerDrawTimestamp = #{winnerDrawTimestamp,jdbcType=BIGINT},
-            winnerTicketNumber = #{winnerTicketNumber,jdbcType=BIGINT}
+            winner_ticket_number = #{winnerTicketNumber,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
