@@ -60,7 +60,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         //!4  !5的时候，raffleStatus会变化
     if(4!=raffleStatusByDb && 5!=raffleStatusByDb){
       BigInteger raffleStatusByChain = raffleContractService.getState(raffleAddress,chainId);
-      if(raffleStatusByChain != null && !raffleStatusByChain.equals(raffleStatusByDb)){
+      if(raffleStatusByChain != null && !raffleStatusByChain.equals( BigInteger.valueOf(raffleStatusByDb))){
         raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(raffleStatusByChain)));
       }
     }

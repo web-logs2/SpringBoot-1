@@ -62,6 +62,25 @@ public class TokenInfoController {
         }
         return ResponseUtil.ok("create token success!");
     }
+
+    /**
+     * 删除token
+     * @param
+     * @return
+     */
+    @RequestMapping("/deleteByTokenId")
+    public Object deleteByTokenId(
+            @RequestParam("contractAddress") String contractAddress,
+            @RequestParam("tokenId") String tokenId) {
+        Object result = tokenInfoMapper.deleteByTokenId(contractAddress,tokenId);
+        if (result.equals(0)) {
+            return ResponseUtil.fail(2, "token does not exist.");
+        }
+        return ResponseUtil.ok("delete token success!");
+    }
 }
+
+
+
 
 

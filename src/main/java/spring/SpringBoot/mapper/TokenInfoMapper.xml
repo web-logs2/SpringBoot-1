@@ -34,6 +34,11 @@
     delete from token_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByTokenId"  parameterType="java.lang.String" >
+    delete from token_info
+    where contract_address = #{contractAddress,jdbcType=VARCHAR} and token_id = #{tokenId,jdbcType=VARCHAR}
+  </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="spring.SpringBoot.entry.TokenInfo" useGeneratedKeys="true">
     insert into token_info (token_id, contract_address, `owner`, 
       nftStandard_id, image, `name`, `chain`,

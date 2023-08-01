@@ -23,7 +23,8 @@ public final class ChainConstants {
                         11155111,
                         "sepolia",
                         "https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336",
-                        "0xcD3F30766e447a9Ed86a909f7E918FBa411a34C2",
+//                        "0xcD3F30766e447a9Ed86a909f7E918FBa411a34C2",
+                        "0x93Bbfb6ec89600F3617d0465e5f3806FF7A88074",
                         "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
                         3000000L
                 ));

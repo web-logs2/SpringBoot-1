@@ -89,4 +89,5 @@ public class RaffleInfoController {
         RaffleInfo raffleInfo= raffleInfoService.getRaffleDetailByRaffleAddress(raffleAddress);
         return ResponseUtil.ok(raffleInfo);
     }
+
 }

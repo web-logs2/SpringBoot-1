@@ -10,6 +10,8 @@ import java.util.List;
 public interface TokenInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByTokenId(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId);
+
     int insert(TokenInfo record);
 
     int insertSelective(TokenInfo record);
