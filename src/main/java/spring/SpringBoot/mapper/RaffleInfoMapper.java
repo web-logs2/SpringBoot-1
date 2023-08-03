@@ -37,4 +37,6 @@ public interface RaffleInfoMapper {
 
     List<RaffleInfo> getExecRetryIfNoRNGRaffleInfos();
 
+    List<RaffleInfo> findAll(@Param("offset") int offset, @Param("limit") int limit,@Param("chainId") String chainId);
+
 }

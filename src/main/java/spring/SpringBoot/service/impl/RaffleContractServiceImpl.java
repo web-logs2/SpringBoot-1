@@ -43,6 +43,10 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         RaffleInfo raffleInfo = raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
         TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(),raffleInfo.getTokenId());
 
+        if(null == tokenInfo) {
+            return Long.valueOf(-1);
+        }
+
         return Long.valueOf(tokenInfo.getChain());
     }
 

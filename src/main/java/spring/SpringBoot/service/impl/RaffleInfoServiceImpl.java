@@ -2,6 +2,7 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
@@ -51,6 +52,26 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         return list;
     }
 
+    @Override
+    public List<TokenRaffleVo> findAll(int pageNumber, int pageSize,String chainId) {
+        List<TokenRaffleVo> list = new ArrayList<>();
+        int offset = pageNumber * pageSize;
+        int limit = pageSize;
+        List<RaffleInfo>  raffleInfos =  raffleInfoMapper.findAll(offset,limit,chainId);
+        for (RaffleInfo raffleInfo:raffleInfos){
+            TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
+            TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
+            Integer participants = participantInfoMapper.getParticipantCount(raffleInfo.getRaffleaddress());
+
+            raffleInfo.setParticipants(null == participants?0:participants);
+            raffleInfo = correctStatus(raffleInfo);
+            tokenRaffleVo.setRaffleInfo(raffleInfo);
+            tokenRaffleVo.setTokenInfo(tokenInfo);
+            list.add(tokenRaffleVo);
+        }
+        return list;
+    }
+
   @Override
     public RaffleInfo correctStatus(RaffleInfo raffleInfo){
       int raffleStatusByDb = raffleInfo.getRafflestatus();
@@ -58,13 +79,15 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
       String raffleAddress = raffleInfo.getRaffleaddress();
       Long chainId = raffleContractService.getTokenChainIdByRaffleAddress(raffleAddress);
         //!4  !5的时候，raffleStatus会变化
-    if(4!=raffleStatusByDb && 5!=raffleStatusByDb){
-      BigInteger raffleStatusByChain = raffleContractService.getState(raffleAddress,chainId);
-      if(raffleStatusByChain != null && !raffleStatusByChain.equals( BigInteger.valueOf(raffleStatusByDb))){
-        raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(raffleStatusByChain)));
-      }
+    if(4!=raffleStatusByDb && 5!=raffleStatusByDb && !Long.valueOf(-1).equals(chainId)){
+
+            BigInteger raffleStatusByChain = raffleContractService.getState(raffleAddress,chainId);
+            if(raffleStatusByChain != null && !raffleStatusByChain.equals( BigInteger.valueOf(raffleStatusByDb))){
+                raffleInfo.setRafflestatus(Integer.valueOf(String.valueOf(raffleStatusByChain)));
+            }
+
     }
-    if(4==raffleStatusByDb && 0==swapStatusStatusByDb){
+    if(4==raffleStatusByDb && 0==swapStatusStatusByDb && !Long.valueOf(-1).equals(chainId)){
         // 4:已经完成   && 0：说明还未进行选择，需要矫正状态。  1：eth  2：nft
         BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleAddress,chainId);
         if(0 !=swapStautsByChain.intValue() ){
@@ -92,14 +115,14 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
      }
 //     5:是终态，和兑换状态有关
     if(new BigInteger("5").equals(raffleInfo.getRafflestatus()) &&
-            !(new BigInteger("0").equals(raffleInfo.getRaffleAssets()))) {
+            !(new BigInteger("0").equals(raffleInfo.getRaffleAssets())) && !Long.valueOf(-1).equals(chainId)) {
         //取消状态，getSwapStauts  = 1，即为已退回
         BigInteger nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId);
         BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress(),chainId);
         BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
         if(new BigInteger("1").equals(nftBackStatus)){
-            if(raffleAssetsByDb == 999){
+            if(raffleAssetsByDb ==999){
                 if(soldTickets.equals(refundTickets)){
                     raffleInfo.setRaffleAssets(0);
                 }else {
@@ -130,6 +153,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
       updateRaffleInfo(raffleInfo);
       return raffleInfo;
     }
+
+
+
 
     @Override
     public int createRaffleInfo(RaffleInfo raffleInfo) {

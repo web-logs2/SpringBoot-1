@@ -86,6 +86,21 @@
         where `owner` = #{owner,jdbcType=VARCHAR}
     </select>
 
+    <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        ri.id, ri.raffleAddress, ri.owner, ri.token_id, ri.contract_address, ri.tickets, ri.ticketPrice, ri.startTimestamp,
+        ri.endTimestamp, ri.raffleStatus, ri.create_time, ri.update_time, ri.king, ri.swap_status,ri.cancelled_extracted_status,
+        ri.raffle_assets,ri.winnerDrawTimestamp
+        FROM raffle_info ri
+        JOIN token_info ti
+        ON ri.contract_address = ti.contract_address
+        AND ri.token_id = ti.token_id
+        <if test="chainId != 'All'">
+            WHERE ti.chain = #{chainId}
+        </if>
+        ORDER BY ri.id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from raffle_info

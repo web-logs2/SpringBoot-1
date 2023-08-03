@@ -1,5 +1,6 @@
 package spring.SpringBoot.service;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.vo.TokenRaffleVo;
 
@@ -19,5 +20,8 @@ public interface RaffleInfoService {
 
     RaffleInfo  getRaffleDetailByRaffleAddress(String raffleAddress);
 
-  RaffleInfo correctStatus(RaffleInfo raffleInfo);
+    List<TokenRaffleVo> findAll(int pageNumber, int pageSize,String chainId);
+
+    RaffleInfo correctStatus(RaffleInfo raffleInfo);
+
 }

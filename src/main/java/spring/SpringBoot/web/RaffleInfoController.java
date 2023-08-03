@@ -89,5 +89,14 @@ public class RaffleInfoController {
         RaffleInfo raffleInfo= raffleInfoService.getRaffleDetailByRaffleAddress(raffleAddress);
         return ResponseUtil.ok(raffleInfo);
     }
-
+    /**
+     * 获取raffle-all
+     * @param
+     * @return
+     */
+    @RequestMapping("/getAll")
+    public Object getAll(@RequestParam int pageNumber, @RequestParam int pageSize,@RequestParam String chainId) {
+        List<TokenRaffleVo> tokenRaffleVos = raffleInfoService.findAll(pageNumber,pageSize,chainId);
+        return ResponseUtil.ok(tokenRaffleVos);
+    }
 }
