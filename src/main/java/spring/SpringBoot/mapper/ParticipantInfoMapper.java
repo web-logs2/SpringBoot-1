@@ -30,8 +30,10 @@ List<ParticipantInfo> getParticipantInfosByParticipantInfo(ParticipantInfo recor
 
     List<ParticipantInfo> getParticipantInfosByRaffleAddress(String raffleaddress);
 
-    List<ParticipantInfo>  getParticipantInfosGroupByRaffleAddress(String participantAddress);
-
+    List<ParticipantInfo>  getParticipantInfosGroupByRaffleAddress(@Param("participantAddress")  String participantAddress,
+                                                                   @Param("offset") int offset,
+                                                                   @Param("limit") int limit,
+                                                                   @Param("chainId") String chainId);
     List<ParticipantInfo> ParticipantInfos(String raffleaddress);
 
 

@@ -25,8 +25,11 @@ public class ParticipantInfoController {
      * @return
      */
     @RequestMapping("/getParticipantInfoList")
-    public Object getParticipantInfoList(@RequestParam String userAddress) {
-      List<TokenRaffleVo> participantInfos = participantInfoService.getParticipantInfos(userAddress);
+    public Object getParticipantInfoList(@RequestParam String userAddress,
+                                         @RequestParam int pageNumber,
+                                         @RequestParam int pageSize,
+                                         @RequestParam String chainId) {
+      List<TokenRaffleVo> participantInfos = participantInfoService.getParticipantInfos(userAddress,pageNumber,pageSize,chainId);
         return ResponseUtil.ok(participantInfos);
     }
 

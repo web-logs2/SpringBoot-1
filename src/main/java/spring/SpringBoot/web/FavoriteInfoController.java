@@ -29,8 +29,14 @@ public class FavoriteInfoController {
      * @return
      */
     @RequestMapping("/getFavoriteInfoList")
-    public Object getFavoriteInfoList(@RequestParam String subscriberWallet) {
-        List<TokenRaffleVo>  favoriteInfos = favoriteInfoService.getFavoriteInfoList(subscriberWallet);
+    public Object getFavoriteInfoList(
+            @RequestParam String subscriberWallet,
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam String chainId
+
+    ) {
+        List<TokenRaffleVo>  favoriteInfos = favoriteInfoService.getFavoriteInfoList(subscriberWallet,pageNumber,pageSize,chainId);
         return ResponseUtil.ok(favoriteInfos);
     }
 

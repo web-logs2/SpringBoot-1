@@ -98,6 +98,9 @@
         <if test="chainId != 'All'">
             WHERE ti.chain = #{chainId}
         </if>
+        <if test="owner != null">
+            AND ri.owner = #{owner}
+        </if>
         ORDER BY ri.id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>

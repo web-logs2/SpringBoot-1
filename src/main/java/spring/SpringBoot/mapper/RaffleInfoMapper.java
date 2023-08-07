@@ -22,8 +22,6 @@ public interface RaffleInfoMapper {
 
     int updateByPrimaryKey(RaffleInfo record);
 
-    List<RaffleInfo> getRaffleInfoListByOwner(String owner);
-
     RaffleInfo getRaffleInfoByCondition(Map map);
 
     RaffleInfo getWaitingForNftRaffleInfos(@Param("contractAddress") String contractAddress, @Param("tokenId") String tokenId,@Param("owner") String owner);
@@ -37,6 +35,8 @@ public interface RaffleInfoMapper {
 
     List<RaffleInfo> getExecRetryIfNoRNGRaffleInfos();
 
-    List<RaffleInfo> findAll(@Param("offset") int offset, @Param("limit") int limit,@Param("chainId") String chainId);
+    List<RaffleInfo> getRaffleInfoListByOwner(@Param("owner") String owner);
+
+    List<RaffleInfo> findAll(@Param("owner") String owner,@Param("offset") int offset, @Param("limit") int limit,@Param("chainId") String chainId);
 
 }

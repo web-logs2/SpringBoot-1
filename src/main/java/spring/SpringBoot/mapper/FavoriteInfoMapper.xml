@@ -18,11 +18,22 @@
     from favorite_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+<!--  <select id="getFavoriteInfoList" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--    select-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from favorite_info-->
+<!--    where subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR}-->
+<!--  </select>-->
   <select id="getFavoriteInfoList" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from favorite_info
-    where subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR}
+    SELECT fi.id, fi.subscriber_wallet, fi.raffleAddress, fi.subscribee_wallet, fi.create_time, fi.update_time
+    FROM favorite_info fi
+    JOIN raffle_info ri ON fi.raffleAddress = ri.raffleAddress
+    JOIN token_info ti ON ri.contract_address = ti.contract_address AND ri.token_id = ti.token_id
+    WHERE fi.subscriber_wallet = #{subscriberWallet,jdbcType=VARCHAR}
+    <if test="chainId != 'All'">
+      AND ti.chain = #{chainId}
+    </if>
+    LIMIT #{limit} OFFSET #{offset}
   </select>
 
   <select id="getFavoriteInfoListbyRaffleAndSubscriber" resultMap="BaseResultMap">

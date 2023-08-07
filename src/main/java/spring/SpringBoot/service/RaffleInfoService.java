@@ -20,7 +20,7 @@ public interface RaffleInfoService {
 
     RaffleInfo  getRaffleDetailByRaffleAddress(String raffleAddress);
 
-    List<TokenRaffleVo> findAll(int pageNumber, int pageSize,String chainId);
+    List<TokenRaffleVo> findAll(String owner,int pageNumber, int pageSize,String chainId);
 
     RaffleInfo correctStatus(RaffleInfo raffleInfo);
 

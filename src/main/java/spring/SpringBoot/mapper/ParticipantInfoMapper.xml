@@ -21,12 +21,24 @@
     from participant_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+<!--  <select id="getParticipantInfosGroupByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--    SELECT raffleAddress,participant_address, SUM(ticket) AS totalTicket-->
+<!--    FROM participant_info-->
+<!--    where participant_address = #{participantAddress,jdbcType=VARCHAR}-->
+<!--    GROUP BY raffleAddress;-->
+<!--  </select>-->
   <select id="getParticipantInfosGroupByRaffleAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT raffleAddress,participant_address, SUM(ticket) AS totalTicket
-    FROM participant_info
-    where participant_address = #{participantAddress,jdbcType=VARCHAR}
-    GROUP BY raffleAddress;
-  </select>
+    SELECT pi.raffleAddress, pi.participant_address, SUM(pi.ticket) AS totalTicket
+    FROM participant_info pi
+    JOIN raffle_info ri ON pi.raffleAddress = ri.raffleAddress
+    JOIN token_info ti ON ri.contract_address = ti.contract_address AND ri.token_id = ti.token_id
+    WHERE pi.participant_address = #{participantAddress,jdbcType=VARCHAR}
+    <if test="chainId != 'All'">
+      AND ti.chain = #{chainId}
+    </if>
+    GROUP BY pi.raffleAddress
+    LIMIT #{limit} OFFSET #{offset}
+</select>
   <select id="getParticipantInfos" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

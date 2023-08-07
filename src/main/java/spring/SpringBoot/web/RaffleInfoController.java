@@ -95,8 +95,12 @@ public class RaffleInfoController {
      * @return
      */
     @RequestMapping("/getAll")
-    public Object getAll(@RequestParam int pageNumber, @RequestParam int pageSize,@RequestParam String chainId) {
-        List<TokenRaffleVo> tokenRaffleVos = raffleInfoService.findAll(pageNumber,pageSize,chainId);
+    public Object getAll(@RequestParam int pageNumber,
+                         @RequestParam int pageSize,
+                         @RequestParam String chainId,
+                         @RequestParam(value = "owner", required = false) String owner
+    ) {
+        List<TokenRaffleVo> tokenRaffleVos = raffleInfoService.findAll(owner,pageNumber,pageSize,chainId);
         return ResponseUtil.ok(tokenRaffleVos);
     }
 }

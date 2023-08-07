@@ -53,11 +53,11 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     }
 
     @Override
-    public List<TokenRaffleVo> findAll(int pageNumber, int pageSize,String chainId) {
+    public List<TokenRaffleVo> findAll(String owner,int pageNumber, int pageSize,String chainId) {
         List<TokenRaffleVo> list = new ArrayList<>();
         int offset = pageNumber * pageSize;
         int limit = pageSize;
-        List<RaffleInfo>  raffleInfos =  raffleInfoMapper.findAll(offset,limit,chainId);
+        List<RaffleInfo>  raffleInfos =  raffleInfoMapper.findAll(owner,offset,limit,chainId);
         for (RaffleInfo raffleInfo:raffleInfos){
             TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
             TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());

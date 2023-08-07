@@ -34,8 +34,10 @@ public class FavoriteInfoServiceImpl implements FavoriteInfoService {
     TokenInfoMapper tokenInfoMapper;
 
     @Override
-    public List<TokenRaffleVo> getFavoriteInfoList(String subscriberWallet) {
-        List<FavoriteInfo> favoriteInfos = favoriteInfoMapper.getFavoriteInfoList(subscriberWallet);
+    public List<TokenRaffleVo> getFavoriteInfoList(String subscriberWallet,int pageNumber, int pageSize,String chainId) {
+        int offset = pageNumber * pageSize;
+        int limit = pageSize;
+        List<FavoriteInfo> favoriteInfos = favoriteInfoMapper.getFavoriteInfoList(subscriberWallet,offset,limit,chainId);
 
         List<TokenRaffleVo> list = new ArrayList<>();
 

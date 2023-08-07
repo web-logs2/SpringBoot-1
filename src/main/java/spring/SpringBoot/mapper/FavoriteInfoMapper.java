@@ -20,7 +20,10 @@ public interface FavoriteInfoMapper {
 
     int updateByPrimaryKey(FavoriteInfo record);
 
-    List<FavoriteInfo> getFavoriteInfoList(String subscriberWallet);
+    List<FavoriteInfo> getFavoriteInfoList(@Param("subscriberWallet")  String subscriberWallet,
+                                           @Param("offset") int offset,
+                                           @Param("limit") int limit,
+                                           @Param("chainId") String chainId);
 
     List<FavoriteInfo> getFavoriteInfoListbyRaffleAndSubscriber(@Param("subscriberWallet")  String subscriberWallet, @Param("raffleaddress")  String raffleaddress);
 }

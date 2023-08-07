@@ -32,8 +32,11 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
 
 
     @Override
-    public List<TokenRaffleVo> getParticipantInfos(String participantAddress) {
-      List<ParticipantInfo> participantInfos = participantInfoMapper.getParticipantInfosGroupByRaffleAddress(participantAddress);
+    public List<TokenRaffleVo> getParticipantInfos(String participantAddress,int pageNumber, int pageSize,String chainId) {
+      int offset = pageNumber * pageSize;
+      int limit = pageSize;
+      List<ParticipantInfo> participantInfos = participantInfoMapper.getParticipantInfosGroupByRaffleAddress(participantAddress,
+              offset,limit,chainId);
       List<TokenRaffleVo> list = new ArrayList<>();
       for(ParticipantInfo participantInfo:participantInfos){
         TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
