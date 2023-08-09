@@ -22,13 +22,11 @@ public class TaskJob {
      * 条件：swap_status = 0 AND king IS NOT NULL AND UNIX_TIMESTAMP(NOW()) > (winnerDrawTimestamp + (2 * 24 * 60 * 60))
      * @throws Exception
      **/
-
     @Scheduled(cron = "0 0 1 * * ?")
    public void job1() throws Exception {
         System.out.println("transferAllIfCompletedWithNFT定义的定时开始执行"+ LocalDateTime.now() );
         raffleContractService.execSwapTransferAllIfCompletedWithNFT();
         System.out.println("transferAllIfCompletedWithNFT执行结束"+ LocalDateTime.now() );
-
     }
 
     /**

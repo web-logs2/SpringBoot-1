@@ -3,6 +3,8 @@ package spring.SpringBoot.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import spring.SpringBoot.constant.RaffleStatus;
+import spring.SpringBoot.constant.SwapStatus;
 import spring.SpringBoot.entry.ParticipantInfo;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
@@ -79,7 +81,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
       String raffleAddress = raffleInfo.getRaffleaddress();
       Long chainId = raffleContractService.getTokenChainIdByRaffleAddress(raffleAddress);
         //!4  !5的时候，raffleStatus会变化
-    if(4!=raffleStatusByDb && 5!=raffleStatusByDb && !Long.valueOf(-1).equals(chainId)){
+    if(RaffleStatus.Completed.getCode()!=raffleStatusByDb && RaffleStatus.Cancelled.getCode()!=raffleStatusByDb && !Long.valueOf(-1).equals(chainId)){
 
             BigInteger raffleStatusByChain = raffleContractService.getState(raffleAddress,chainId);
             if(raffleStatusByChain != null && !raffleStatusByChain.equals( BigInteger.valueOf(raffleStatusByDb))){
@@ -87,10 +89,10 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
             }
 
     }
-    if(4==raffleStatusByDb && 0==swapStatusStatusByDb && !Long.valueOf(-1).equals(chainId)){
+    if(RaffleStatus.Completed.getCode()==raffleStatusByDb && SwapStatus.NoSwap.getCode()==swapStatusStatusByDb && !Long.valueOf(-1).equals(chainId)){
         // 4:已经完成   && 0：说明还未进行选择，需要矫正状态。  1：eth  2：nft
         BigInteger swapStautsByChain = raffleContractService.getSwapStauts(raffleAddress,chainId);
-        if(0 !=swapStautsByChain.intValue() ){
+        if(SwapStatus.NoSwap.getCode() !=swapStautsByChain.intValue() ){
             raffleInfo.setSwapStatus(swapStautsByChain.intValue());
         }
 
@@ -114,14 +116,14 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         }
      }
 //     5:是终态，和兑换状态有关
-    if(new BigInteger("5").equals(raffleInfo.getRafflestatus()) &&
-            !(new BigInteger("0").equals(raffleInfo.getRaffleAssets())) && !Long.valueOf(-1).equals(chainId)) {
+    if(RaffleStatus.Cancelled.getCode() == raffleInfo.getRafflestatus() &&
+            RaffleStatus.WaitingForNFT.getCode() != raffleInfo.getRaffleAssets() && !Long.valueOf(-1).equals(chainId)) {
         //取消状态，getSwapStauts  = 1，即为已退回
-        BigInteger nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId);
+        Integer nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId).intValue();
         BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress(),chainId);
         BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
-        if(new BigInteger("1").equals(nftBackStatus)){
+        if(SwapStatus.ETH.getCode() == nftBackStatus){
             if(raffleAssetsByDb ==999){
                 if(soldTickets.equals(refundTickets)){
                     raffleInfo.setRaffleAssets(0);
@@ -135,14 +137,14 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         }
         if(soldTickets.equals(refundTickets)){
             if(raffleAssetsByDb == 999){
-                if(new BigInteger("1").equals(nftBackStatus)){
+                if(SwapStatus.ETH.getCode() ==nftBackStatus){
                     raffleInfo.setRaffleAssets(0);
                 }else {
                     raffleInfo.setRaffleAssets(2);
                 }
             }
         }else {
-            if(!new BigInteger("1").equals(nftBackStatus)){
+            if(SwapStatus.ETH.getCode() !=nftBackStatus){
                 raffleInfo.setRaffleAssets(999);
             }
         }

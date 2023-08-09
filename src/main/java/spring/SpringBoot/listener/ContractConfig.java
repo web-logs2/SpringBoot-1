@@ -14,7 +14,6 @@ import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.constant.ChainConstants;
-import spring.SpringBoot.constant.Constant;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import spring.SpringBoot.entry.UserInfo;
 import spring.SpringBoot.service.UserInfoService;
+import spring.SpringBoot.service.impl.RaffleContractServiceImpl;
 import spring.SpringBoot.utils.ResponseUtil;
 
 import java.util.List;
@@ -97,5 +98,4 @@ public class UserInfoController {
         }
         return ResponseUtil.ok(result);
     }
-
 }

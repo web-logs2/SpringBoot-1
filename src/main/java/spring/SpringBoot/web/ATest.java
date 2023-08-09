@@ -1,16 +1,23 @@
 package spring.SpringBoot.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGasPrice;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
+import spring.SpringBoot.service.RaffleContractService;
 
 import java.util.concurrent.ExecutionException;
 
 public class ATest {
-//    public static void main(String[] args) throws ExecutionException, InterruptedException {
+//    private static RaffleContractService raffleContractService;
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+
+
+//        raffleContractService.execSwapTransferAllIfCompletedWithNFT();
 //        Web3j client = Web3j.build(new HttpService("https://sepolia.infura.io/v3/3a4cf0ed857e458f8a704efd8211a336"));
 //        Web3ClientVersion clientVersion = client.web3ClientVersion().sendAsync().get();
 //        System.out.println(clientVersion.getWeb3ClientVersion());
@@ -29,5 +36,5 @@ public class ATest {
 //        // => 741270235881990866
 
 
-//    }
+    }
 }

@@ -41,4 +41,9 @@ public class RaffleContractController {
         return raffleContractService.getWinnerTicketNumber(raffleAddress,chainId);
     }
 
+    @RequestMapping("/test")
+    public void test() {
+        raffleContractService.execSwapTransferAllIfCompletedWithNFT();
+    }
+
 }

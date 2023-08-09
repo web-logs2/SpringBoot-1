@@ -12,7 +12,7 @@ import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.constant.ChainConstants;
-import spring.SpringBoot.constant.Constant;
+import spring.SpringBoot.constant.SwapStatus;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
@@ -251,7 +251,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         for (RaffleInfo raffleInfo : raffleInfoList) {
             RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
             Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
-            if (new BigInteger("0").equals(raffleInfo1.getSwapStatus())) {
+            if (SwapStatus.NoSwap.getCode() == raffleInfo1.getSwapStatus()) {
                 transferAllIfCompletedWithNFT(raffleInfo1.getRaffleaddress(),chainId);
             }
         }
