@@ -43,7 +43,7 @@ public class RaffleContractController {
 
     @RequestMapping("/test")
     public void test() {
-        raffleContractService.execSwapTransferAllIfCompletedWithNFT();
+        raffleContractService.execRetryIfNoRNG();
     }
 
 }

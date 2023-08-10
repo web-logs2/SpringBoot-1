@@ -61,7 +61,7 @@
               ri.endTimestamp, ri.raffleStatus, ri.create_time, ri.update_time, ri.king, ri.swap_status,ri.cancelled_extracted_status,
               ri.raffle_assets,ri.winnerDrawTimestamp
         from raffle_info ri
-        JOIN participant_info pi ON ri.raffleAddress = pi.raffleAddress
+--         JOIN participant_info pi ON ri.raffleAddress = pi.raffleAddress
         WHERE ri.rafflestatus = 5 AND ri.raffle_assets != 0 AND (UNIX_TIMESTAMP(NOW()) > ri.endTimestamp + (2 * 24 * 60 * 60) )
     </select>
 
@@ -69,7 +69,7 @@
         select
         <include refid="Base_Column_List"/>
         from raffle_info
-        WHERE rafflestatus IN (0, 1, 2) AND UNIX_TIMESTAMP(NOW()) > (endTimestamp+ (2 * 24 * 60 * 60))
+        WHERE rafflestatus IN (1, 2) AND UNIX_TIMESTAMP(NOW()) > (endTimestamp+ (2 * 24 * 60 * 60))
     </select>
 
     <select id="getExecRetryIfNoRNGRaffleInfos" resultMap="BaseResultMap">

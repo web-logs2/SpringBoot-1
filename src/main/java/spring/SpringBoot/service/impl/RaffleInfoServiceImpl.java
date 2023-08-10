@@ -2,7 +2,7 @@ package spring.SpringBoot.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import spring.SpringBoot.constant.RaffleAssetsStatus;
 import spring.SpringBoot.constant.RaffleStatus;
 import spring.SpringBoot.constant.SwapStatus;
 import spring.SpringBoot.entry.ParticipantInfo;
@@ -43,8 +43,6 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
           TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
           TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
           Integer participants = participantInfoMapper.getParticipantCount(raffleInfo.getRaffleaddress());
-//            List<ParticipantInfo> participantInfos = new  ArrayList<>();
-//            participantInfos = participantInfoMapper.ParticipantInfos(raffleInfo.getRaffleaddress());
           raffleInfo.setParticipants(null == participants?0:participants);
             raffleInfo = correctStatus(raffleInfo);
             tokenRaffleVo.setRaffleInfo(raffleInfo);
@@ -58,8 +56,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
     public List<TokenRaffleVo> findAll(String owner,int pageNumber, int pageSize,String chainId) {
         List<TokenRaffleVo> list = new ArrayList<>();
         int offset = pageNumber * pageSize;
-        int limit = pageSize;
-        List<RaffleInfo>  raffleInfos =  raffleInfoMapper.findAll(owner,offset,limit,chainId);
+        List<RaffleInfo>  raffleInfos =  raffleInfoMapper.findAll(owner,offset,pageSize,chainId);
         for (RaffleInfo raffleInfo:raffleInfos){
             TokenRaffleVo  tokenRaffleVo = new TokenRaffleVo();
             TokenInfo tokenInfo = tokenInfoMapper.selectByTokenId(raffleInfo.getContractAddress(), raffleInfo.getTokenId());
@@ -98,7 +95,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 
         if(null == raffleInfo.getKing()){
             String king = raffleContractService.getKing(raffleInfo.getRaffleaddress(),chainId);
-            if(null!=king&&""!=king){
+            if(null!=king&&!"".equals(king)){
                 raffleInfo.setKing(king);
             }
         }
@@ -124,28 +121,28 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
         if(SwapStatus.ETH.getCode() == nftBackStatus){
-            if(raffleAssetsByDb ==999){
+            if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
                 if(soldTickets.equals(refundTickets)){
-                    raffleInfo.setRaffleAssets(0);
+                    raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
                 }else {
-                    raffleInfo.setRaffleAssets(1);
+                    raffleInfo.setRaffleAssets(RaffleAssetsStatus.ETH.getCode());
                 }
             }
-            if(raffleAssetsByDb == 1){
-                raffleInfo.setRaffleAssets(0);
+            if(RaffleAssetsStatus.ETH.getCode() == raffleAssetsByDb ){
+                raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
             }
         }
         if(soldTickets.equals(refundTickets)){
-            if(raffleAssetsByDb == 999){
+            if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
                 if(SwapStatus.ETH.getCode() ==nftBackStatus){
-                    raffleInfo.setRaffleAssets(0);
+                    raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
                 }else {
-                    raffleInfo.setRaffleAssets(2);
+                    raffleInfo.setRaffleAssets(RaffleAssetsStatus.NFT.getCode());
                 }
             }
         }else {
             if(SwapStatus.ETH.getCode() !=nftBackStatus){
-                raffleInfo.setRaffleAssets(999);
+                raffleInfo.setRaffleAssets(RaffleAssetsStatus.ALL.getCode());
             }
         }
 
@@ -192,7 +189,7 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
 
     @Override
     public RaffleInfo getRaffleDetailByRaffleAddress(String raffleAddress) {
-        if (null!=raffleAddress && ""!=raffleAddress){
+        if (null!=raffleAddress && !"".equals(raffleAddress)){
             return raffleInfoMapper.getDetailByRaffleAddress(raffleAddress);
         }
         return null;

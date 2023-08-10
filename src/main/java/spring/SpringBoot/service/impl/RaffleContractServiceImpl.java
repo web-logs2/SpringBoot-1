@@ -1,5 +1,7 @@
 package spring.SpringBoot.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
 import spring.SpringBoot.mapper.RaffleInfoMapper;
 import spring.SpringBoot.mapper.TokenInfoMapper;
+import spring.SpringBoot.schedule.TaskJob;
 import spring.SpringBoot.service.RaffleContractService;
 import spring.SpringBoot.service.RaffleInfoService;
 import spring.SpringBoot.solidity.NRaffle;
@@ -24,6 +27,7 @@ import spring.SpringBoot.solidity.NRaffleFactory;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -37,6 +41,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
     @Autowired
     TokenInfoMapper tokenInfoMapper;
+    private static final Logger logger = LoggerFactory.getLogger(RaffleContractServiceImpl.class);
 
     @Override
     public Long getTokenChainIdByRaffleAddress(String raffleAddress){
@@ -88,7 +93,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         }
         if (null != transactionReceipt) {
             String transactionHash = transactionReceipt.getTransactionHash();
-            System.out.println("verifyNFTPresenceBeforeStart-transactionHash=" + transactionHash);
+            logger.info("verifyNFTPresenceBeforeStart-transactionHash={}",transactionHash);
+
         }
         return "ok";
     }
@@ -205,13 +211,6 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     public void transferAllIfCancelled(String address,Long chainId) {
         NRaffle NRaffleContract = createNRaffle(address,chainId);
         try {
-//            if(2 == raffleAsset){
-//                NRaffleContract.transferNFTToOwnerIfCancelled().send();
-//
-//            }
-//            if(999==raffleAsset){
-//                NRaffleContract.transferAllIfCancelled().send();
-//            }
            NRaffleContract.transferAllIfCancelled().send();
 
         } catch (Exception e) {
@@ -247,7 +246,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execSwapTransferAllIfCompletedWithNFT() {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getExecSwapRaffleInfos();
-        System.out.println("execSwap共执行数据：" + raffleInfoList.size());
+        logger.info("execSwap共执行数据={}",raffleInfoList.size());
+
         for (RaffleInfo raffleInfo : raffleInfoList) {
             RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
             Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
@@ -260,10 +260,11 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execTransferAllIfCancelled() {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
-        System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
+        logger.info("execTransferAllIfCancelled共执行数据={}",raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
             Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
             transferAllIfCancelled(raffleInfo.getRaffleaddress(),chainId);
+            //资产退回后，db内部没有办法更新，每次调用链上函数时候增加一个监听。监听完成后再kill掉，防止越积累越多
         }
     }
 
@@ -275,7 +276,7 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getCancelIfUnsoldRaffleInfos();
         //到期未完成抽奖活动清理
-        System.out.println("execTransferAllIfCancelled共执行数据：" + raffleInfoList.size());
+        logger.info("execTransferAllIfCancelled共执行数据={}",raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
             Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
             cancelIfUnsold(raffleInfo.getRaffleaddress(),chainId);
@@ -331,10 +332,8 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     public BigInteger getAssignedTicketNumberRange(String raffleAddress, String owner, BigInteger index,Long chainId) {
         NRaffle NRaffleContract = createNRaffle(raffleAddress,chainId);
         BigInteger value = null;
-
         try {
             value = NRaffleContract.getAssignedTicketNumberRange(owner,index).send();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

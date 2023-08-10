@@ -1,5 +1,7 @@
 package spring.SpringBoot.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +16,7 @@ import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.constant.ChainConstants;
+import spring.SpringBoot.schedule.TaskJob;
 import spring.SpringBoot.solidity.NRaffle;
 import spring.SpringBoot.solidity.NRaffleFactory;
 
@@ -30,6 +33,7 @@ public class ContractConfig {
     ChainConstants.Chain chainFantom = ChainConstants.CHAIN_CONFIGS.get(4002);
     ChainConstants.Chain chainPolygonMumbai = ChainConstants.CHAIN_CONFIGS.get(80001);
     ChainConstants.Chain chainBscTestnet = ChainConstants.CHAIN_CONFIGS.get(97);
+    private static final Logger logger = LoggerFactory.getLogger(ContractConfig.class);
 
     @Bean
     @Scope("prototype")
@@ -62,7 +66,8 @@ public class ContractConfig {
         try {
             Web3ClientVersion web3ClientVersion = web3jSepolia.web3ClientVersion().send();
             String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-            System.out.println("clientVersion" + clientVersion);
+            logger.info("clientVersion = {}",clientVersion);
+
             //加载智能合约
             BigInteger gasPrice = web3jSepolia.ethGasPrice().send().getGasPrice();
             String nRaffleFactoryAddress = chainSepolia.getRaffleFactoryaAddress();
@@ -84,7 +89,8 @@ public class ContractConfig {
         try {
             Web3ClientVersion web3ClientVersion = web3jFantom.web3ClientVersion().send();
             String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-            System.out.println("clientVersion" + clientVersion);
+            logger.info("clientVersion = {}",clientVersion);
+
             //加载智能合约
             BigInteger gasPrice = web3jFantom.ethGasPrice().send().getGasPrice();
             String nRaffleFactoryAddress = chainFantom.getRaffleFactoryaAddress();
@@ -107,7 +113,7 @@ public class ContractConfig {
         try {
             Web3ClientVersion web3ClientVersion = web3jPolygonMumbai.web3ClientVersion().send();
             String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-            System.out.println("clientVersion" + clientVersion);
+            logger.info("clientVersion = {}",clientVersion);
             //加载智能合约
             BigInteger gasPrice = web3jPolygonMumbai.ethGasPrice().send().getGasPrice();
             String nRaffleFactoryAddress = chainPolygonMumbai.getRaffleFactoryaAddress();
@@ -128,7 +134,7 @@ public class ContractConfig {
         try {
             Web3ClientVersion web3ClientVersion = web3jBscTestnet.web3ClientVersion().send();
             String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-            System.out.println("clientVersion" + clientVersion);
+            logger.info("clientVersion = {}",clientVersion);
             //加载智能合约
             BigInteger gasPrice = web3jBscTestnet.ethGasPrice().send().getGasPrice();
             String nRaffleFactoryAddress = chainBscTestnet.getRaffleFactoryaAddress();
@@ -167,7 +173,6 @@ public class ContractConfig {
     public EthFilter fantomNRaffleFactoryFilter(@Qualifier("fantomNRaffleFactoryTrace") NRaffleFactory trace) {
         Web3j web3j = Web3j.build(new HttpService(chainFantom.getNode()));
         BigInteger currentBlockNumber = BigInteger.ZERO; // Default value
-
         try {
             currentBlockNumber = web3j.ethBlockNumber().send().getBlockNumber();
         } catch (IOException e) {
@@ -186,7 +191,6 @@ public class ContractConfig {
     public EthFilter polygonMumbaiNRaffleFactoryFilter(@Qualifier("polygonMumbaiNRaffleFactoryTrace") NRaffleFactory trace) {
         Web3j web3j = Web3j.build(new HttpService(chainPolygonMumbai.getNode()));
         BigInteger currentBlockNumber = BigInteger.ZERO; // Default value
-
         try {
             currentBlockNumber = web3j.ethBlockNumber().send().getBlockNumber();
         } catch (IOException e) {
@@ -207,7 +211,6 @@ public class ContractConfig {
     public EthFilter bscTestnetNRaffleFactoryFilter(@Qualifier("bscTestnetNRaffleFactoryTrace") NRaffleFactory trace) {
         Web3j web3j = Web3j.build(new HttpService(chainBscTestnet.getNode()));
         BigInteger currentBlockNumber = BigInteger.ZERO; // Default value
-
         try {
             currentBlockNumber = web3j.ethBlockNumber().send().getBlockNumber();
         } catch (IOException e) {
