@@ -114,15 +114,15 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
      }
 //     5:是终态，和兑换状态有关
     if(RaffleStatus.Cancelled.getCode() == raffleInfo.getRafflestatus() &&
-            RaffleStatus.WaitingForNFT.getCode() != raffleInfo.getRaffleAssets() && !Long.valueOf(-1).equals(chainId)) {
+            RaffleAssetsStatus.NO.getCode() != raffleInfo.getRaffleAssets() && !Long.valueOf(-1).equals(chainId)) {
         //取消状态，getSwapStauts  = 1，即为已退回
-        Integer nftBackStatus = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId).intValue();
-        BigInteger soldTickets = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress(),chainId);
-        BigInteger refundTickets = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
+        Integer nftBackStatusbyChain = raffleContractService.getSwapStauts(raffleInfo.getRaffleaddress(),chainId).intValue();
+        BigInteger soldTicketsbyChain = raffleContractService.getSoldTickets(raffleInfo.getRaffleaddress(),chainId);
+        BigInteger refundTicketsbyChain = raffleContractService.getRefundTickets(raffleInfo.getRaffleaddress(),chainId);
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
-        if(SwapStatus.ETH.getCode() == nftBackStatus){
+        if(SwapStatus.ETH.getCode() == nftBackStatusbyChain){
             if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
-                if(soldTickets.equals(refundTickets)){
+                if(soldTicketsbyChain.equals(refundTicketsbyChain)){
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
                 }else {
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.ETH.getCode());
@@ -132,16 +132,16 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
                 raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
             }
         }
-        if(soldTickets.equals(refundTickets)){
+        if(soldTicketsbyChain.equals(refundTicketsbyChain)){
             if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
-                if(SwapStatus.ETH.getCode() ==nftBackStatus){
+                if(SwapStatus.ETH.getCode() ==nftBackStatusbyChain){
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
                 }else {
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.NFT.getCode());
                 }
             }
         }else {
-            if(SwapStatus.ETH.getCode() !=nftBackStatus){
+            if(SwapStatus.ETH.getCode() !=nftBackStatusbyChain){
                 raffleInfo.setRaffleAssets(RaffleAssetsStatus.ALL.getCode());
             }
         }

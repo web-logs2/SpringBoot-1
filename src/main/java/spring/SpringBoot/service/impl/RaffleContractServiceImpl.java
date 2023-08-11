@@ -14,6 +14,8 @@ import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.StaticGasProvider;
 import spring.SpringBoot.constant.ChainConstants;
+import spring.SpringBoot.constant.RaffleAssetsStatus;
+import spring.SpringBoot.constant.RaffleStatus;
 import spring.SpringBoot.constant.SwapStatus;
 import spring.SpringBoot.entry.RaffleInfo;
 import spring.SpringBoot.entry.TokenInfo;
@@ -233,12 +235,15 @@ public class RaffleContractServiceImpl implements RaffleContractService {
 
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getExecRetryIfNoRNGRaffleInfos();
         for(RaffleInfo raffleInfo:raffleInfoList){
-            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
-            NRaffle NRaffleContract = createNRaffle(raffleInfo.getRaffleaddress(),chainId);
-            try {
-                NRaffleContract.retryIfNoRNG().send();
-            } catch (Exception e) {
-                e.printStackTrace();
+            RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
+            if(RaffleStatus.WaitingForRNG.getCode() == raffleInfo1.getRafflestatus()){
+                Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+                NRaffle NRaffleContract = createNRaffle(raffleInfo.getRaffleaddress(),chainId);
+                try {
+                    NRaffleContract.retryIfNoRNG().send();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -246,12 +251,13 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     @Override
     public void execSwapTransferAllIfCompletedWithNFT() {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getExecSwapRaffleInfos();
+
         logger.info("execSwap共执行数据={}",raffleInfoList.size());
 
         for (RaffleInfo raffleInfo : raffleInfoList) {
             RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
-            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
             if (SwapStatus.NoSwap.getCode() == raffleInfo1.getSwapStatus()) {
+                Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
                 transferAllIfCompletedWithNFT(raffleInfo1.getRaffleaddress(),chainId);
             }
         }
@@ -262,9 +268,11 @@ public class RaffleContractServiceImpl implements RaffleContractService {
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getTransferAllIfCancelledRaffleInfos();
         logger.info("execTransferAllIfCancelled共执行数据={}",raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
-            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
-            transferAllIfCancelled(raffleInfo.getRaffleaddress(),chainId);
-            //资产退回后，db内部没有办法更新，每次调用链上函数时候增加一个监听。监听完成后再kill掉，防止越积累越多
+            RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
+            if(RaffleStatus.Cancelled.getCode() == raffleInfo1.getRafflestatus() && RaffleAssetsStatus.NO.getCode() != raffleInfo1.getRaffleAssets()){
+                Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+                transferAllIfCancelled(raffleInfo.getRaffleaddress(),chainId);
+            }
         }
     }
 
@@ -275,11 +283,15 @@ public class RaffleContractServiceImpl implements RaffleContractService {
     public void execCancelIfUnsold() {
 
         List<RaffleInfo> raffleInfoList = raffleInfoMapper.getCancelIfUnsoldRaffleInfos();
-        //到期未完成抽奖活动清理
         logger.info("execTransferAllIfCancelled共执行数据={}",raffleInfoList.size());
         for (RaffleInfo raffleInfo : raffleInfoList) {
-            Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
-            cancelIfUnsold(raffleInfo.getRaffleaddress(),chainId);
+            RaffleInfo raffleInfo1 = raffleInfoService.correctStatus(raffleInfo);
+            if(RaffleStatus.WaitingForStart.getCode() == raffleInfo1.getRafflestatus() ||
+            RaffleStatus.SellingTickets.getCode()== raffleInfo1.getRafflestatus()
+            ){
+                Long chainId = getTokenChainIdByRaffleAddress(raffleInfo.getRaffleaddress());
+                cancelIfUnsold(raffleInfo.getRaffleaddress(),chainId);
+            }
         }
     }
 

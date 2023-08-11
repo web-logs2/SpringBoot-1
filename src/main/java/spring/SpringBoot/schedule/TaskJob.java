@@ -58,7 +58,7 @@ public class TaskJob {
     }
 
     /**
-     * 测试完成，问题：资产退回后，db内部没有办法更新，每次调用链上函数时候增加一个监听。监听完成后再kill掉，防止越积累越多
+     * 测试完成，问题：纠正状态函数里边关于assets的部分逻辑是否正确。
      *取消状态下，退回所有的NFT和Eth
      * ri.rafflestatus = 5 AND ri.raffleAssets != 0 AND (UNIX_TIMESTAMP(NOW()) > ri.endTimestamp + (2 * 24 * 60 * 60) )
      * 每天下午的14点执行
