@@ -12,8 +12,8 @@ public final class ChainConstants {
                 new Chain(
                 4002,
                 "fantomTestnet",
-//                "https://rpcapi-tracing.testnet.fantom.network",
-                "https://rpc.testnet.fantom.network/",
+                "https://rpcapi-tracing.testnet.fantom.network",
+//                "https://rpc.testnet.fantom.network/",
                 "0xFe970248A59562674c7b02143b236BCd554fA9E7",
                 "acdf03d0669bbd6191f79dfd224a0cd3a0b7d50df59fda874e48cc35d4a5619e",
                 3000000L
