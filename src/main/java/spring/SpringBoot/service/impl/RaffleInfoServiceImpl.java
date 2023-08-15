@@ -122,7 +122,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
         int raffleAssetsByDb = raffleInfo.getRaffleAssets();
         if(SwapStatus.ETH.getCode() == nftBackStatusbyChain){
             if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
-                if(soldTicketsbyChain.equals(refundTicketsbyChain)){
+                if((soldTicketsbyChain == null) ?
+                        (refundTicketsbyChain == null) :
+                        soldTicketsbyChain.equals(refundTicketsbyChain)){
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
                 }else {
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.ETH.getCode());
@@ -132,7 +134,9 @@ public class RaffleInfoServiceImpl implements RaffleInfoService {
                 raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
             }
         }
-        if(soldTicketsbyChain.equals(refundTicketsbyChain)){
+        if((soldTicketsbyChain == null) ?
+                (refundTicketsbyChain == null) :
+                soldTicketsbyChain.equals(refundTicketsbyChain)){
             if(RaffleAssetsStatus.ALL.getCode() == raffleAssetsByDb){
                 if(SwapStatus.ETH.getCode() ==nftBackStatusbyChain){
                     raffleInfo.setRaffleAssets(RaffleAssetsStatus.NO.getCode());
